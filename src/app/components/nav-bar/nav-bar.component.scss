@@ -1,0 +1,40 @@
+nav {
+  background: linear-gradient(to bottom, #5a4bac, #090130); // Degradado azul oscuro
+  padding: 10px 0px;
+  margin: 10px auto 0;
+  border-radius: 5px;
+
+  ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    margin: 0;
+
+    li {
+      a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 5px;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+      }
+    }
+
+  }
+}
+
+nav ul li a.registro-link {
+  color: white;
+  font-weight: bold;
+  background: linear-gradient(to bottom, #06f561, #026b10);
+  padding: 5px;
+}
+
+
+
+

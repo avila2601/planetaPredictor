@@ -1,0 +1,156 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "email": "admin@example.com",
+      "password": "12",
+      "pollas": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "2",
+      "username": "juan",
+      "email": "juan@example.com",
+      "password": "abc",
+      "pollas": [
+        1,
+        4
+      ]
+    },
+    {
+      "id": "3",
+      "username": "maria",
+      "email": "maria@example.com",
+      "password": "pass",
+      "pollas": [
+        2,
+        4
+      ]
+    },
+    {
+      "id": "4",
+      "username": "pedro",
+      "email": "pedro@example.com",
+      "password": "qwe",
+      "pollas": [
+        1,
+        3,
+        5
+      ]
+    },
+    {
+      "id": "a7b1",
+      "username": "atenis",
+      "email": "a@mg.com",
+      "password": "12",
+      "pollas": []
+    }
+  ],
+  "pollas": [
+    {
+      "id": "1",
+      "leagueId": "4769",
+      "name": "Champions League",
+      "torneo": "Champions League 2024/25",
+      "leagueShortcut": "ucl2024",
+      "leagueSeason": "2024",
+      "adminId": 1,
+      "participants": [
+        1,
+        2,
+        4
+      ],
+      "matches": []
+    },
+    {
+      "id": "db51",
+      "leagueId": 4793,
+      "name": "Nations League",
+      "torneo": "Nations League A 2024/2025",
+      "leagueShortcut": "nla",
+      "leagueSeason": "2024",
+      "adminId": 2,
+      "participants": [
+        2
+      ],
+      "matches": [],
+      "notes": "Carga todos los partidos"
+    }
+  ],
+  "predictions": [
+    {
+      "id": "1741830928021",
+      "userId": 1,
+      "equipoLocal": "Juventus Turin",
+      "equipoVisitante": "PSV Eindhoven",
+      "horario": "2024-09-17T16:45:00Z",
+      "pronosticoLocal": 1,
+      "pronosticoVisitante": 1,
+      "pronosticoGuardado": "1 - 1",
+      "resultadoFinal": "3 - 1",
+      "puntos": 2
+    },
+    {
+      "id": "1741838332102",
+      "userId": "2",
+      "matchId": 74576,
+      "equipoLocal": "BSC Young Boys",
+      "equipoVisitante": "Aston Villa",
+      "horario": "2024-09-17T16:45:00Z",
+      "pronosticoLocal": 0,
+      "pronosticoVisitante": 2,
+      "pronosticoGuardado": "0 - 2",
+      "resultadoFinal": "0 - 3",
+      "puntos": 7
+    },
+    {
+      "id": "1741840017292",
+      "userId": "2",
+      "matchId": 74577,
+      "equipoLocal": "Juventus Turin",
+      "equipoVisitante": "PSV Eindhoven",
+      "horario": "2024-09-17T16:45:00Z",
+      "pronosticoLocal": 1,
+      "pronosticoVisitante": 1,
+      "pronosticoGuardado": "1 - 1",
+      "resultadoFinal": "3 - 1",
+      "puntos": 2
+    },
+    {
+      "id": "1741842634561",
+      "userId": "2",
+      "matchId": 73806,
+      "equipoLocal": "FC Bayern München",
+      "equipoVisitante": "Dinamo Zagreb",
+      "horario": "2024-09-17T19:00:00Z",
+      "pronosticoLocal": 3,
+      "pronosticoVisitante": 0,
+      "pronosticoGuardado": "3 - 0",
+      "resultadoFinal": "9 - 2",
+      "puntos": 5
+    },
+    {
+      "id": "1741987061438",
+      "userId": "2",
+      "matchId": 73832,
+      "equipoLocal": "Real Madrid",
+      "equipoVisitante": "VfB Stuttgart",
+      "horario": "2024-09-17T19:00:00Z",
+      "pronosticoLocal": 3,
+      "pronosticoVisitante": 1,
+      "pronosticoGuardado": "3 - 1",
+      "resultadoFinal": "3 - 1",
+      "puntos": 10
+    }
+  ],
+  "tournaments": [
+    {
+      "leagueId": 814,
+      "matchesEndpoint": "",
+      "id": "fb2b"
+    }
+  ]
+}

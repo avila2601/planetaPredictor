@@ -1,0 +1,76 @@
+.tabla-container {
+  margin: 0 auto; /* Centra horizontalmente */
+  display: flex;
+  flex-direction: column; /* Permite que la tabla y el botón se apilen verticalmente */
+  align-items: center; /* Centra los elementos internos */
+  background-color: white; /* Asegura que el fondo sea blanco */
+  padding: 20px; /* Espaciado interno */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  width: 90%; /* Limita el ancho del contenedor */
+}
+
+table {
+  width: 100%; /* La tabla ocupará todo el ancho del contenedor */
+  border-collapse: separate;
+  border-radius: 2px;
+  border: 1px solid #2a7a2a;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px dotted #2a7a2a;
+  border-right: 1px dotted #2a7a2a;
+  border-left: 1px dotted #2a7a2a;
+}
+
+th {
+  background-color: #2a7a2a; /* Verde oscuro para encabezado */
+  color: white;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(144, 238, 144, 0.3);
+}
+
+a {
+  text-decoration: none; /* Quita el subrayado */
+  font-size: 20px; /* Aumenta el tamaño del emoji */
+  display: inline-block; /* Evita que se desplace con el texto */
+}
+
+/* Contenedor del botón "CREAR POLLA" */
+.crear-polla-container {
+  display: flex;
+  justify-content: flex-end; /* Alinea a la derecha */
+  width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
+  padding-top: 15px; /* Espaciado superior */
+}
+
+/* Estilos del botón */
+.boton-guardar {
+  background: linear-gradient(to bottom, #5a4bac, #2f1f80);
+  color: white;
+  border: none;
+  padding: 10px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  font-size: 12px;
+
+  &:hover {
+    background: linear-gradient(to bottom, #5a4bac, #140a47);
+  }
+}
+
+
+
+
+
+
+
+

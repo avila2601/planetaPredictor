@@ -1,0 +1,34 @@
+<div class="modal-overlay">
+  <div class="modal-content" #modalContent>
+    <div class="modal-header">
+      <h2>Crear Polla</h2>
+      <button class="cerrar-modal" (click)="cerrarModal()">✖</button>
+    </div>
+
+    <div class="modal-body">
+      <form class="formulario-info-general">
+        <div class="campo">
+          <label for="torneo">Torneo:</label>
+          <select id="torneo" [(ngModel)]="torneoSeleccionado" name="torneo">
+            <option [ngValue]="null" disabled selected>Seleccione un torneo</option>
+            <option *ngFor="let torneo of torneos" [ngValue]="torneo">{{ torneo.name }}</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" placeholder="Ingrese el nombre" [(ngModel)]="nombrePolla" name="nombre">
+        </div>
+
+        <div class="campo">
+          <label for="condiciones">Condiciones y premiación:</label>
+          <textarea id="condiciones" placeholder="Describa las condiciones y premiación" [(ngModel)]="condiciones" name="condiciones"></textarea>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button class="boton-guardar" (click)="handleGuardar()">Guardar</button>
+    </div>
+  </div>
+</div>

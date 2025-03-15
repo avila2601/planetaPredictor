@@ -1,0 +1,38 @@
+<div class="tabla-container">
+  <table>
+    <tr>
+      <th>Nombre</th>
+      <th>Torneo</th>
+      <th>Posición</th>
+      <th>Puntaje</th>
+      <th>Ingresar pronósticos</th>
+      <th>Ver tabla de<br>posiciones</th>
+      <th>Administrar</th>
+    </tr>
+
+    <!-- 🔥 Mostrar solo las pollas del usuario -->
+    <tr *ngFor="let polla of pollas">
+      <td>{{ polla.name }}</td>
+      <td>{{ polla.torneo }}</td> <!-- ✅ Mostrar directamente el torneo -->
+      <td>1</td> <!-- TODO: Obtener posición real -->
+      <td>{{ puntajeTotal }}</td>
+      <td><a (click)="irAPronosticos(polla)">🔮</a></td>
+      <td><a routerLink="/posiciones">📈</a></td>
+      <td><a routerLink="/administrar">⚙️</a></td>
+    </tr>
+  </table>
+
+  <!-- 🔥 Si el usuario no tiene pollas, mostrar mensaje -->
+  <p *ngIf="pollas.length === 0">No estás registrado en ninguna polla.</p>
+
+  <!-- Botón para abrir el modal -->
+  <div class="crear-polla-container">
+    <button class="boton-guardar" (click)="abrirModal()">CREAR POLLA</button>
+  </div>
+
+  <!-- Modal, solo se muestra si `modalAbierto` es `true` -->
+  <app-crear-polla *ngIf="modalAbierto" (modalCerrado)="cerrarModal(); cargarPollasDelUsuario()"></app-crear-polla>
+</div>
+
+<app-pronosticos *ngIf="mostrarPronostico"></app-pronosticos>
+<app-posiciones *ngIf="mostrarPosiciones"></app-posiciones>

@@ -1,0 +1,23 @@
+<div class="tabla-container">
+  <!-- Formulario de Login -->
+  <div class="login-container" *ngIf="!isAuthenticated">
+    <input type="text" placeholder="Usuario" [(ngModel)]="usuario" />
+    <input type="password" placeholder="Contraseña" [(ngModel)]="contrasena" />
+    <button (click)="login()">Ingresar</button>
+    <p *ngIf="errorMensaje" class="error">{{ errorMensaje }}</p>
+
+    <!-- Hipervínculo para recuperar contraseña -->
+    <p class="forgot-password">
+      <a routerLink="/recuperar-password">¿Olvidó su contraseña?</a>
+    </p>
+    <p class="registro-link">
+    </p>
+
+  </div>
+
+  <!-- Mensaje de bienvenida y botón de logout -->
+  <div class="dashboard" *ngIf="isAuthenticated">
+    <h2>Bienvenid&#64;, {{ usuario }}</h2>
+    <button (click)="logout()">Cerrar Sesión</button>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="registro-container">
+  <h2>Registro</h2>
+
+  <input type="text" placeholder="Usuario" [(ngModel)]="usuario" />
+  <p *ngIf="errorUsuario" class="error">{{ errorUsuario }}</p>
+
+  <input type="email" placeholder="Correo electrónico" [(ngModel)]="correo" />
+  <p *ngIf="errorCorreo" class="error">{{ errorCorreo }}</p>
+
+  <input type="password" placeholder="Contraseña" [(ngModel)]="contrasena" />
+  <p *ngIf="errorContrasena" class="error">{{ errorContrasena }}</p>
+
+  <button (click)="registrar()">Registrarse</button>
+
+  <p *ngIf="mensaje" [class.error]="mensaje.includes('Error') || mensaje.includes('ya existe')" [class.success]="mensaje.includes('satisfactoriamente')">
+    {{ mensaje }}
+  </p>
+</div>
+

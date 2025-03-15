@@ -1,0 +1,50 @@
+<div class="tabla-container">
+  <div class="titulo-tabla">Ingresar pronósticos</div>
+  <button class="boton-regresar" (click)="regresar()">Regresar</button>
+  <table>
+    <tr>
+      <th>Horario</th>
+      <th>Equipo Local</th>
+      <th>Equipo Visitante</th>
+      <th>Pronóstico</th>
+      <th>Pronósticos <br> guardados</th>
+      <th>Resultado</th>
+      <th>Puntaje</th>
+    </tr>
+    <tr *ngFor="let match of matches">
+      <td>{{ match.matchDateTimeUTC | date:'dd MMM - HH:mm' }}</td>
+      <td>
+        <img [src]="match.team1.teamIconUrl" alt="{{ match.team1.teamName }}" class="icono-equipo">
+        {{ match.team1.teamName }}
+      </td>
+      <td>
+        <img [src]="match.team2.teamIconUrl" alt="{{ match.team2.teamName }}" class="icono-equipo">
+        {{ match.team2.teamName }}
+      </td>
+      <td>
+        <input type="number" inputmode="numeric" [(ngModel)]="match.pronosticoLocal" [ngModelOptions]="{standalone: true}" min="0">
+        -
+        <input type="number" inputmode="numeric" [(ngModel)]="match.pronosticoVisitante" [ngModelOptions]="{standalone: true}" min="0">
+        <button class="boton-guardar" (click)="guardarPronostico(match)">Guardar</button>
+      </td>
+      <td>{{ match.pronosticoGuardado }}</td>
+      <td>
+        <ng-container *ngIf="match.matchResults?.length; else sinResultado">
+          {{ match.matchResults[1].pointsTeam1 }} - {{ match.matchResults[1].pointsTeam2 }}
+        </ng-container>
+        <ng-template #sinResultado>-</ng-template>
+      </td>
+      <td>{{ match.puntos !== undefined ? match.puntos : '-' }}</td>
+    </tr>
+    <tr class="fila-total">
+      <td colspan="3"></td>
+      <td>
+        <button class="boton-guardar" (click)="guardarTodos()">Guardar<br>Todos</button>
+      </td>
+      <td></td>
+      <td class="puntaje-total">Puntaje Total</td>
+      <td class="puntaje-total-numero">{{ puntajeTotal !== undefined ? puntajeTotal : '-' }}</td>
+    </tr>
+  </table>
+  <button class="boton-regresar" (click)="regresar()">Regresar</button>
+</div>

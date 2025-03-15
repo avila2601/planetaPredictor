@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-color: rgb(136, 205, 116);
+  background-image: url('assets/images/bg-grass.png');
+  background-origin: padding-box;
+  background-repeat: repeat;
+}
+
+.container {
+  width: 75%;
+  margin: 0 auto; // Centra la caja en la pantalla
+}

@@ -1,0 +1,100 @@
+.tabla-container {
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #2a7a2a;
+}
+
+.titulo-tabla {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+table {
+  background-color: white;
+  width: 100%;
+  border-collapse: separate;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px dotted #2a7a2a;
+  border-right: 1px dotted #2a7a2a;
+  border-left: 1px dotted #2a7a2a;
+}
+
+th {
+  background-color: #2a7a2a;
+  color: white;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(144, 238, 144, 0.3);
+}
+
+input {
+  width: 40px;
+  text-align: center;
+  border: 1px solid #2a7a2a;
+  border-radius: 4px;
+}
+
+.icono-equipo {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.boton-regresar,
+.boton-guardar {
+  background: linear-gradient(to bottom, #5a4bac, #2f1f80);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.boton-regresar {
+  align-self: flex-end;
+  margin-bottom: 10px;
+  padding: 8px;
+}
+
+.boton-regresar:hover,
+.boton-guardar:hover {
+  background: linear-gradient(to bottom, #5a4bac, #140a47);
+}
+
+.fila-total {
+  background-color: #5a4bac;
+  color: black;
+  font-weight: bold;
+}
+
+.puntaje-total {
+  text-align: right;
+  padding-right: 15px;
+}
+
+.puntaje-total-numero {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
