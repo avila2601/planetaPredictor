@@ -7,6 +7,8 @@ import { PosicionesComponent } from '../posiciones/posiciones.component';
 import { PollaService } from '../../services/polla.service';
 import { AuthService } from '../../services/auth.service';
 import { Polla } from '../../models/polla.model';
+import { ChangeDetectorRef } from '@angular/core';
+import { PuntajeService } from '../../services/puntaje.service';
 
 @Component({
   selector: 'app-grupos-activos',
@@ -18,19 +20,25 @@ import { Polla } from '../../models/polla.model';
 export class GruposActivosComponent implements OnInit {
   mostrarPronostico = false;
   mostrarPosiciones = false;
-  puntajeTotal = 0;
+  puntajeTotal: number | null = null;
   torneos: { id: number; nombre: string }[] = [];
   pollas: Polla[] = [];
   modalAbierto = false;
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private pollaService: PollaService,
     private authService: AuthService,
-    private router: Router // Importamos Router
+    private router: Router,
+    private puntajeService: PuntajeService
   ) {}
 
   ngOnInit() {
     this.cargarPollasDelUsuario();
+
+    this.puntajeService.puntajeTotal$.subscribe(puntaje => {
+      this.puntajeTotal = puntaje;
+    });
   }
 
   cargarPollasDelUsuario() {
@@ -65,6 +73,13 @@ export class GruposActivosComponent implements OnInit {
 
   irAAdministrar() {
     this.router.navigate(['/administrar']);
+  }
+
+
+  actualizarPuntaje(nuevoPuntaje: number) {
+    console.log("📢 Puntaje recibido en el padre:", nuevoPuntaje);
+    this.puntajeTotal = nuevoPuntaje;
+    this.cdr.detectChanges(); // 🔥 Forzamos la detección de cambios
   }
 
 

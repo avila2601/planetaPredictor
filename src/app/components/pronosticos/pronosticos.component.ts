@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -10,6 +10,7 @@ import { PollaService } from '../../services/polla.service';
 import { Polla } from '../../models/polla.model';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { PuntajeService } from '../../services/puntaje.service';
 
 
 @Component({
@@ -30,7 +31,8 @@ export class PronosticosComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private pollaService: PollaService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private puntajeService: PuntajeService
   ) {
     this.pollaSeleccionada$ = this.pollaService.pollaSeleccionada$;
   }
@@ -55,6 +57,7 @@ export class PronosticosComponent implements OnInit {
               }
             });
           } else {
+            console.log("🌍 URL actual:", this.route.snapshot.paramMap.get('id'));
             console.warn("⚠️ No hay ID de polla en la URL.");
           }
         });
@@ -65,7 +68,6 @@ export class PronosticosComponent implements OnInit {
       }
     });
   }
-
 
   obtenerMatches(polla: Polla) {
     console.log(`📌 Cargando partidos para la polla: ${polla.name}`);
@@ -182,18 +184,21 @@ export class PronosticosComponent implements OnInit {
         this.matchService.savePrediction(prediction).subscribe();
       }
     });
+    this.calcularPuntajeTotal();
   }
 
   guardarTodos() {
     console.log('💾 Guardando todos los pronósticos...');
     this.matches.forEach((match) => {
       this.guardarPronostico(match);
+      this.calcularPuntajeTotal();
     });
   }
 
   calcularPuntajeTotal() {
     this.puntajeTotal = this.matches.reduce((total, match) => total + (match.puntos || 0), 0);
     localStorage.setItem('puntajeTotal', JSON.stringify(this.puntajeTotal));
+    this.puntajeService.actualizarPuntaje(this.puntajeTotal);
   }
 
   cargarPronosticosGuardados() {

@@ -15,7 +15,7 @@
       <td>{{ polla.name }}</td>
       <td>{{ polla.torneo }}</td> <!-- ✅ Mostrar directamente el torneo -->
       <td>1</td> <!-- TODO: Obtener posición real -->
-      <td>{{ puntajeTotal }}</td>
+      <td>{{ puntajeTotal !== null ? puntajeTotal : '-' }}</td>
       <td><a (click)="irAPronosticos(polla)">🔮</a></td>
       <td><a (click)="irAPosiciones()">📈</a></td>
       <td><a (click)="irAAdministrar()">⚙️</a></td>

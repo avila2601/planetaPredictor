@@ -134,6 +134,32 @@
       "pronosticoGuardado": "2 - 1",
       "resultadoFinal": "2 - 1",
       "puntos": 10
+    },
+    {
+      "id": 1742147227292,
+      "userId": "2",
+      "matchId": 74626,
+      "equipoLocal": "Roter Stern Belgrad",
+      "equipoVisitante": "FC Barcelona",
+      "horario": "2024-11-06T20:00:00Z",
+      "pronosticoLocal": 1,
+      "pronosticoVisitante": 2,
+      "pronosticoGuardado": "1 - 2",
+      "resultadoFinal": "2 - 5",
+      "puntos": 5
+    },
+    {
+      "id": 1742147245114,
+      "userId": "2",
+      "matchId": 74577,
+      "equipoLocal": "Juventus Turin",
+      "equipoVisitante": "PSV Eindhoven",
+      "horario": "2024-09-17T16:45:00Z",
+      "pronosticoLocal": 2,
+      "pronosticoVisitante": 0,
+      "pronosticoGuardado": "2 - 0",
+      "resultadoFinal": "3 - 1",
+      "puntos": 6
     }
   ],
   "tournaments": [
