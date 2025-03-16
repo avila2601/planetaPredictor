@@ -12,6 +12,7 @@ export class AuthService {
   private authStatus = new BehaviorSubject<User | null>(null);
   user$ = this.authStatus.asObservable();
   isAuthenticated$ = this.user$.pipe(map(user => !!user)); // 🔥 Verifica si hay usuario autenticado
+  private usuarioAutenticado = new BehaviorSubject<User | null>(null);
 
   constructor(private http: HttpClient) {
     const userId = localStorage.getItem('userId');
@@ -20,24 +21,31 @@ export class AuthService {
     }
   }
 
+  setLoggedUser(user: User | null) {
+    this.usuarioAutenticado.next(user);
+    this.authStatus.next(user);
+    if (user) {
+      localStorage.setItem('userId', user.id.toString());
+    } else {
+      localStorage.removeItem('userId');
+    }
+  }
+
   login(username: string, password: string): Observable<User | null> {
     username = username.trim().toLowerCase();
 
     return this.http.get<User[]>(`${this.apiUrl}?username=${username}`).pipe(
-      map(users => {
-        const user = users.find(u => u.password === password) || null;
-        if (user?.id) { // 🔹 Verifica que `user` y `id` existen antes de guardarlo
-          localStorage.setItem('userId', user.id.toString());
+      map(users => users.find(u => u.password === password) || null),
+      tap(user => {
+        if (user?.id) {
+          this.setLoggedUser(user);
         }
-        return user;
-      }),
-      tap(user => this.authStatus.next(user))
+      })
     );
   }
 
   logout() {
-    this.authStatus.next(null);
-    localStorage.removeItem('userId');
+    this.setLoggedUser(null);
   }
 
   getLoggedUser(): Observable<User | null> {
@@ -46,7 +54,8 @@ export class AuthService {
     if (!userId) return of(null);
 
     return this.http.get<User>(`${this.apiUrl}/${userId}`).pipe(
-      tap(user => this.authStatus.next(user))
+      tap(user => this.setLoggedUser(user)),
+      switchMap(() => this.user$)
     );
   }
 
@@ -67,11 +76,12 @@ export class AuthService {
             }
 
             const newUser: User = {
-              id: Date.now(), // ✅ Genera un ID único en frontend
+              id: Date.now(),
               username,
               email,
               password,
-              pollas: []
+              pollas: [],
+              puntaje: 0 // 🔹 Asegurar que el usuario tiene puntaje inicial
             };
 
             return this.http.post<User>(this.apiUrl, newUser).pipe(
@@ -94,4 +104,11 @@ export class AuthService {
       })
     );
   }
+
+  actualizarPuntajeUsuario(userId: number, nuevoPuntaje: number): Observable<User> {
+    return this.http.patch<User>(`${this.apiUrl}/${userId}`, { puntaje: nuevoPuntaje }).pipe(
+      tap(user => this.authStatus.next(user)) // 🔹 Actualiza el estado global del usuario
+    );
+  }
+
 }

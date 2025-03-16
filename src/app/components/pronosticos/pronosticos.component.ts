@@ -11,7 +11,7 @@ import { Polla } from '../../models/polla.model';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { PuntajeService } from '../../services/puntaje.service';
-
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-pronosticos',
@@ -32,7 +32,8 @@ export class PronosticosComponent implements OnInit {
     private authService: AuthService,
     private pollaService: PollaService,
     private route: ActivatedRoute,
-    private puntajeService: PuntajeService
+    private puntajeService: PuntajeService,
+    private http: HttpClient
   ) {
     this.pollaSeleccionada$ = this.pollaService.pollaSeleccionada$;
   }
@@ -195,10 +196,25 @@ export class PronosticosComponent implements OnInit {
     });
   }
 
-  calcularPuntajeTotal() {
+  calcularPuntajeTotal(): number {
     this.puntajeTotal = this.matches.reduce((total, match) => total + (match.puntos || 0), 0);
-    localStorage.setItem('puntajeTotal', JSON.stringify(this.puntajeTotal));
-    this.puntajeService.actualizarPuntaje(this.puntajeTotal);
+
+    this.authService.user$.subscribe(user => {
+      if (user) {
+        const updatedUser = { ...user, puntaje: this.puntajeTotal };
+
+        // 🔥 Actualizar en db.json
+        this.http.put(`http://localhost:3000/users/${user.id}`, updatedUser).subscribe(() => {
+          console.log("✅ Puntaje actualizado en db.json:", this.puntajeTotal);
+        });
+
+        // 🔥 Guardar localmente
+        localStorage.setItem('puntajeTotal', JSON.stringify(this.puntajeTotal));
+        this.puntajeService.actualizarPuntaje(this.puntajeTotal);
+      }
+    });
+
+    return this.puntajeTotal; // 🔹 Retorna el puntaje total calculado
   }
 
   cargarPronosticosGuardados() {
@@ -210,6 +226,22 @@ export class PronosticosComponent implements OnInit {
     if (puntajeGuardado) {
       this.puntajeTotal = JSON.parse(puntajeGuardado);
     }
+  }
+
+  actualizarPuntaje(nuevoPuntaje: number) {
+    this.authService.user$.subscribe(user => {
+      if (user) {
+        const puntajeActualizado = user.puntaje + nuevoPuntaje;
+        this.authService.actualizarPuntajeUsuario(user.id, puntajeActualizado).subscribe(usuarioActualizado => {
+          console.log("✅ Puntaje actualizado en db.json:", usuarioActualizado.puntaje);
+        });
+      }
+    });
+  }
+
+  procesarPronosticos() {
+    const puntosGanados = this.calcularPuntajeTotal();
+    this.actualizarPuntaje(puntosGanados);
   }
 
   regresar() {

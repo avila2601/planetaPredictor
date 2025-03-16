@@ -4,4 +4,5 @@ export interface User {
   email: string;
   password: string;
   pollas: number[]; // IDs de las pollas en las que participa
+  puntaje: number;
 }

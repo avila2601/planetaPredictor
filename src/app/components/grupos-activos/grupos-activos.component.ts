@@ -36,10 +36,28 @@ export class GruposActivosComponent implements OnInit {
   ngOnInit() {
     this.cargarPollasDelUsuario();
 
+    // 🔥 Escuchar cambios en el usuario autenticado
+    this.authService.user$.subscribe(user => {
+      if (user) {
+        console.log("👤 Usuario autenticado:", user);
+        this.puntajeService.setPuntajeDesdeUsuario(user);
+        this.cargarPuntajeTotal(); // ✅ Pasa el puntaje directamente
+      }
+    });
+
+    // 🔥 Escuchar cambios en el puntaje total
     this.puntajeService.puntajeTotal$.subscribe(puntaje => {
       this.puntajeTotal = puntaje;
     });
   }
+
+
+  private cargarPuntajeTotal() {
+  const puntajeGuardado = localStorage.getItem('puntajeTotal');
+  this.puntajeTotal = puntajeGuardado ? JSON.parse(puntajeGuardado) : 0; // 🔥 Usa 0 si es null
+  this.puntajeService.actualizarPuntaje(this.puntajeTotal ?? 0);
+}
+
 
   cargarPollasDelUsuario() {
     this.pollaService.getPollasByLoggedUser().subscribe(pollas => {
@@ -82,5 +100,10 @@ export class GruposActivosComponent implements OnInit {
     this.cdr.detectChanges(); // 🔥 Forzamos la detección de cambios
   }
 
+  logout() {
+    localStorage.setItem('puntajeTotal', JSON.stringify(this.puntajeTotal)); // Guardar el puntaje
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 
 }
