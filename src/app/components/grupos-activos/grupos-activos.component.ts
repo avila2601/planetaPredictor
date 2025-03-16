@@ -58,4 +58,14 @@ export class GruposActivosComponent implements OnInit {
   irAPronosticos(polla: Polla) {
     this.router.navigate(['/pronosticos', polla.id]);
   }
+
+  irAPosiciones() {
+    this.router.navigate(['/posiciones']);
+  }
+
+  irAAdministrar() {
+    this.router.navigate(['/administrar']);
+  }
+
+
 }

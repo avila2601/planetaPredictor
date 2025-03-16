@@ -89,6 +89,7 @@ export class PollaService {
           tap(() => {
             // Actualiza la lista de pollas después de crear la nueva polla
             this.obtenerPollas().subscribe(); // Se actualiza la lista de pollas
+            location.reload();
           })
         );
       })

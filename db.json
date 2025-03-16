@@ -78,71 +78,61 @@
       ],
       "matches": [],
       "notes": "Carga todos los partidos"
+    },
+    {
+      "id": "fc3f",
+      "leagueId": 4701,
+      "name": "A",
+      "torneo": "Afrika Cup 2024",
+      "leagueShortcut": "ac",
+      "leagueSeason": "2024",
+      "adminId": 2,
+      "participants": [
+        2
+      ],
+      "matches": [],
+      "notes": "A"
+    },
+    {
+      "id": "20d6",
+      "leagueId": 4708,
+      "name": "U",
+      "torneo": "UEFA EURO 2024",
+      "leagueShortcut": "em",
+      "leagueSeason": "2024",
+      "adminId": 2,
+      "participants": [
+        2
+      ],
+      "matches": [],
+      "notes": "U"
     }
   ],
   "predictions": [
     {
-      "id": "1741830928021",
-      "userId": 1,
-      "equipoLocal": "Juventus Turin",
-      "equipoVisitante": "PSV Eindhoven",
-      "horario": "2024-09-17T16:45:00Z",
-      "pronosticoLocal": 1,
-      "pronosticoVisitante": 1,
-      "pronosticoGuardado": "1 - 1",
-      "resultadoFinal": "3 - 1",
-      "puntos": 2
-    },
-    {
-      "id": "1741838332102",
+      "id": 1742080419150,
       "userId": "2",
       "matchId": 74576,
       "equipoLocal": "BSC Young Boys",
       "equipoVisitante": "Aston Villa",
       "horario": "2024-09-17T16:45:00Z",
-      "pronosticoLocal": 0,
-      "pronosticoVisitante": 2,
-      "pronosticoGuardado": "0 - 2",
+      "pronosticoLocal": 2,
+      "pronosticoVisitante": 3,
+      "pronosticoGuardado": "2 - 3",
       "resultadoFinal": "0 - 3",
       "puntos": 7
     },
     {
-      "id": "1741840017292",
+      "id": 1742080449953,
       "userId": "2",
-      "matchId": 74577,
-      "equipoLocal": "Juventus Turin",
-      "equipoVisitante": "PSV Eindhoven",
-      "horario": "2024-09-17T16:45:00Z",
-      "pronosticoLocal": 1,
+      "matchId": 75717,
+      "equipoLocal": "Portugal",
+      "equipoVisitante": "Kroatien",
+      "horario": "2024-09-05T18:45:00Z",
+      "pronosticoLocal": 2,
       "pronosticoVisitante": 1,
-      "pronosticoGuardado": "1 - 1",
-      "resultadoFinal": "3 - 1",
-      "puntos": 2
-    },
-    {
-      "id": "1741842634561",
-      "userId": "2",
-      "matchId": 73806,
-      "equipoLocal": "FC Bayern München",
-      "equipoVisitante": "Dinamo Zagreb",
-      "horario": "2024-09-17T19:00:00Z",
-      "pronosticoLocal": 3,
-      "pronosticoVisitante": 0,
-      "pronosticoGuardado": "3 - 0",
-      "resultadoFinal": "9 - 2",
-      "puntos": 5
-    },
-    {
-      "id": "1741987061438",
-      "userId": "2",
-      "matchId": 73832,
-      "equipoLocal": "Real Madrid",
-      "equipoVisitante": "VfB Stuttgart",
-      "horario": "2024-09-17T19:00:00Z",
-      "pronosticoLocal": 3,
-      "pronosticoVisitante": 1,
-      "pronosticoGuardado": "3 - 1",
-      "resultadoFinal": "3 - 1",
+      "pronosticoGuardado": "2 - 1",
+      "resultadoFinal": "2 - 1",
       "puntos": 10
     }
   ],
