@@ -27,6 +27,8 @@ export class PuntajeService {
 
   // 🔥 Nuevo método para actualizar puntaje desde el usuario autenticado
   setPuntajeDesdeUsuario(user: User | null) {
+    console.log(user, 'monis');
+
     if (user?.puntaje !== undefined) {
       this.actualizarPuntaje(user.puntaje);
     } else {

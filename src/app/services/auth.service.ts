@@ -37,6 +37,8 @@ export class AuthService {
     return this.http.get<User[]>(`${this.apiUrl}?username=${username}`).pipe(
       map(users => users.find(u => u.password === password) || null),
       tap(user => {
+    console.log(user, 'ateneaa')
+
         if (user?.id) {
           this.setLoggedUser(user);
         }
