@@ -11,27 +11,37 @@
     </tr>
 
     <!-- 🔥 Mostrar solo las pollas del usuario -->
-    <tr *ngFor="let polla of pollas">
+    <tr *ngFor="let polla of pollas$ | async">
       <td>{{ polla.name }}</td>
-      <td>{{ polla.torneo }}</td> <!-- ✅ Mostrar directamente el torneo -->
-      <td>1</td> <!-- TODO: Obtener posición real -->
-      <td>{{ puntajeTotal !== null ? puntajeTotal : '-' }}</td>
-      <td><a (click)="irAPronosticos(polla)">🔮</a></td>
-      <td><a (click)="irAPosiciones()">📈</a></td>
-      <td><a (click)="irAAdministrar()">⚙️</a></td>
+      <td>{{ polla.torneo }}</td>
+      <td>{{ obtenerPosicion(polla) }}</td>
+      <td>{{ puntajeTotal$ | async }}</td>
+      <td><a (click)="irAPronosticos(polla)" role="button" aria-label="Ver pronósticos">🔮</a></td>
+      <td><a (click)="irAPosiciones(polla)" role="button" aria-label="Ver posiciones">📈</a></td>
+      <td><a (click)="irAAdministrar()" role="button" aria-label="Administrar">⚙️</a></td>
     </tr>
   </table>
 
   <!-- 🔥 Si el usuario no tiene pollas, mostrar mensaje -->
-  <p *ngIf="pollas.length === 0">No estás registrado en ninguna polla.</p>
+  <ng-container *ngIf="(pollas$ | async)?.length === 0">
+    <p>No estás registrado en ninguna polla.</p>
+  </ng-container>
 
   <!-- Botón para abrir el modal -->
   <div class="crear-polla-container">
-    <button class="boton-guardar" (click)="abrirModal()">CREAR POLLA</button>
+    <button
+      class="boton-guardar"
+      (click)="abrirModal()"
+      [disabled]="!(user$ | async)">
+      CREAR POLLA
+    </button>
   </div>
 
   <!-- Modal, solo se muestra si `modalAbierto` es `true` -->
-  <app-crear-polla *ngIf="modalAbierto" (modalCerrado)="cerrarModal(); cargarPollasDelUsuario()"></app-crear-polla>
+  <app-crear-polla
+    *ngIf="modalAbierto"
+    (modalCerrado)="cerrarModal(); cargarPollasDelUsuario()">
+  </app-crear-polla>
 </div>
 
 <app-pronosticos *ngIf="mostrarPronostico"></app-pronosticos>

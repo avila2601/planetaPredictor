@@ -2,7 +2,7 @@
   <!-- Formulario de Login -->
   <div class="login-container" *ngIf="!isAuthenticated">
     <input type="text" placeholder="Usuario" [(ngModel)]="usuario" />
-    <input type="password" placeholder="Contraseña" [(ngModel)]="contrasena" />
+    <input type="password" placeholder="Contraseña" [(ngModel)]="contrasena" (keydown.enter)="login()" />
     <button (click)="login()">Ingresar</button>
     <p *ngIf="errorMensaje" class="error">{{ errorMensaje }}</p>
 

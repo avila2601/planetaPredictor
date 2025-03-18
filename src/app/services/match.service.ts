@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { Match } from '../models/match.model';
 import { Prediction } from '../models/prediction.model';
 import { Polla } from '../models/polla.model'; // Asegúrate de importar el modelo correcto
@@ -9,7 +9,7 @@ import { Polla } from '../models/polla.model'; // Asegúrate de importar el mode
   providedIn: 'root',
 })
 export class MatchService {
-  private predictionsUrl = 'http://localhost:3000/predictions'; // Ruta para guardar pronósticos
+  readonly predictionsUrl = 'http://localhost:3000/predictions'; // Ruta para guardar pronósticos
 
   constructor(private http: HttpClient) {}
 
@@ -28,6 +28,12 @@ export class MatchService {
   }
 
   updatePrediction(id: number, prediction: Prediction): Observable<Prediction> {
-    return this.http.put<Prediction>(`${this.predictionsUrl}/${id}`, prediction);
-  }
+    return this.http.put<Prediction>(`${this.predictionsUrl}/${id}`, prediction)
+        .pipe(
+            catchError(error => {
+                console.error('Error updating prediction:', error);
+                return throwError(() => error);
+            })
+        );
+}
 }

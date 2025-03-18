@@ -25,7 +25,7 @@
         <input type="number" inputmode="numeric" [(ngModel)]="match.pronosticoLocal" [ngModelOptions]="{standalone: true}" min="0">
         -
         <input type="number" inputmode="numeric" [(ngModel)]="match.pronosticoVisitante" [ngModelOptions]="{standalone: true}" min="0">
-        <button class="boton-guardar" (click)="guardarPronostico(match)" (click)="procesarPronosticos()">Guardar</button>
+        <button class="boton-guardar" (click)="guardarYProcesar(match)">Guardar</button>
       </td>
       <td>{{ match.pronosticoGuardado }}</td>
       <td>

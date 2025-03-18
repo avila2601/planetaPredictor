@@ -8,11 +8,11 @@ import { User } from '../models/user.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/users';
+  apiUrl = 'http://localhost:3000/users';
   private authStatus = new BehaviorSubject<User | null>(null);
   user$ = this.authStatus.asObservable();
   isAuthenticated$ = this.user$.pipe(map(user => !!user)); // 🔥 Verifica si hay usuario autenticado
-  private usuarioAutenticado = new BehaviorSubject<User | null>(null);
+
 
   constructor(private http: HttpClient) {
     const userId = localStorage.getItem('userId');
@@ -22,7 +22,6 @@ export class AuthService {
   }
 
   setLoggedUser(user: User | null) {
-    this.usuarioAutenticado.next(user);
     this.authStatus.next(user);
     if (user) {
       localStorage.setItem('userId', user.id.toString());

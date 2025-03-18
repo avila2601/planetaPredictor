@@ -1,7 +1,17 @@
 import { Component, EventEmitter, Output, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil, take } from 'rxjs/operators';
 import { PollaService } from '../../services/polla.service';
+import { Polla } from '../../models/polla.model';
+
+interface TorneoTemp {
+  name: string;
+  leagueId: number;
+  leagueShortcut: string;
+  leagueSeason: string;
+}
 
 @Component({
   selector: 'app-crear-polla',
@@ -12,97 +22,100 @@ import { PollaService } from '../../services/polla.service';
 })
 export class CrearPollaComponent implements OnInit, OnDestroy {
   @Output() modalCerrado = new EventEmitter<void>();
+  @ViewChild('modalContent') modalContent!: ElementRef;
 
-  torneos: { name: string; leagueId: number }[] = [];
-  torneoSeleccionado: { name: string; leagueId: number } | null = null;
+  private destroy$ = new Subject<void>();
+
+  torneos: TorneoTemp[] = [];
+  torneoSeleccionado: TorneoTemp | null = null;
   nombrePolla: string = '';
   condiciones: string = '';
 
-  @ViewChild('modalContent') modalContent!: ElementRef;
+  constructor(
+    private pollaService: PollaService,
+    private el: ElementRef
+  ) {}
 
-  constructor(private pollaService: PollaService, private el: ElementRef) {}
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.cargarTorneos();
+    this.setupEventListeners();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.removeEventListeners();
+  }
+
+  private setupEventListeners(): void {
     document.addEventListener('keydown', this.handleKeydown);
     document.addEventListener('click', this.handleClickOutside);
   }
 
-  ngOnDestroy() {
+  private removeEventListeners(): void {
     document.removeEventListener('keydown', this.handleKeydown);
     document.removeEventListener('click', this.handleClickOutside);
   }
 
-  handleKeydown = (event: KeyboardEvent) => {
+  private handleKeydown = (event: KeyboardEvent): void => {
     if (event.key === 'Escape') {
       this.cerrarModal();
     }
   };
 
-  handleClickOutside = (event: Event) => {
+  private handleClickOutside = (event: Event): void => {
     if (this.modalContent && !this.modalContent.nativeElement.contains(event.target)) {
       this.cerrarModal();
     }
   };
 
-  cerrarModal() {
+  cerrarModal(): void {
     this.modalCerrado.emit();
   }
 
-  cargarTorneos() {
-    this.pollaService.getAllTorneos().subscribe((torneos: { name: string; leagueId: number }[]) => {
-      this.torneos = torneos;
-    });
+  private cargarTorneos(): void {
+    this.pollaService.getAllTorneos()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (torneos) => this.torneos = torneos,
+        error: (error) => console.error('Error cargando torneos:', error)
+      });
   }
 
-  handleGuardar() {
+  handleGuardar(): void {
+    if (!this.validarFormulario()) return;
+    if (!this.torneoSeleccionado) return;
+
+    this.pollaService.crearPolla(
+      this.nombrePolla,
+      this.torneoSeleccionado,
+      this.condiciones
+    ).pipe(
+      take(1),
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: () => {
+        console.log("✅ Polla creada correctamente");
+        this.cerrarModal(); // Solo llamamos cerrarModal una vez
+      },
+      error: (error) => {
+        console.error("❌ Error al crear la polla:", error);
+        alert("Hubo un error al crear la polla. Intenta de nuevo.");
+      }
+    });
+}
+
+  private validarFormulario(): boolean {
     if (!this.nombrePolla || !this.torneoSeleccionado || !this.condiciones) {
       alert("Todos los campos son obligatorios");
-      return;
+      return false;
     }
 
-    // Verificar que torneoSeleccionado no sea null antes de acceder a sus propiedades
     if (!this.torneoSeleccionado?.name || !this.torneoSeleccionado?.leagueId) {
       console.error("❌ Error: El torneo seleccionado es inválido.");
-      return;
+      return false;
     }
 
-    this.pollaService.obtenerDatosLiga(this.torneoSeleccionado.leagueId)
-      .subscribe(
-        (datosLiga) => {
-          if (!datosLiga) {
-            console.error("❌ Error: No se encontraron datos de la liga.");
-            return;
-          }
-
-          const torneo = {
-            name: this.torneoSeleccionado!.name, // ! asegura que el valor no es null
-            leagueId: this.torneoSeleccionado!.leagueId,
-            leagueShortcut: datosLiga.leagueShortcut,
-            leagueSeason: datosLiga.leagueSeason
-          };
-
-          this.pollaService.crearPolla(this.nombrePolla, torneo, this.condiciones)
-            .subscribe(
-              () => {
-                console.log("✅ Polla creada correctamente");
-                // Recargar las pollas después de crear una nueva polla
-                this.pollaService.obtenerPollas().subscribe((pollas) => {
-                  console.log("Pollas actualizadas", pollas);
-                });
-                this.modalCerrado.emit();
-                this.cerrarModal();
-              },
-              (error) => {
-                console.error("❌ Error al crear la polla:", error);
-                alert("Hubo un error al crear la polla. Intenta de nuevo.");
-              }
-            );
-        },
-        (error) => {
-          console.error("❌ Error obteniendo datos de la liga:", error);
-          alert("No se pudieron obtener los datos de la liga. Intenta de nuevo.");
-        }
-      );
+    return true;
   }
 }

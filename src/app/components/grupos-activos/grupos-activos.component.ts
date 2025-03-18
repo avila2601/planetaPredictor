@@ -1,109 +1,102 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil, map, take } from 'rxjs/operators';
+import { AuthService } from '../../services/auth.service';
+import { PuntajeService } from '../../services/puntaje.service';
+import { PollaService } from '../../services/polla.service';
+import { Polla } from '../../models/polla.model';
+import { User } from '../../models/user.model';
 import { CrearPollaComponent } from '../crear-polla/crearpolla.component';
 import { PronosticosComponent } from '../pronosticos/pronosticos.component';
 import { PosicionesComponent } from '../posiciones/posiciones.component';
-import { PollaService } from '../../services/polla.service';
-import { AuthService } from '../../services/auth.service';
-import { Polla } from '../../models/polla.model';
-import { ChangeDetectorRef } from '@angular/core';
-import { PuntajeService } from '../../services/puntaje.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-grupos-activos',
   standalone: true,
-  imports: [PronosticosComponent, PosicionesComponent, CommonModule, CrearPollaComponent],
+  imports: [CommonModule, RouterModule, CrearPollaComponent, PronosticosComponent, PosicionesComponent],
   templateUrl: './grupos-activos.component.html',
-  styleUrl: './grupos-activos.component.scss'
+  styleUrls: ['./grupos-activos.component.scss']
 })
-export class GruposActivosComponent implements OnInit {
+
+export class GruposActivosComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
+  pollas$: Observable<Polla[]>;
+  puntajeTotal$: Observable<number>;
+  user$: Observable<User | null>;
+  modalAbierto = false;
   mostrarPronostico = false;
   mostrarPosiciones = false;
-  puntajeTotal: number | null = null;
-  torneos: { id: number; nombre: string }[] = [];
-  pollas: Polla[] = [];
-  modalAbierto = false;
 
   constructor(
-    private cdr: ChangeDetectorRef,
-    private pollaService: PollaService,
     private authService: AuthService,
-    private router: Router,
-    private puntajeService: PuntajeService
-  ) {}
+    private puntajeService: PuntajeService,
+    private pollaService: PollaService,
+    private router: Router
+  ) {
+    this.pollas$ = this.pollaService.getPollasByUser$;
+    this.puntajeTotal$ = this.puntajeService.puntajeTotal$;
+    this.user$ = this.authService.user$;
+  }
 
-  ngOnInit() {
-    this.cargarPollasDelUsuario();
-
-    // 🔥 Escuchar cambios en el usuario autenticado
-    this.authService.user$.subscribe(user => {
+  ngOnInit(): void {
+    this.authService.user$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(user => {
       if (user) {
-        console.log("👤 Usuario autenticado:", user);
+        this.cargarPollasUsuario(user.id);
         this.puntajeService.setPuntajeDesdeUsuario(user);
-        this.cargarPuntajeTotal(); // ✅ Pasa el puntaje directamente
       }
     });
-
-    // 🔥 Escuchar cambios en el puntaje total
-    this.puntajeService.puntajeTotal$.subscribe(puntaje => {
-      this.puntajeTotal = puntaje;
-    });
   }
 
-
-  private cargarPuntajeTotal() {
-  const puntajeGuardado = localStorage.getItem('puntajeTotal');
-  this.puntajeTotal = puntajeGuardado ? JSON.parse(puntajeGuardado) : 0; // 🔥 Usa 0 si es null
-  this.puntajeService.actualizarPuntaje(this.puntajeTotal ?? 0);
-}
-
-
-  cargarPollasDelUsuario() {
-    this.pollaService.getPollasByLoggedUser().subscribe(pollas => {
-      console.log('Pollas recibidas:', pollas);
-      this.pollas = pollas;
-    });
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  obtenerNombreTorneo(torneoId: number): string {
-    const torneo = this.torneos.find(t => t.id === torneoId);
-    return torneo ? torneo.nombre : 'Torneo desconocido';
+  cargarPollasUsuario(userId: number): void {
+    this.pollaService.cargarPollasPorUsuario(userId);
   }
 
-  abrirModal() {
-    this.modalAbierto = true;
-  }
-
-  cerrarModal() {
-    this.modalAbierto = false;
-    this.cargarPollasDelUsuario();  // Recarga las pollas después de cerrar el modal
-  }
-
-  // 🔥 Navegar a la pantalla de pronósticos con el ID de la polla seleccionada
-  irAPronosticos(polla: Polla) {
+  irAPronosticos(polla: Polla): void {
+    this.pollaService.setPollaSeleccionada(polla);
     this.router.navigate(['/pronosticos', polla.id]);
   }
 
-  irAPosiciones() {
-    this.router.navigate(['/posiciones']);
+  irAPosiciones(polla: Polla): void {
+    this.pollaService.setPollaSeleccionada(polla);
+    this.router.navigate(['/posiciones', polla.id]);
   }
 
-  irAAdministrar() {
-    this.router.navigate(['/administrar']);
+  irAAdministrar(): void {
+    // Implementar lógica de administración
   }
 
-
-  actualizarPuntaje(nuevoPuntaje: number) {
-    console.log("📢 Puntaje recibido en el padre:", nuevoPuntaje);
-    this.puntajeTotal = nuevoPuntaje;
-    this.cdr.detectChanges(); // 🔥 Forzamos la detección de cambios
+  obtenerPosicion(polla: Polla): number {
+    return this.pollaService.calcularPosicionUsuario(polla);
   }
 
-  logout() {
-    localStorage.setItem('puntajeTotal', JSON.stringify(this.puntajeTotal)); // Guardar el puntaje
-    this.authService.logout();
-    this.router.navigate(['/login']);
+  abrirModal(): void {
+    this.modalAbierto = true;
   }
 
+  cerrarModal(): void {
+    this.modalAbierto = false;
+  }
+
+  cargarPollasDelUsuario(): void {
+    this.authService.user$.pipe(
+      take(1),
+      takeUntil(this.destroy$)
+    ).subscribe(user => {
+      if (user) {
+        this.cargarPollasUsuario(user.id);
+      }
+    });
+  }
 }

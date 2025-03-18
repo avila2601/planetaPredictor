@@ -18,6 +18,7 @@ export const routes: Routes = [
   { path: 'pronosticos', component: PronosticosComponent, canActivate: [AuthGuard] },
   { path: 'pronosticos/:id', component: PronosticosComponent, canActivate: [AuthGuard] },
   { path: 'posiciones', component: PosicionesComponent, canActivate: [AuthGuard] },
+  { path: 'posiciones/:id', component: PosicionesComponent, canActivate: [AuthGuard] },
   { path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard] },
   { path: 'info-general', component: InfoGeneralComponent, canActivate: [AuthGuard] },
   { path: 'recuperar-password', component: RecuperarPasswordComponent },

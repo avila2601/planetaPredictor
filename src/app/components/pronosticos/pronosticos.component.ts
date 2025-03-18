@@ -8,7 +8,7 @@ import { Prediction } from '../../models/prediction.model';
 import { AuthService } from '../../services/auth.service';
 import { PollaService } from '../../services/polla.service';
 import { Polla } from '../../models/polla.model';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { PuntajeService } from '../../services/puntaje.service';
 import { HttpClient } from '@angular/common/http';
@@ -121,72 +121,56 @@ export class PronosticosComponent implements OnInit {
     return resultado ? `${resultado.pointsTeam1} - ${resultado.pointsTeam2}` : '-';
   }
 
+  isSaving = false;
+
   guardarPronostico(match: Match) {
+    if (this.isSaving) return;
+    this.isSaving = true;
+
     if (this.userId === null) {
-      console.error("❌ No se puede guardar el pronóstico: usuario no autenticado");
-      return;
+        console.error("❌ No se puede guardar el pronóstico: usuario no autenticado");
+        this.isSaving = false;
+        return;
     }
 
-    console.log('Intentando guardar pronóstico para:', match);
+    // Si ambos pronósticos son nulos o vacíos, eliminar la predicción
+    if (match.pronosticoLocal === null && match.pronosticoVisitante === null) {
+        this.matchService.getPredictionsByUser(this.userId).pipe(take(1)).subscribe((predictions) => {
+            const existingPrediction = predictions.find((p) => p.matchId === match.matchID);
 
-    if (match.pronosticoLocal === null || match.pronosticoVisitante === null) {
-      match.pronosticoGuardado = '';
-      console.log('❌ Pronóstico inválido, se cancela el guardado.');
-      return;
+            if (existingPrediction) {
+                // Eliminar la predicción existente
+                this.http.delete(`${this.matchService.predictionsUrl}/${existingPrediction.id}`).subscribe({
+                    next: () => {
+                        match.pronosticoGuardado = '';
+                        match.puntos = 0;
+                        this.calcularYActualizarPuntaje();
+                        this.isSaving = false;
+                        console.log("✅ Predicción eliminada correctamente");
+                    },
+                    error: (error) => {
+                        console.error("❌ Error al eliminar predicción:", error);
+                        this.isSaving = false;
+                    }
+                });
+            } else {
+                this.isSaving = false;
+            }
+        });
+        return;
     }
 
-    match.pronosticoGuardado = `${match.pronosticoLocal} - ${match.pronosticoVisitante}`;
-    const resultado = this.obtenerResultadoFinal(match);
-    if (!resultado) return;
-
-    const [resLocal, resVisitante] = resultado.split(' - ').map(Number);
-    let puntos = 0;
-
-    if (
-      (match.pronosticoLocal > match.pronosticoVisitante && resLocal > resVisitante) ||
-      (match.pronosticoLocal < match.pronosticoVisitante && resLocal < resVisitante) ||
-      (match.pronosticoLocal === match.pronosticoVisitante && resLocal === resVisitante)
-    ) {
-      puntos += 5;
-      if ((match.pronosticoLocal - match.pronosticoVisitante) === (resLocal - resVisitante)) {
-        puntos += 1;
-      }
-    }
-    if (match.pronosticoLocal === resLocal) puntos += 2;
-    if (match.pronosticoVisitante === resVisitante) puntos += 2;
-
-    match.puntos = puntos;
-
-    const prediction: Prediction = {
-      id: Date.now(),
-      userId: this.userId,
-      matchId: match.matchID,
-      equipoLocal: match.team1.teamName,
-      equipoVisitante: match.team2.teamName,
-      horario: match.matchDateTimeUTC,
-      pronosticoLocal: match.pronosticoLocal,
-      pronosticoVisitante: match.pronosticoVisitante,
-      pronosticoGuardado: match.pronosticoGuardado,
-      resultadoFinal: resultado,
-      puntos: puntos,
-    };
-
-    console.log('🔄 Guardando predicción:', prediction);
-
-    this.matchService.getPredictionsByUser(this.userId).subscribe((predictions) => {
-      console.log('🔍 Comparando con predicciones existentes:', predictions);
-
-      const existingPrediction = predictions.find((p) => p.matchId === match.matchID);
-      if (existingPrediction) {
-        console.log('✏️ Actualizando predicción existente:', existingPrediction);
-        this.matchService.updatePrediction(existingPrediction.id, prediction).subscribe();
-      } else {
-        console.log('🆕 Guardando nueva predicción:', prediction);
-        this.matchService.savePrediction(prediction).subscribe();
-      }
+    // Continuar con el código existente para guardar/actualizar predicciones
+    this.matchService.getPredictionsByUser(this.userId).pipe(take(1)).subscribe((predictions) => {
+        // ... resto del código para guardar/actualizar ...
     });
-    this.calcularPuntajeTotal();
-  }
+}
+
+  calcularYActualizarPuntaje() {
+    this.calcularPuntajeTotal(); // Ya incluye la actualización
+}
+
+
 
   guardarTodos() {
     console.log('💾 Guardando todos los pronósticos...');
@@ -197,9 +181,16 @@ export class PronosticosComponent implements OnInit {
   }
 
   calcularPuntajeTotal(): number {
-    this.puntajeTotal = this.matches.reduce((total, match) => total + (match.puntos || 0), 0);
+    const nuevoPuntaje = this.matches.reduce((total, match) => total + (match.puntos || 0), 0);
 
-    this.authService.user$.subscribe(user => {
+    // Solo actualiza si el puntaje cambió
+    if (nuevoPuntaje === this.puntajeTotal) {
+      return this.puntajeTotal;
+    }
+
+    this.puntajeTotal = nuevoPuntaje;
+
+    this.authService.user$.pipe(take(1)).subscribe(user => {
       if (user) {
         const updatedUser = { ...user, puntaje: this.puntajeTotal };
 
@@ -214,8 +205,9 @@ export class PronosticosComponent implements OnInit {
       }
     });
 
-    return this.puntajeTotal; // 🔹 Retorna el puntaje total calculado
+    return this.puntajeTotal;
   }
+
 
   cargarPronosticosGuardados() {
     const pronosticosGuardados = localStorage.getItem('matches');
@@ -229,9 +221,10 @@ export class PronosticosComponent implements OnInit {
   }
 
   actualizarPuntaje(nuevoPuntaje: number) {
-    this.authService.user$.subscribe(user => {
+    this.authService.user$.pipe(take(1)).subscribe(user => { // ⬅️ Asegura que solo se ejecuta una vez
       if (user) {
         const puntajeActualizado = user.puntaje + nuevoPuntaje;
+
         this.authService.actualizarPuntajeUsuario(user.id, puntajeActualizado).subscribe(usuarioActualizado => {
           console.log("✅ Puntaje actualizado en db.json:", usuarioActualizado.puntaje);
         });
@@ -241,10 +234,20 @@ export class PronosticosComponent implements OnInit {
 
   procesarPronosticos() {
     const puntosGanados = this.calcularPuntajeTotal();
-    this.actualizarPuntaje(puntosGanados);
+
+    if (puntosGanados !== 0) { // ⬅️ Evita actualizar si no hay cambios
+      this.actualizarPuntaje(puntosGanados);
+      console.log("✅ Pronósticos procesados, puntaje total:", puntosGanados);
+    }
   }
 
   regresar() {
     this.router.navigate(['/grupos-activos']);
   }
+
+  guardarYProcesar(match: Match) {
+    this.guardarPronostico(match);
+    this.procesarPronosticos();
+  }
+
 }

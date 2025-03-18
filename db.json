@@ -5,85 +5,69 @@
       "username": "admin",
       "email": "admin@example.com",
       "password": "12",
-      "pollas": [
-        1,
-        2
-      ],
+      "pollas": [],
       "puntaje": 0
     },
     {
       "id": "2",
       "username": "juan",
       "email": "juan@example.com",
-      "password": "abc",
+      "password": "aa",
       "pollas": [
-        "1",
-        "db51"
+        1742338342766,
+        1742338750952,
+        1742338813692
       ],
-      "puntaje": 35
+      "puntaje": 0
     }
   ],
   "pollas": [
     {
-      "id": "1",
-      "leagueId": "4769",
+      "id": 1742338342766,
+      "leagueId": 4736,
+      "name": "T",
+      "torneo": "Test Liga Sirez ",
+      "leagueShortcut": "TLS",
+      "leagueSeason": "2024",
+      "adminId": 2,
+      "participants": [
+        2
+      ],
+      "matches": [],
+      "notes": "T"
+    },
+    {
+      "id": 1742338750952,
+      "leagueId": 4822,
       "name": "Champions League",
-      "torneo": "Champions League 2024/25",
-      "leagueShortcut": "ucl2024",
-      "leagueSeason": "2024",
-      "adminId": 1,
+      "torneo": "Champions League 2025",
+      "leagueShortcut": "ucl",
+      "leagueSeason": "2025",
+      "adminId": 2,
       "participants": [
-        1,
-        2,
-        4
+        2
       ],
-      "matches": []
+      "matches": [],
+      "notes": "NA"
     },
     {
-      "id": "db51",
-      "leagueId": 4793,
-      "name": "Nations League",
-      "torneo": "Nations League A 2024/2025",
-      "leagueShortcut": "nla",
+      "id": 1742338813692,
+      "leagueId": 4800,
+      "name": "Champiosn League",
+      "torneo": "Champions League 2024/25 deutsche Teams",
+      "leagueShortcut": "cl24de",
       "leagueSeason": "2024",
       "adminId": 2,
       "participants": [
         2
       ],
       "matches": [],
-      "notes": "Carga todos los partidos"
-    },
-    {
-      "id": "8b2c",
-      "leagueId": 4716,
-      "name": "Copa america",
-      "torneo": "Copa América 2024",
-      "leagueShortcut": "CA2024",
-      "leagueSeason": "2024",
-      "adminId": 2,
-      "participants": [
-        2
-      ],
-      "matches": [],
-      "notes": "AA"
+      "notes": "NA"
     }
   ],
   "predictions": [
     {
-      "id": 1742080419150,
-      "userId": "2",
-      "matchId": 74576,
-      "equipoLocal": "BSC Young Boys",
-      "equipoVisitante": "Aston Villa",
-      "horario": "2024-09-17T16:45:00Z",
-      "pronosticoLocal": 2,
-      "pronosticoVisitante": 3,
-      "pronosticoGuardado": "2 - 3",
-      "resultadoFinal": "0 - 3",
-      "puntos": 7
-    },
-    {
-      "id": 1742080449953,
+      "id": "1742080449953",
       "userId": "2",
       "matchId": 75717,
       "equipoLocal": "Portugal",
@@ -96,20 +80,7 @@
       "puntos": 10
     },
     {
-      "id": 1742147227292,
-      "userId": "2",
-      "matchId": 74626,
-      "equipoLocal": "Roter Stern Belgrad",
-      "equipoVisitante": "FC Barcelona",
-      "horario": "2024-11-06T20:00:00Z",
-      "pronosticoLocal": 1,
-      "pronosticoVisitante": 2,
-      "pronosticoGuardado": "1 - 2",
-      "resultadoFinal": "2 - 5",
-      "puntos": 5
-    },
-    {
-      "id": 1742147245114,
+      "id": "1742147245114",
       "userId": "2",
       "matchId": 74577,
       "equipoLocal": "Juventus Turin",
@@ -122,7 +93,7 @@
       "puntos": 6
     },
     {
-      "id": 1742172661491,
+      "id": "1742172661491",
       "userId": "2",
       "matchId": 73832,
       "equipoLocal": "Real Madrid",
@@ -135,7 +106,7 @@
       "puntos": 7
     },
     {
-      "id": 1742172929786,
+      "id": "1742172929786",
       "userId": "2",
       "matchId": 73806,
       "equipoLocal": "FC Bayern München",
@@ -148,7 +119,7 @@
       "puntos": 10
     },
     {
-      "id": 1742173382194,
+      "id": "1742173382194",
       "userId": "2",
       "matchId": 69881,
       "equipoLocal": "Argentinien",
@@ -159,13 +130,6 @@
       "pronosticoGuardado": "1 - 1",
       "resultadoFinal": "2 - 0",
       "puntos": 0
-    }
-  ],
-  "tournaments": [
-    {
-      "leagueId": 814,
-      "matchesEndpoint": "",
-      "id": "fb2b"
     }
   ],
   "puntajes": [
