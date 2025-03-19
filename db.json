@@ -5,7 +5,10 @@
       "username": "admin",
       "email": "admin@example.com",
       "password": "12",
-      "pollas": [],
+      "pollas": [
+        1,
+        2
+      ],
       "puntaje": 0
     },
     {
@@ -14,58 +17,71 @@
       "email": "juan@example.com",
       "password": "aa",
       "pollas": [
-        1742338342766,
-        1742338750952,
-        1742338813692
+        "1",
+        "db51"
       ],
-      "puntaje": 0
+      "puntaje": 7
     }
   ],
   "pollas": [
     {
-      "id": 1742338342766,
-      "leagueId": 4736,
-      "name": "T",
-      "torneo": "Test Liga Sirez ",
-      "leagueShortcut": "TLS",
-      "leagueSeason": "2024",
-      "adminId": 2,
-      "participants": [
-        2
-      ],
-      "matches": [],
-      "notes": "T"
-    },
-    {
-      "id": 1742338750952,
-      "leagueId": 4822,
+      "id": "1",
+      "leagueId": "4769",
       "name": "Champions League",
-      "torneo": "Champions League 2025",
-      "leagueShortcut": "ucl",
-      "leagueSeason": "2025",
-      "adminId": 2,
+      "torneo": "Champions League 2024/25",
+      "leagueShortcut": "ucl2024",
+      "leagueSeason": "2024",
+      "adminId": 1,
       "participants": [
-        2
+        1,
+        2,
+        4
       ],
-      "matches": [],
-      "notes": "NA"
+      "matches": []
     },
     {
-      "id": 1742338813692,
-      "leagueId": 4800,
-      "name": "Champiosn League",
-      "torneo": "Champions League 2024/25 deutsche Teams",
-      "leagueShortcut": "cl24de",
+      "id": "db51",
+      "leagueId": 4793,
+      "name": "Nations League",
+      "torneo": "Nations League A 2024/2025",
+      "leagueShortcut": "nla",
       "leagueSeason": "2024",
       "adminId": 2,
       "participants": [
         2
       ],
       "matches": [],
-      "notes": "NA"
+      "notes": "Carga todos los partidos"
+    },
+    {
+      "id": "8b2c",
+      "leagueId": 4716,
+      "name": "Copa america",
+      "torneo": "Copa América 2024",
+      "leagueShortcut": "CA2024",
+      "leagueSeason": "2024",
+      "adminId": 2,
+      "participants": [
+        2
+      ],
+      "matches": [],
+      "notes": "AA"
     }
   ],
   "predictions": [
+    {
+      "id": "1742080419150",
+      "userId": "2",
+      "matchId": 74576,
+      "equipoLocal": "BSC Young Boys",
+      "equipoVisitante": "Aston Villa",
+      "horario": "2024-09-17T16:45:00Z",
+      "pronosticoLocal": 2,
+      "pronosticoVisitante": 3,
+      "pronosticoGuardado": "2 - 3",
+      "resultadoFinal": "0 - 3",
+      "puntos": 7
+    },
     {
       "id": "1742080449953",
       "userId": "2",
@@ -78,58 +94,6 @@
       "pronosticoGuardado": "2 - 1",
       "resultadoFinal": "2 - 1",
       "puntos": 10
-    },
-    {
-      "id": "1742147245114",
-      "userId": "2",
-      "matchId": 74577,
-      "equipoLocal": "Juventus Turin",
-      "equipoVisitante": "PSV Eindhoven",
-      "horario": "2024-09-17T16:45:00Z",
-      "pronosticoLocal": 2,
-      "pronosticoVisitante": 0,
-      "pronosticoGuardado": "2 - 0",
-      "resultadoFinal": "3 - 1",
-      "puntos": 6
-    },
-    {
-      "id": "1742172661491",
-      "userId": "2",
-      "matchId": 73832,
-      "equipoLocal": "Real Madrid",
-      "equipoVisitante": "VfB Stuttgart",
-      "horario": "2024-09-17T19:00:00Z",
-      "pronosticoLocal": 2,
-      "pronosticoVisitante": 1,
-      "pronosticoGuardado": "2 - 1",
-      "resultadoFinal": "3 - 1",
-      "puntos": 7
-    },
-    {
-      "id": "1742172929786",
-      "userId": "2",
-      "matchId": 73806,
-      "equipoLocal": "FC Bayern München",
-      "equipoVisitante": "Dinamo Zagreb",
-      "horario": "2024-09-17T19:00:00Z",
-      "pronosticoLocal": 9,
-      "pronosticoVisitante": 2,
-      "pronosticoGuardado": "9 - 2",
-      "resultadoFinal": "9 - 2",
-      "puntos": 10
-    },
-    {
-      "id": "1742173382194",
-      "userId": "2",
-      "matchId": 69881,
-      "equipoLocal": "Argentinien",
-      "equipoVisitante": "Kanada",
-      "horario": "2024-06-21T00:00:00Z",
-      "pronosticoLocal": 1,
-      "pronosticoVisitante": 1,
-      "pronosticoGuardado": "1 - 1",
-      "resultadoFinal": "2 - 0",
-      "puntos": 0
     }
   ],
   "puntajes": [

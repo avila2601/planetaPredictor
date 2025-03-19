@@ -24,6 +24,7 @@ import { Router } from '@angular/router';
 
 export class GruposActivosComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
+  private posiciones = new Map<number, number>();
 
   pollas$: Observable<Polla[]>;
   puntajeTotal$: Observable<number>;
@@ -50,6 +51,7 @@ export class GruposActivosComponent implements OnInit, OnDestroy {
       if (user) {
         this.cargarPollasUsuario(user.id);
         this.puntajeService.setPuntajeDesdeUsuario(user);
+        this.loadPositions();
       }
     });
   }
@@ -62,6 +64,39 @@ export class GruposActivosComponent implements OnInit, OnDestroy {
   cargarPollasUsuario(userId: number): void {
     this.pollaService.cargarPollasPorUsuario(userId);
   }
+
+  // Method to get and store position
+obtenerYGuardarPosicion(polla: Polla): void {
+  this.pollaService.calcularPosicionUsuario(polla)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(position => {
+          if (polla.id) {
+              this.posiciones.set(polla.id, position);
+          }
+      });
+}
+
+// Method to get stored position
+getPosicion(pollaId: number | undefined): number {
+  if (!pollaId) return 0;
+  return this.posiciones.get(pollaId) || 0;
+}
+
+loadPositions(): void {
+  this.pollas$.pipe(
+      takeUntil(this.destroy$)
+  ).subscribe(pollas => {
+      pollas?.forEach(polla => {
+          if (polla.id) {
+              this.pollaService.calcularPosicionUsuario(polla)
+                  .pipe(take(1))
+                  .subscribe(position => {
+                      this.posiciones.set(polla.id!, position);
+                  });
+          }
+      });
+  });
+}
 
   irAPronosticos(polla: Polla): void {
     this.pollaService.setPollaSeleccionada(polla);
@@ -77,9 +112,9 @@ export class GruposActivosComponent implements OnInit, OnDestroy {
     // Implementar lógica de administración
   }
 
-  obtenerPosicion(polla: Polla): number {
+  obtenerPosicion(polla: Polla): Observable<number> {
     return this.pollaService.calcularPosicionUsuario(polla);
-  }
+}
 
   abrirModal(): void {
     this.modalAbierto = true;

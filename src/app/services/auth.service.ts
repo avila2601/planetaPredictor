@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, tap, switchMap } from 'rxjs/operators';
+import { map, tap, switchMap, catchError } from 'rxjs/operators';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -111,5 +111,24 @@ export class AuthService {
       tap(user => this.authStatus.next(user)) // 🔹 Actualiza el estado global del usuario
     );
   }
+
+  updateUser(user: User): Observable<User> {
+    return this.http.patch<User>(`${this.apiUrl}/${user.id}`, user).pipe(
+      tap(updatedUser => {
+        this.setLoggedUser(updatedUser);
+        console.log('✅ Usuario actualizado:', updatedUser);
+      })
+    );
+  }
+
+  getUserById(userId: number): Observable<User | null> {
+    return this.http.get<User>(`${this.apiUrl}/${userId}`).pipe(
+        catchError(() => of(null))
+    );
+}
+
+getCurrentUserId(): number | null {
+  return this.authStatus.getValue()?.id || null;  // Changed from userSubject to authStatus
+}
 
 }

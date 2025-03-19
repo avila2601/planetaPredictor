@@ -14,7 +14,7 @@
     <tr *ngFor="let polla of pollas$ | async">
       <td>{{ polla.name }}</td>
       <td>{{ polla.torneo }}</td>
-      <td>{{ obtenerPosicion(polla) }}</td>
+      <td class="posicion-cell">{{ getPosicion(polla.id) }}</td>
       <td>{{ puntajeTotal$ | async }}</td>
       <td><a (click)="irAPronosticos(polla)" role="button" aria-label="Ver pronósticos">🔮</a></td>
       <td><a (click)="irAPosiciones(polla)" role="button" aria-label="Ver posiciones">📈</a></td>
