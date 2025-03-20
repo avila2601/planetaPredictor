@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil, map, take, tap } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { PuntajeService } from '../../services/puntaje.service';
 import { PollaService } from '../../services/polla.service';

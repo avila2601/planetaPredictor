@@ -7,6 +7,5 @@ export interface Polla {
   leagueSeason: string;
   adminId: string;
   participants: string[];
-  matches: string[];
   notes: string;
 }

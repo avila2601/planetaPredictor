@@ -6,12 +6,7 @@ import { AuthService } from './auth.service';
 import { Polla } from '../models/polla.model';
 import { User } from '../models/user.model';
 
-interface TorneoData {
-  name: string;
-  leagueId: string;
-  leagueShortcut: string;
-  leagueSeason: string;
-}
+
 
 @Injectable({
   providedIn: 'root'
@@ -122,55 +117,68 @@ export class PollaService {
     });
 }
 
-  crearPolla(nombre: string, torneo: TorneoData, notas: string): Observable<Polla> {
-    this.loading.next(true);
+crearPolla(nombre: string, torneo: Partial<Polla>, notas: string): Observable<Polla> {
+  this.loading.next(true);
 
-    return this.authService.user$.pipe(
-      take(1),
-      switchMap(user => {
-        if (!user) {
-          throw new Error('Usuario no autenticado');
-        }
+  return this.authService.user$.pipe(
+    take(1),
+    switchMap(user => {
+      if (!user) {
+        throw new Error('Usuario no autenticado');
+      }
 
-        const nuevaPolla: Polla = {
-          id: Date.now().toString(),
-          name: nombre,
-          torneo: torneo.name,
-          leagueId: torneo.leagueId,
-          leagueShortcut: torneo.leagueShortcut,
-          leagueSeason: torneo.leagueSeason,
-          adminId: user.id,
-          participants: [user.id],
-          matches: [],
-          notes: notas
-        };
+      const nuevaPolla: Polla = {
+        id: Date.now().toString(),
+        name: nombre,
+        torneo: torneo.name!,
+        leagueId: torneo.leagueId!,
+        leagueShortcut: torneo.leagueShortcut!,
+        leagueSeason: torneo.leagueSeason!,
+        adminId: user.id,
+        participants: [user.id],  // Add user ID to participants array
+        notes: notas
+      };
 
-        return this.http.post<Polla>(this.apiUrl, nuevaPolla).pipe(
-          switchMap(polla => {
-            const updatedUser = {
-              ...user,
-              pollas: [...(user.pollas || []), polla.id!]
-            };
-            return this.authService.updateUser(updatedUser).pipe(
-              map(() => polla)
-            );
-          }),
-          tap(polla => console.log('✅ Polla creada:', polla)),
-          catchError(error => {
-            console.error('❌ Error creando polla:', error);
-            return this.handleError(error);
-          }),
-          finalize(() => this.loading.next(false))
-        );
-      })
-    );
-  }
+      return this.http.post<Polla>(this.apiUrl, nuevaPolla).pipe(
+        switchMap(polla => {
+          // Update user's pollas array
+          const updatedUser = {
+            ...user,
+            pollas: [...(user.pollas || []), polla.id!]
+          };
+
+          // Update polla with user in participants
+          const updatedPolla = {
+            ...polla,
+            participants: [user.id]  // Ensure participant is added
+          };
+
+          // First update the polla
+          return this.http.patch<Polla>(`${this.apiUrl}/${polla.id}`, updatedPolla).pipe(
+            // Then update the user
+            switchMap(() => this.authService.updateUser(updatedUser)),
+            // Return the updated polla
+            map(() => updatedPolla)
+          );
+        }),
+        tap(polla => console.log('✅ Polla creada:', polla)),
+        catchError(error => {
+          console.error('❌ Error creando polla:', error);
+          return this.handleError(error);
+        }),
+        finalize(() => this.loading.next(false))
+      );
+    })
+  );
+}
+
+
   setPollaSeleccionada(polla: Polla | null): void {
     this.pollaSeleccionada.next(polla);
     console.log('🎯 Polla seleccionada:', polla);
   }
 
-  getAllTorneos(): Observable<TorneoData[]> {
+  getAllTorneos(): Observable<Partial<Polla>[]> {
     return this.http.get<any[]>(this.ligaApiUrl).pipe(
       map(leagues => leagues
         .filter(league =>

@@ -6,12 +6,7 @@ import { takeUntil, take } from 'rxjs/operators';
 import { PollaService } from '../../services/polla.service';
 import { Polla } from '../../models/polla.model';
 
-interface TorneoTemp {
-  name: string;
-  leagueId: string;
-  leagueShortcut: string;
-  leagueSeason: string;
-}
+
 
 @Component({
   selector: 'app-crear-polla',
@@ -26,8 +21,8 @@ export class CrearPollaComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  torneos: TorneoTemp[] = [];
-  torneoSeleccionado: TorneoTemp | null = null;
+  torneos: Partial<Polla>[] = [];
+  torneoSeleccionado: Partial<Polla> | null = null;
   nombrePolla: string = '';
   condiciones: string = '';
 

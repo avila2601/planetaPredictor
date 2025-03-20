@@ -80,7 +80,7 @@ export class MatchService {
       id: existingId || Date.now().toString(),
       userId,
       pollaId,
-      matchId: match.matchID,
+      matchId: match.matchID.toString(),
       equipoLocal: match.team1.teamName,
       equipoVisitante: match.team2.teamName,
       horario: match.matchDateTimeUTC,
