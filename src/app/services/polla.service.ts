@@ -66,42 +66,80 @@ export class PollaService {
     );
 }
 
-  calcularPosicionUsuario(polla: Polla): Observable<number> {
-    if (!polla.participants?.length) {
-        return of(1);
-    }
+calcularPosicionUsuario(polla: Polla): Observable<number> {
+  console.log('🔍 Iniciando cálculo de posición para polla:', polla.id);
 
-    return forkJoin(
-        polla.participants.map(participantId =>
-            this.authService.getUserById(participantId)
-        )
-    ).pipe(
-        map(participants => {
-            const participantesConPuntajes = participants
-                .filter((p): p is User => p !== null)
-                .map(participant => ({
-                    id: participant.id,
-                    puntaje: participant.puntaje || 0
-                }));
+  if (!polla.participants?.length) {
+      console.log('⚠️ No hay participantes en la polla');
+      return of(1);
+  }
 
-            participantesConPuntajes.sort((a, b) => b.puntaje - a.puntaje);
+  console.log('👥 Participantes:', polla.participants);
 
-            const currentUserId = this.authService.getCurrentUserId();
-            const position = participantesConPuntajes.findIndex(p => p.id === currentUserId) + 1;
+  // Get puntajes for this polla first
+  return this.puntajeService.obtenerPuntajesPorPolla(polla.id!).pipe(
+      switchMap(puntajes => {
+          console.log('💯 Puntajes de la polla:', puntajes);
 
-            console.log('🏆 Posición calculada:', {
-                pollaId: polla.id,
-                userId: currentUserId,
-                position: position || participantesConPuntajes.length + 1
-            });
+          return forkJoin(
+              polla.participants.map(participantId => {
+                  console.log('🔄 Obteniendo datos del participante:', participantId);
+                  return this.authService.getUserById(participantId);
+              })
+          ).pipe(
+              map(participants => {
+                  console.log('📊 Datos de participantes obtenidos:', participants);
 
-            return position || participantesConPuntajes.length + 1;
-        }),
-        catchError(error => {
-            console.error('❌ Error calculando posición:', error);
-            return of(0);
-        })
-    );
+                  const participantesConPuntajes = participants
+                      .filter((p): p is User => {
+                          const isValid = p !== null;
+                          if (!isValid) console.log('⚠️ Usuario no encontrado en los datos');
+                          return isValid;
+                      })
+                      .map(participant => {
+                          // Find puntaje for this participant in this polla
+                          const puntajeObj = puntajes.find(p =>
+                              p.userId === participant.id &&
+                              p.pollaId === polla.id
+                          );
+                          const puntaje = puntajeObj?.puntajeTotal || 0;
+                          console.log(`📝 Puntaje de ${participant.id}:`, puntaje);
+
+                          return {
+                              id: participant.id,
+                              puntaje: Number(puntaje)
+                          };
+                      });
+
+                  console.log('📊 Participantes con puntajes:', participantesConPuntajes);
+
+                  // Sort by points (highest first)
+                  participantesConPuntajes.sort((a, b) => b.puntaje - a.puntaje);
+                  console.log('🏆 Ranking ordenado:', participantesConPuntajes);
+
+                  const currentUserId = this.authService.getCurrentUserId();
+                  console.log('👤 Usuario actual:', currentUserId);
+
+                  const position = participantesConPuntajes.findIndex(p => p.id === currentUserId) + 1;
+                  const finalPosition = position || participantesConPuntajes.length + 1;
+
+                  console.log('🎯 Posición final calculada:', {
+                      pollaId: polla.id,
+                      userId: currentUserId,
+                      position: finalPosition,
+                      totalParticipants: participantesConPuntajes.length,
+                      ranking: participantesConPuntajes
+                  });
+
+                  return finalPosition;
+              })
+          );
+      }),
+      catchError(error => {
+          console.error('❌ Error en el cálculo:', error);
+          return of(0);
+      })
+  );
 }
 
   cargarPollasPorUsuario(userId: string): void {
