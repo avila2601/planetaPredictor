@@ -22,12 +22,20 @@
         {{ match.team2.teamName }}
       </td>
       <td>
-        <input type="number" inputmode="numeric" [(ngModel)]="match.pronosticoLocal" [ngModelOptions]="{standalone: true}" min="0">
+        <input type="number"
+               [(ngModel)]="match.pronosticoLocal"
+               [ngModelOptions]="{standalone: true}"
+               min="0"
+               (ngModelChange)="onInputChange($event, match, 'local')">
         -
-        <input type="number" inputmode="numeric" [(ngModel)]="match.pronosticoVisitante" [ngModelOptions]="{standalone: true}" min="0">
+        <input type="number"
+               [(ngModel)]="match.pronosticoVisitante"
+               [ngModelOptions]="{standalone: true}"
+               min="0"
+               (ngModelChange)="onInputChange($event, match, 'visitante')">
         <button class="boton-guardar" (click)="guardarYProcesar(match)">Guardar</button>
-      </td>
-      <td>{{ match.pronosticoGuardado }}</td>
+    </td>
+    <td>{{ match.pronosticoGuardado || '-' }}</td>
       <td>
         <ng-container *ngIf="match.matchResults?.length; else sinResultado">
           {{ match.matchResults[1].pointsTeam1 }} - {{ match.matchResults[1].pointsTeam2 }}

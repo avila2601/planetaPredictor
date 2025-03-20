@@ -1,5 +1,5 @@
 export interface User {
-  id: number; // Opcional porque el backend lo genera
+  id: string; // Opcional porque el backend lo genera
   username: string;
   email: string;
   password: string;

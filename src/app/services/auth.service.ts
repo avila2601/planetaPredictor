@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, tap, switchMap, catchError } from 'rxjs/operators';
 import { User } from '../models/user.model';
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class AuthService {
   isAuthenticated$ = this.user$.pipe(map(user => !!user)); // 🔥 Verifica si hay usuario autenticado
 
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     const userId = localStorage.getItem('userId');
     if (userId) {
       this.getLoggedUser().subscribe();
@@ -24,7 +26,7 @@ export class AuthService {
   setLoggedUser(user: User | null) {
     this.authStatus.next(user);
     if (user) {
-      localStorage.setItem('userId', user.id.toString());
+      localStorage.setItem('userId', user.id);
     } else {
       localStorage.removeItem('userId');
     }
@@ -46,18 +48,38 @@ export class AuthService {
   }
 
   logout() {
-    this.setLoggedUser(null);
+    localStorage.clear();
+    this.authStatus.next(null);
+    this.router.navigate(['/inicio']);
   }
 
   getLoggedUser(): Observable<User | null> {
     const userId = localStorage.getItem('userId');
 
-    if (!userId) return of(null);
+    if (!userId) {
+      // Clear auth state when no userId found
+      this.clearAuthState();
+      return of(null);
+    }
 
     return this.http.get<User>(`${this.apiUrl}/${userId}`).pipe(
-      tap(user => this.setLoggedUser(user)),
-      switchMap(() => this.user$)
+      tap(user => {
+        if (!user) {
+          this.clearAuthState();
+        } else {
+          this.authStatus.next(user);
+        }
+      }),
+      catchError(() => {
+        this.clearAuthState();
+        return of(null);
+      })
     );
+  }
+
+  private clearAuthState(): void {
+    localStorage.clear();
+    this.authStatus.next(null);
   }
 
   registrar(username: string, email: string, password: string): Observable<string> {
@@ -77,7 +99,7 @@ export class AuthService {
             }
 
             const newUser: User = {
-              id: Date.now(),
+              id: Date.now().toString(),
               username,
               email,
               password,
@@ -106,7 +128,7 @@ export class AuthService {
     );
   }
 
-  actualizarPuntajeUsuario(userId: number, nuevoPuntaje: number): Observable<User> {
+  actualizarPuntajeUsuario(userId: string, nuevoPuntaje: number): Observable<User> {
     return this.http.patch<User>(`${this.apiUrl}/${userId}`, { puntaje: nuevoPuntaje }).pipe(
       tap(user => this.authStatus.next(user)) // 🔹 Actualiza el estado global del usuario
     );
@@ -121,13 +143,13 @@ export class AuthService {
     );
   }
 
-  getUserById(userId: number): Observable<User | null> {
+  getUserById(userId: string): Observable<User | null> {
     return this.http.get<User>(`${this.apiUrl}/${userId}`).pipe(
         catchError(() => of(null))
     );
 }
 
-getCurrentUserId(): number | null {
+getCurrentUserId(): string | null {
   return this.authStatus.getValue()?.id || null;  // Changed from userSubject to authStatus
 }
 

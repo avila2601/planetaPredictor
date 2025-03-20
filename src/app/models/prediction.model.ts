@@ -1,6 +1,6 @@
 export interface Prediction {
-  id: number;               // ID único del pronóstico
-  userId: number;           // ID del usuario que hizo el pronóstico
+  id: string;               // ID único del pronóstico
+  userId: string;           // ID del usuario que hizo el pronóstico
   matchId: number;          // ID del partido al que pertenece el pronóstico
   pollaId?: number;         // (Opcional) ID de la polla si lo manejas por grupos
   equipoLocal: string;      // Nombre del equipo local

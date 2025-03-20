@@ -23,7 +23,7 @@ export class MatchService {
     );
   }
 
-  getPredictionsByUser(userId: number, pollaId?: number): Observable<Prediction[]> {
+  getPredictionsByUser(userId: string, pollaId?: number): Observable<Prediction[]> {
     let url = `${this.predictionsUrl}?userId=${userId}`;
     if (pollaId) {
       url += `&pollaId=${pollaId}`;
@@ -43,7 +43,7 @@ export class MatchService {
     );
   }
 
-  updatePrediction(id: number, prediction: Prediction): Observable<Prediction> {
+  updatePrediction(id: string, prediction: Prediction): Observable<Prediction> {
     const updateData = {
       pronosticoLocal: prediction.pronosticoLocal,
       pronosticoVisitante: prediction.pronosticoVisitante,
@@ -58,7 +58,7 @@ export class MatchService {
     );
   }
 
-  saveOrUpdatePrediction(match: Match, userId: number, pollaId: number): Observable<Prediction> {
+  saveOrUpdatePrediction(match: Match, userId: string, pollaId: number): Observable<Prediction> {
     return this.getPredictionsByUser(userId, pollaId).pipe(
       take(1),
       switchMap(predictions => {
@@ -75,9 +75,9 @@ export class MatchService {
     );
   }
 
-  private createPredictionObject(match: Match, userId: number, pollaId: number, existingId?: number): Prediction {
+  private createPredictionObject(match: Match, userId: string, pollaId: number, existingId?: string): Prediction {
     return {
-      id: existingId || Date.now(),
+      id: existingId || Date.now().toString(),
       userId,
       pollaId,
       matchId: match.matchID,

@@ -54,7 +54,7 @@ export class GruposActivosComponent implements OnInit, OnDestroy {
     });
   }
 
-  private cargarPuntajeUsuario(userId: number): void {
+  private cargarPuntajeUsuario(userId: string): void {
     this.puntajeService.cargarPuntajes(userId);
 
     this.puntajeService.puntajesPorPolla$.pipe(
@@ -69,7 +69,7 @@ export class GruposActivosComponent implements OnInit, OnDestroy {
     return this.puntajesPorPolla.get(pollaId) || 0;
   }
 
-  cargarPollasUsuario(userId: number): void {
+  cargarPollasUsuario(userId: string): void {
     this.pollaService.cargarPollasPorUsuario(userId);
   }
 

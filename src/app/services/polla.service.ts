@@ -103,7 +103,7 @@ export class PollaService {
     );
 }
 
-  cargarPollasPorUsuario(userId: number): void {
+  cargarPollasPorUsuario(userId: string): void {
     this.loading.next(true);
 
     this.getPollasByLoggedUser().pipe(

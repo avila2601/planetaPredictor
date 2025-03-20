@@ -22,7 +22,7 @@ import { Prediction } from '../../models/prediction.model';
 export class PronosticosComponent implements OnInit, OnDestroy {
   matches: Match[] = [];
   puntajeTotal: number = 0;
-  userId: number | null = null;
+  userId: string | null = null;
   pollaSeleccionada$: Observable<Polla | null>;
   isSaving = false;
 
@@ -168,7 +168,7 @@ export class PronosticosComponent implements OnInit, OnDestroy {
 
   private shouldDeletePrediction(match: Match): boolean {
     return match.pronosticoLocal === null && match.pronosticoVisitante === null;
-  }
+}
 
   private deletePrediction(match: Match, pollaId: number): void {
     this.matchService.deleteMatchPrediction(match.matchID, pollaId)
@@ -309,6 +309,21 @@ export class PronosticosComponent implements OnInit, OnDestroy {
         }
       });
   }
+
+  onInputChange(value: any, match: Match, field: 'local' | 'visitante'): void {
+    if (value === '') {
+        if (field === 'local') {
+            match.pronosticoLocal = null;
+        } else {
+            match.pronosticoVisitante = null;
+        }
+
+        // Clear pronosticoGuardado if both fields are empty
+        if (match.pronosticoLocal === null && match.pronosticoVisitante === null) {
+            match.pronosticoGuardado = '';
+        }
+    }
+}
 
   regresar(): void {
     this.router.navigate(['/grupos-activos']);

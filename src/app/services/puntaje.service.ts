@@ -23,7 +23,7 @@ export class PuntajeService {
   constructor(private http: HttpClient) {}
 
   // Nuevo método para obtener todos los puntajes de un usuario
-  obtenerPuntajesPorUsuario(usuarioId: number): Observable<Puntaje[]> {
+  obtenerPuntajesPorUsuario(usuarioId: string): Observable<Puntaje[]> {
     return this.http.get<Puntaje[]>(`${this.API_URL}?usuarioId=${usuarioId}`).pipe(
       tap(puntajes => {
         console.log('📊 Puntajes obtenidos:', puntajes);
@@ -36,7 +36,7 @@ export class PuntajeService {
   }
 
   // Nuevo método para obtener el puntaje total de todas las pollas de un usuario
-  obtenerPuntajeTotal(usuarioId: number): Observable<number> {
+  obtenerPuntajeTotal(usuarioId: string): Observable<number> {
     return this.obtenerPuntajesPorUsuario(usuarioId).pipe(
       map(puntajes => puntajes.reduce((total, p) => total + p.puntaje, 0)),
       tap(total => {
@@ -46,7 +46,7 @@ export class PuntajeService {
     );
   }
 
-  actualizarPuntaje(pollaId: number, usuarioId: number, nuevoPuntaje: number): Observable<Puntaje> {
+  actualizarPuntaje(pollaId: number, usuarioId: string, nuevoPuntaje: number): Observable<Puntaje> {
     return this.obtenerPuntajeExistente(pollaId, usuarioId).pipe(
       map(puntajeExistente => {
         if (puntajeExistente) {
@@ -77,7 +77,7 @@ export class PuntajeService {
     );
   }
 
-  obtenerPuntaje(pollaId: number, usuarioId: number): Observable<number> {
+  obtenerPuntaje(pollaId: number, usuarioId: string): Observable<number> {
     return this.obtenerPuntajeExistente(pollaId, usuarioId).pipe(
       tap(puntaje => {
         if (puntaje) {
@@ -88,7 +88,7 @@ export class PuntajeService {
     );
   }
 
-  private obtenerPuntajeExistente(pollaId: number, usuarioId: number): Observable<Puntaje | null> {
+  private obtenerPuntajeExistente(pollaId: number, usuarioId: string): Observable<Puntaje | null> {
     return this.http.get<Puntaje[]>(`${this.API_URL}?pollaId=${pollaId}&usuarioId=${usuarioId}`).pipe(
       map(puntajes => puntajes[0] || null),
       catchError(error => {
@@ -103,7 +103,7 @@ export class PuntajeService {
     this.puntajeTotalSubject.next(puntaje);
   }
 
-  cargarPuntajes(usuarioId: number): void {
+  cargarPuntajes(usuarioId: string): void {
     this.obtenerPuntajesPorUsuario(usuarioId).pipe(
       take(1)
     ).subscribe(puntajes => {

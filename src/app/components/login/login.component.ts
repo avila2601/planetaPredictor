@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth.service';
+import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,41 +13,57 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   usuario = '';
   contrasena = '';
   errorMensaje = '';
   isAuthenticated = false;
+  private destroy$ = new Subject<void>();
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
-    this.isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    this.usuario = localStorage.getItem('usuario') || ''; // Recuperar usuario si existe
+    // Subscribe to authentication state
+    this.authService.user$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        this.isAuthenticated = !!user;
+        if (user) {
+          this.usuario = user.username || '';
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   login() {
-    const usuarioLower = this.usuario.trim().toLowerCase(); // Convertir a minúsculas
+    const usuarioLower = this.usuario.trim().toLowerCase();
 
-    this.authService.login(usuarioLower, this.contrasena).subscribe((success) => {
-      if (success) {
+    this.authService.login(usuarioLower, this.contrasena).subscribe({
+      next: (success) => {
+        if (success) {
         this.isAuthenticated = true;
-        localStorage.setItem('isAuthenticated', 'true'); // Guardar estado de autenticación
-        localStorage.setItem('usuario', usuarioLower); // Guardar usuario en minúsculas
-        this.router.navigate(['/grupos-activos']);
-      } else {
-        this.errorMensaje = 'Usuario o contraseña incorrectos';
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('usuario', usuarioLower);
+          this.router.navigate(['/grupos-activos']);
+        } else {
+          this.errorMensaje = 'Usuario o contraseña incorrectos';
+        }
+      },
+      error: (error) => {
+        console.error('Error en login:', error);
+        this.errorMensaje = 'Error al intentar iniciar sesión';
       }
     });
   }
 
   logout() {
-    this.isAuthenticated = false;
-    localStorage.removeItem('isAuthenticated'); // Eliminar autenticación
-    localStorage.removeItem('usuario'); // Eliminar usuario
-    this.router.navigate(['/']).then(() => {
-      window.location.reload(); // Asegurar que todo se reinicia
-    });
+    this.authService.logout();
+    this.usuario = '';
+    this.contrasena = '';
+    this.errorMensaje = '';
   }
 }
-

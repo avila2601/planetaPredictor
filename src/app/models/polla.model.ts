@@ -5,8 +5,8 @@ export interface Polla {
   torneo: string;
   leagueShortcut: string;
   leagueSeason: string;
-  adminId: number;
-  participants: number[];
+  adminId: string;
+  participants: string[];
   matches: number[];
   notes: string;
 }
