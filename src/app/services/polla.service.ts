@@ -5,6 +5,7 @@ import { map, switchMap, tap, catchError, take, finalize } from 'rxjs/operators'
 import { AuthService } from './auth.service';
 import { Polla } from '../models/polla.model';
 import { User } from '../models/user.model';
+import { PuntajeService } from './puntaje.service';
 
 
 
@@ -27,7 +28,8 @@ export class PollaService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private puntajeService: PuntajeService
   ) {
     this.inicializarPollas();
   }
@@ -135,30 +137,39 @@ crearPolla(nombre: string, torneo: Partial<Polla>, notas: string): Observable<Po
         leagueShortcut: torneo.leagueShortcut!,
         leagueSeason: torneo.leagueSeason!,
         adminId: user.id,
-        participants: [user.id],  // Add user ID to participants array
+        participants: [user.id],
         notes: notas
       };
 
+      // 1. Create the polla
       return this.http.post<Polla>(this.apiUrl, nuevaPolla).pipe(
         switchMap(polla => {
-          // Update user's pollas array
+          // 2. Update user's pollas array
           const updatedUser = {
             ...user,
             pollas: [...(user.pollas || []), polla.id!]
           };
 
-          // Update polla with user in participants
-          const updatedPolla = {
-            ...polla,
-            participants: [user.id]  // Ensure participant is added
+          // 3. Create initial puntaje for the creator
+          const initialPuntaje = {
+            id: `${polla.id}_${user.id}_${Date.now()}`,
+            userId: user.id,
+            pollaId: polla.id!,
+            puntajeTotal: 0
           };
 
-          // First update the polla
-          return this.http.patch<Polla>(`${this.apiUrl}/${polla.id}`, updatedPolla).pipe(
-            // Then update the user
-            switchMap(() => this.authService.updateUser(updatedUser)),
-            // Return the updated polla
-            map(() => updatedPolla)
+          // 4. Execute all updates in parallel
+          return forkJoin({
+            polla: this.http.patch<Polla>(`${this.apiUrl}/${polla.id}`, polla),
+            user: this.authService.updateUser(updatedUser),
+            puntaje: this.puntajeService.inicializarPuntajesParaPolla(polla)
+          }).pipe(
+            map(() => polla),
+            tap(() => {
+              // Update local BehaviorSubject
+              const currentPollas = this.pollas$.getValue();
+              this.pollas$.next([...currentPollas, polla]);
+            })
           );
         }),
         tap(polla => console.log('✅ Polla creada:', polla)),
