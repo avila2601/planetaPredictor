@@ -1,84 +1,120 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { catchError, map, tap, switchMap, take } from 'rxjs/operators';
+
+interface Puntaje {
+  id?: string;
+  pollaId: number;
+  usuarioId: number;
+  puntaje: number;
+}
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class PuntajeService {
-  private readonly STORAGE_KEY = 'puntajeTotal';
-  private readonly API_URL = 'http://localhost:3000/users';
-
+  private readonly API_URL = 'http://localhost:3000/puntajes';
+  private puntajesPorPollaSubject = new BehaviorSubject<Map<number, number>>(new Map());
   private puntajeTotalSubject = new BehaviorSubject<number>(0);
+
+  readonly puntajesPorPolla$ = this.puntajesPorPollaSubject.asObservable();
   readonly puntajeTotal$ = this.puntajeTotalSubject.asObservable();
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) {
-    this.initializePuntaje();
-  }
-
-  private initializePuntaje(): void {
-    try {
-      const puntajeGuardado = localStorage.getItem(this.STORAGE_KEY);
-      if (puntajeGuardado) {
-        const puntaje = JSON.parse(puntajeGuardado);
-        this.puntajeTotalSubject.next(Number(puntaje));
-        console.log('✅ Puntaje inicial cargado:', puntaje);
-      }
-    } catch (error) {
-      console.error('❌ Error cargando puntaje inicial:', error);
-      localStorage.removeItem(this.STORAGE_KEY);
-    }
-  }
-
-  actualizarPuntaje(nuevoPuntaje: number): void {
-    try {
-      if (nuevoPuntaje < 0) throw new Error('El puntaje no puede ser negativo');
-
-      this.puntajeTotalSubject.next(nuevoPuntaje);
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(nuevoPuntaje));
-      console.log('✅ Puntaje actualizado:', nuevoPuntaje);
-    } catch (error) {
-      console.error('❌ Error actualizando puntaje:', error);
-    }
-  }
-
-  obtenerPuntaje(): number {
-    return this.puntajeTotalSubject.value;
-  }
-
-  setPuntajeDesdeUsuario(user: User | null): void {
-    if (!user) {
-      console.warn('⚠️ Usuario no proporcionado, estableciendo puntaje a 0');
-      this.actualizarPuntaje(0);
-      return;
-    }
-
-    const puntaje = user.puntaje ?? 0;
-    this.actualizarPuntaje(puntaje);
-    console.log('👤 Puntaje actualizado desde usuario:', { userId: user.id, puntaje });
-  }
-
-  actualizarPuntajeEnDB(userId: number, nuevoPuntaje: number): Observable<User> {
-    return this.http.patch<User>(`${this.API_URL}/${userId}`, { puntaje: nuevoPuntaje }).pipe(
-      tap({
-        next: (user) => {
-          this.actualizarPuntaje(user.puntaje);
-          console.log('✅ Puntaje actualizado en DB:', { userId, puntaje: user.puntaje });
-        },
-        error: (error) => console.error('❌ Error actualizando puntaje en DB:', error)
+  // Nuevo método para obtener todos los puntajes de un usuario
+  obtenerPuntajesPorUsuario(usuarioId: number): Observable<Puntaje[]> {
+    return this.http.get<Puntaje[]>(`${this.API_URL}?usuarioId=${usuarioId}`).pipe(
+      tap(puntajes => {
+        console.log('📊 Puntajes obtenidos:', puntajes);
+      }),
+      catchError(error => {
+        console.error('❌ Error obteniendo puntajes:', error);
+        return of([]);
       })
     );
   }
 
-  resetPuntaje(): void {
-    try {
-      localStorage.removeItem(this.STORAGE_KEY);
-      this.puntajeTotalSubject.next(0);
-      console.log('🔄 Puntaje reseteado');
-    } catch (error) {
-      console.error('❌ Error reseteando puntaje:', error);
-    }
+  // Nuevo método para obtener el puntaje total de todas las pollas de un usuario
+  obtenerPuntajeTotal(usuarioId: number): Observable<number> {
+    return this.obtenerPuntajesPorUsuario(usuarioId).pipe(
+      map(puntajes => puntajes.reduce((total, p) => total + p.puntaje, 0)),
+      tap(total => {
+        this.puntajeTotalSubject.next(total);
+        console.log('💯 Puntaje total calculado:', total);
+      })
+    );
   }
+
+  actualizarPuntaje(pollaId: number, usuarioId: number, nuevoPuntaje: number): Observable<Puntaje> {
+    return this.obtenerPuntajeExistente(pollaId, usuarioId).pipe(
+      map(puntajeExistente => {
+        if (puntajeExistente) {
+          return { ...puntajeExistente, puntaje: nuevoPuntaje };
+        } else {
+          return {
+            id: Date.now().toString(),
+            pollaId,
+            usuarioId,
+            puntaje: nuevoPuntaje
+          };
+        }
+      }),
+      switchMap(puntaje => {
+        if (puntaje.id) {
+          return this.http.patch<Puntaje>(`${this.API_URL}/${puntaje.id}`, puntaje);
+        } else {
+          return this.http.post<Puntaje>(this.API_URL, puntaje);
+        }
+      }),
+      tap(puntaje => {
+        // Actualizar el Map de puntajes por polla
+        const puntajesActuales = this.puntajesPorPollaSubject.getValue();
+        puntajesActuales.set(puntaje.pollaId, puntaje.puntaje);
+        this.puntajesPorPollaSubject.next(puntajesActuales);
+        console.log('✅ Puntaje actualizado:', puntaje);
+      })
+    );
+  }
+
+  obtenerPuntaje(pollaId: number, usuarioId: number): Observable<number> {
+    return this.obtenerPuntajeExistente(pollaId, usuarioId).pipe(
+      tap(puntaje => {
+        if (puntaje) {
+          this.puntajeTotalSubject.next(puntaje.puntaje);
+        }
+      }),
+      map(puntaje => puntaje?.puntaje || 0)
+    );
+  }
+
+  private obtenerPuntajeExistente(pollaId: number, usuarioId: number): Observable<Puntaje | null> {
+    return this.http.get<Puntaje[]>(`${this.API_URL}?pollaId=${pollaId}&usuarioId=${usuarioId}`).pipe(
+      map(puntajes => puntajes[0] || null),
+      catchError(error => {
+        console.error('❌ Error obteniendo puntaje:', error);
+        return of(null);
+      })
+    );
+  }
+
+  // Método para actualizar el puntaje total desde cualquier componente
+  setPuntajeTotal(puntaje: number): void {
+    this.puntajeTotalSubject.next(puntaje);
+  }
+
+  cargarPuntajes(usuarioId: number): void {
+    this.obtenerPuntajesPorUsuario(usuarioId).pipe(
+      take(1)
+    ).subscribe(puntajes => {
+      const puntajesMap = new Map<number, number>();
+      puntajes.forEach(p => {
+        if (p.pollaId) {
+          puntajesMap.set(p.pollaId, p.puntaje);
+        }
+      });
+      this.puntajesPorPollaSubject.next(puntajesMap);
+    });
+  }
+
 }

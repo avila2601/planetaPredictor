@@ -144,21 +144,41 @@ export class MatchService {
 
     const resultadoLocal = resultado.pointsTeam1;
     const resultadoVisitante = resultado.pointsTeam2;
+    let puntos = 0;
 
-    // Acierto exacto: 3 puntos
-    if (match.pronosticoLocal === resultadoLocal && match.pronosticoVisitante === resultadoVisitante) {
-      return 3;
-    }
-    // Acierto diferencia de goles: 2 puntos
-    if ((match.pronosticoLocal - match.pronosticoVisitante) === (resultadoLocal - resultadoVisitante)) {
-      return 2;
-    }
-    // Acierto ganador/empate: 1 punto
-    if ((match.pronosticoLocal > match.pronosticoVisitante && resultadoLocal > resultadoVisitante) ||
+    // Acertar al ganador o empate = 5 puntos
+    const acertoGanador =
+        (match.pronosticoLocal > match.pronosticoVisitante && resultadoLocal > resultadoVisitante) ||
         (match.pronosticoLocal < match.pronosticoVisitante && resultadoLocal < resultadoVisitante) ||
-        (match.pronosticoLocal === match.pronosticoVisitante && resultadoLocal === resultadoVisitante)) {
-      return 1;
+        (match.pronosticoLocal === match.pronosticoVisitante && resultadoLocal === resultadoVisitante);
+
+    if (acertoGanador) {
+        puntos += 5;
+
+        // Acertar diferencia de gol (solo si acertó ganador) = 1 punto adicional
+        if ((match.pronosticoLocal - match.pronosticoVisitante) === (resultadoLocal - resultadoVisitante)) {
+            puntos += 1;
+        }
+
+        // Acertar goles del equipo ganador = 2 puntos
+        if (resultadoLocal > resultadoVisitante) {
+            if (match.pronosticoLocal === resultadoLocal) puntos += 2;
+        } else if (resultadoLocal < resultadoVisitante) {
+            if (match.pronosticoVisitante === resultadoVisitante) puntos += 2;
+        } else {
+            // En caso de empate, se considera ganador a ambos
+            if (match.pronosticoLocal === resultadoLocal) puntos += 2;
+            if (match.pronosticoVisitante === resultadoVisitante) puntos += 2;
+        }
+
+        // Acertar goles del equipo perdedor = 2 puntos
+        if (resultadoLocal > resultadoVisitante) {
+            if (match.pronosticoVisitante === resultadoVisitante) puntos += 2;
+        } else if (resultadoLocal < resultadoVisitante) {
+            if (match.pronosticoLocal === resultadoLocal) puntos += 2;
+        }
     }
-    return 0;
-  }
+
+    return puntos;
+}
 }

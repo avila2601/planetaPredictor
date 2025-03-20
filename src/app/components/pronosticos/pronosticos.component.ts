@@ -295,11 +295,17 @@ export class PronosticosComponent implements OnInit, OnDestroy {
   }
 
   private updateUserScore(): void {
-    this.authService.user$
+    const pollaId = Number(this.route.snapshot.paramMap.get('id'));
+    if (!pollaId || !this.userId) return;
+
+    this.puntajeService.actualizarPuntaje(pollaId, this.userId, this.puntajeTotal)
       .pipe(take(1))
-      .subscribe(user => {
-        if (user) {
-          this.puntajeService.actualizarPuntaje(this.puntajeTotal);
+      .subscribe({
+        next: (puntaje) => {
+          console.log('✅ Puntaje guardado:', puntaje);
+        },
+        error: (error) => {
+          console.error('❌ Error guardando puntaje:', error);
         }
       });
   }

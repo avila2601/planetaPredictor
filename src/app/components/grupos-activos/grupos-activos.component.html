@@ -15,7 +15,7 @@
       <td>{{ polla.name }}</td>
       <td>{{ polla.torneo }}</td>
       <td class="posicion-cell">{{ getPosicion(polla.id) }}</td>
-      <td>{{ puntajeTotal$ | async }}</td>
+      <td>{{ getPuntajePolla(polla.id) }}</td>
       <td><a (click)="irAPronosticos(polla)" role="button" aria-label="Ver pronósticos">🔮</a></td>
       <td><a (click)="irAPosiciones(polla)" role="button" aria-label="Ver posiciones">📈</a></td>
       <td><a (click)="irAAdministrar()" role="button" aria-label="Administrar">⚙️</a></td>
@@ -40,8 +40,8 @@
   <!-- Modal, solo se muestra si `modalAbierto` es `true` -->
   <app-crear-polla
     *ngIf="modalAbierto"
-    (modalCerrado)="cerrarModal(); cargarPollasDelUsuario()">
-  </app-crear-polla>
+    (modalCerrado)="onModalCerrado()">
+</app-crear-polla>
 </div>
 
 <app-pronosticos *ngIf="mostrarPronostico"></app-pronosticos>

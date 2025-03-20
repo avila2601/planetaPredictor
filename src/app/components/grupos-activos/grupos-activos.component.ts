@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil, map, take } from 'rxjs/operators';
+import { takeUntil, map, take, tap } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { PuntajeService } from '../../services/puntaje.service';
 import { PollaService } from '../../services/polla.service';
@@ -11,8 +11,6 @@ import { User } from '../../models/user.model';
 import { CrearPollaComponent } from '../crear-polla/crearpolla.component';
 import { PronosticosComponent } from '../pronosticos/pronosticos.component';
 import { PosicionesComponent } from '../posiciones/posiciones.component';
-import { Router } from '@angular/router';
-
 
 @Component({
   selector: 'app-grupos-activos',
@@ -21,10 +19,10 @@ import { Router } from '@angular/router';
   templateUrl: './grupos-activos.component.html',
   styleUrls: ['./grupos-activos.component.scss']
 })
-
 export class GruposActivosComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private posiciones = new Map<number, number>();
+  private puntajesPorPolla = new Map<number, number>();
 
   pollas$: Observable<Polla[]>;
   puntajeTotal$: Observable<number>;
@@ -50,53 +48,61 @@ export class GruposActivosComponent implements OnInit, OnDestroy {
     ).subscribe(user => {
       if (user) {
         this.cargarPollasUsuario(user.id);
-        this.puntajeService.setPuntajeDesdeUsuario(user);
+        this.cargarPuntajeUsuario(user.id);
         this.loadPositions();
       }
     });
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  private cargarPuntajeUsuario(userId: number): void {
+    this.puntajeService.cargarPuntajes(userId);
+
+    this.puntajeService.puntajesPorPolla$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(puntajes => {
+      this.puntajesPorPolla = puntajes;
+    });
+  }
+
+  getPuntajePolla(pollaId: number | undefined): number {
+    if (!pollaId) return 0;
+    return this.puntajesPorPolla.get(pollaId) || 0;
   }
 
   cargarPollasUsuario(userId: number): void {
     this.pollaService.cargarPollasPorUsuario(userId);
   }
 
-  // Method to get and store position
-obtenerYGuardarPosicion(polla: Polla): void {
-  this.pollaService.calcularPosicionUsuario(polla)
+  obtenerYGuardarPosicion(polla: Polla): void {
+    this.pollaService.calcularPosicionUsuario(polla)
       .pipe(takeUntil(this.destroy$))
       .subscribe(position => {
-          if (polla.id) {
-              this.posiciones.set(polla.id, position);
-          }
+        if (polla.id) {
+          this.posiciones.set(polla.id, position);
+        }
       });
-}
+  }
 
-// Method to get stored position
-getPosicion(pollaId: number | undefined): number {
-  if (!pollaId) return 0;
-  return this.posiciones.get(pollaId) || 0;
-}
+  getPosicion(pollaId: number | undefined): number {
+    if (!pollaId) return 0;
+    return this.posiciones.get(pollaId) || 0;
+  }
 
-loadPositions(): void {
-  this.pollas$.pipe(
+  loadPositions(): void {
+    this.pollas$.pipe(
       takeUntil(this.destroy$)
-  ).subscribe(pollas => {
+    ).subscribe(pollas => {
       pollas?.forEach(polla => {
-          if (polla.id) {
-              this.pollaService.calcularPosicionUsuario(polla)
-                  .pipe(take(1))
-                  .subscribe(position => {
-                      this.posiciones.set(polla.id!, position);
-                  });
-          }
+        if (polla.id) {
+          this.pollaService.calcularPosicionUsuario(polla)
+            .pipe(take(1))
+            .subscribe(position => {
+              this.posiciones.set(polla.id!, position);
+            });
+        }
       });
-  });
-}
+    });
+  }
 
   irAPronosticos(polla: Polla): void {
     this.pollaService.setPollaSeleccionada(polla);
@@ -110,11 +116,8 @@ loadPositions(): void {
 
   irAAdministrar(): void {
     // Implementar lógica de administración
+    console.log('🔧 Función de administración no implementada');
   }
-
-  obtenerPosicion(polla: Polla): Observable<number> {
-    return this.pollaService.calcularPosicionUsuario(polla);
-}
 
   abrirModal(): void {
     this.modalAbierto = true;
@@ -124,14 +127,19 @@ loadPositions(): void {
     this.modalAbierto = false;
   }
 
-  cargarPollasDelUsuario(): void {
+  onModalCerrado(): void {
+    this.cerrarModal();
     this.authService.user$.pipe(
-      take(1),
-      takeUntil(this.destroy$)
+        take(1)
     ).subscribe(user => {
-      if (user) {
-        this.cargarPollasUsuario(user.id);
-      }
+        if (user?.id) {
+            this.cargarPollasUsuario(user.id);
+        }
     });
+}
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
