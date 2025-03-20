@@ -3,6 +3,6 @@ export interface User {
   username: string;
   email: string;
   password: string;
-  pollas: number[]; // IDs de las pollas en las que participa
+  pollas: string[]; // IDs de las pollas en las que participa
   puntaje: number;
 }

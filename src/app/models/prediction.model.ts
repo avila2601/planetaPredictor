@@ -1,8 +1,8 @@
 export interface Prediction {
   id: string;               // ID único del pronóstico
   userId: string;           // ID del usuario que hizo el pronóstico
-  matchId: number;          // ID del partido al que pertenece el pronóstico
-  pollaId?: number;         // (Opcional) ID de la polla si lo manejas por grupos
+  matchId: string;          // ID del partido al que pertenece el pronóstico
+  pollaId?: string;         // (Opcional) ID de la polla si lo manejas por grupos
   equipoLocal: string;      // Nombre del equipo local
   equipoVisitante: string;  // Nombre del equipo visitante
   horario: string;          // Fecha y hora del partido en formato UTC

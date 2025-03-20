@@ -8,7 +8,7 @@ import { Polla } from '../../models/polla.model';
 
 interface TorneoTemp {
   name: string;
-  leagueId: number;
+  leagueId: string;
   leagueShortcut: string;
   leagueSeason: string;
 }

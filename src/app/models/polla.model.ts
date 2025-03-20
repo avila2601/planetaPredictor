@@ -1,12 +1,12 @@
 export interface Polla {
-  id?: number;
-  leagueId: number;
+  id?: string;
+  leagueId: string;
   name: string;
   torneo: string;
   leagueShortcut: string;
   leagueSeason: string;
   adminId: string;
   participants: string[];
-  matches: number[];
+  matches: string[];
   notes: string;
 }

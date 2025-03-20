@@ -1,9 +1,9 @@
 export interface Match {
-  matchID: number;  // Se cambia de matchID a id para evitar problemas de búsqueda
+  matchID: string;  // Se cambia de matchID a id para evitar problemas de búsqueda
   matchDateTime: Date; // Fecha en formato local
   matchDateTimeUTC: string; // Fecha en formato UTC
   timeZoneID: string;
-  leagueId: number;
+  leagueId: string;
   leagueName: string;
   leagueSeason: number;
   team1: Team;

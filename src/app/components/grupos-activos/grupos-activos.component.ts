@@ -21,8 +21,8 @@ import { PosicionesComponent } from '../posiciones/posiciones.component';
 })
 export class GruposActivosComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  private posiciones = new Map<number, number>();
-  private puntajesPorPolla = new Map<number, number>();
+  private posiciones = new Map<string, number>();
+  private puntajesPorPolla = new Map<string, number>();
 
   pollas$: Observable<Polla[]>;
   puntajeTotal$: Observable<number>;
@@ -64,7 +64,7 @@ export class GruposActivosComponent implements OnInit, OnDestroy {
     });
   }
 
-  getPuntajePolla(pollaId: number | undefined): number {
+  getPuntajePolla(pollaId: string | undefined): number {
     if (!pollaId) return 0;
     return this.puntajesPorPolla.get(pollaId) || 0;
   }
@@ -83,7 +83,7 @@ export class GruposActivosComponent implements OnInit, OnDestroy {
       });
   }
 
-  getPosicion(pollaId: number | undefined): number {
+  getPosicion(pollaId: string | undefined): number {
     if (!pollaId) return 0;
     return this.posiciones.get(pollaId) || 0;
   }

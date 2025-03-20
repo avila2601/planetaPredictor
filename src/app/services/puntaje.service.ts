@@ -5,8 +5,8 @@ import { catchError, map, tap, switchMap, take } from 'rxjs/operators';
 
 interface Puntaje {
   id?: string;
-  pollaId: number;
-  usuarioId: number;
+  pollaId: string;
+  usuarioId: string;
   puntaje: number;
 }
 
@@ -15,7 +15,7 @@ interface Puntaje {
 })
 export class PuntajeService {
   private readonly API_URL = 'http://localhost:3000/puntajes';
-  private puntajesPorPollaSubject = new BehaviorSubject<Map<number, number>>(new Map());
+  private puntajesPorPollaSubject = new BehaviorSubject<Map<string, number>>(new Map());
   private puntajeTotalSubject = new BehaviorSubject<number>(0);
 
   readonly puntajesPorPolla$ = this.puntajesPorPollaSubject.asObservable();
@@ -46,7 +46,7 @@ export class PuntajeService {
     );
   }
 
-  actualizarPuntaje(pollaId: number, usuarioId: string, nuevoPuntaje: number): Observable<Puntaje> {
+  actualizarPuntaje(pollaId: string, usuarioId: string, nuevoPuntaje: number): Observable<Puntaje> {
     return this.obtenerPuntajeExistente(pollaId, usuarioId).pipe(
       map(puntajeExistente => {
         if (puntajeExistente) {
@@ -77,7 +77,7 @@ export class PuntajeService {
     );
   }
 
-  obtenerPuntaje(pollaId: number, usuarioId: string): Observable<number> {
+  obtenerPuntaje(pollaId: string, usuarioId: string): Observable<number> {
     return this.obtenerPuntajeExistente(pollaId, usuarioId).pipe(
       tap(puntaje => {
         if (puntaje) {
@@ -88,7 +88,7 @@ export class PuntajeService {
     );
   }
 
-  private obtenerPuntajeExistente(pollaId: number, usuarioId: string): Observable<Puntaje | null> {
+  private obtenerPuntajeExistente(pollaId: string, usuarioId: string): Observable<Puntaje | null> {
     return this.http.get<Puntaje[]>(`${this.API_URL}?pollaId=${pollaId}&usuarioId=${usuarioId}`).pipe(
       map(puntajes => puntajes[0] || null),
       catchError(error => {
@@ -107,7 +107,7 @@ export class PuntajeService {
     this.obtenerPuntajesPorUsuario(usuarioId).pipe(
       take(1)
     ).subscribe(puntajes => {
-      const puntajesMap = new Map<number, number>();
+      const puntajesMap = new Map<string, number>();
       puntajes.forEach(p => {
         if (p.pollaId) {
           puntajesMap.set(p.pollaId, p.puntaje);

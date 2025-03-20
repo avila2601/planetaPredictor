@@ -23,7 +23,7 @@ export class MatchService {
     );
   }
 
-  getPredictionsByUser(userId: string, pollaId?: number): Observable<Prediction[]> {
+  getPredictionsByUser(userId: string, pollaId?: string): Observable<Prediction[]> {
     let url = `${this.predictionsUrl}?userId=${userId}`;
     if (pollaId) {
       url += `&pollaId=${pollaId}`;
@@ -58,7 +58,7 @@ export class MatchService {
     );
   }
 
-  saveOrUpdatePrediction(match: Match, userId: string, pollaId: number): Observable<Prediction> {
+  saveOrUpdatePrediction(match: Match, userId: string, pollaId: string): Observable<Prediction> {
     return this.getPredictionsByUser(userId, pollaId).pipe(
       take(1),
       switchMap(predictions => {
@@ -75,7 +75,7 @@ export class MatchService {
     );
   }
 
-  private createPredictionObject(match: Match, userId: string, pollaId: number, existingId?: string): Prediction {
+  private createPredictionObject(match: Match, userId: string, pollaId: string, existingId?: string): Prediction {
     return {
       id: existingId || Date.now().toString(),
       userId,
@@ -102,7 +102,7 @@ export class MatchService {
     return resultado ? `${resultado.pointsTeam1} - ${resultado.pointsTeam2}` : '-';
   }
 
-  deleteMatchPrediction(matchId: number, pollaId: number): Observable<void> {
+  deleteMatchPrediction(matchId: string, pollaId: string): Observable<void> {
     return this.authService.user$.pipe(
       take(1),
       switchMap(user => {

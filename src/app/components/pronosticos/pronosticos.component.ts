@@ -138,7 +138,7 @@ export class PronosticosComponent implements OnInit, OnDestroy {
 
   private updateMatchesWithPredictions(predictions: Prediction[]): void {
     this.matches = this.matches.map(match => {
-      const prediction = predictions.find(p => Number(p.matchId) === Number(match.matchID));
+      const prediction = predictions.find(p => (p.matchId) === (match.matchID));
       if (prediction) {
         return {
           ...match,
@@ -152,51 +152,55 @@ export class PronosticosComponent implements OnInit, OnDestroy {
     });
   }
 
-  guardarPronostico(match: Match): void {
-    if (this.isSaving || !this.userId) return;
-
-    this.isSaving = true;
-    const pollaId = Number(this.route.snapshot.paramMap.get('id'));
-
-    if (this.shouldDeletePrediction(match)) {
-      this.deletePrediction(match, pollaId);
-      return;
-    }
-
-    this.saveOrUpdatePrediction(match, pollaId);
-  }
-
   private shouldDeletePrediction(match: Match): boolean {
     return match.pronosticoLocal === null && match.pronosticoVisitante === null;
 }
 
-  private deletePrediction(match: Match, pollaId: number): void {
-    this.matchService.deleteMatchPrediction(match.matchID, pollaId)
-      .pipe(take(1))
-      .subscribe({
-        next: () => {
-          this.handlePredictionDeleted(match);
-        },
-        error: (error) => {
-          console.error("❌ Error eliminando predicción:", error);
-          this.isSaving = false;
-        }
-      });
-  }
+  guardarPronostico(match: Match): void {
+    if (this.isSaving || !this.userId) return;
 
-  private saveOrUpdatePrediction(match: Match, pollaId: number): void {
-    this.matchService.saveOrUpdatePrediction(match, this.userId!, pollaId)
+    this.isSaving = true;
+    const pollaId = this.route.snapshot.paramMap.get('id');
+    if (!pollaId) {
+        console.warn('⚠️ No se encontró ID de polla');
+        return;
+    }
+
+    if (this.shouldDeletePrediction(match)) {
+        this.deletePrediction(match, pollaId);
+        return;
+    }
+
+    this.saveOrUpdatePrediction(match, pollaId);
+}
+
+private deletePrediction(match: Match, pollaId: string): void {
+  this.matchService.deleteMatchPrediction(match.matchID.toString(), pollaId)
       .pipe(take(1))
       .subscribe({
-        next: (savedPrediction) => {
-          this.handlePredictionSaved(match, savedPrediction);
-        },
-        error: (error) => {
-          console.error("❌ Error guardando predicción:", error);
-          this.isSaving = false;
-        }
+          next: () => {
+              this.handlePredictionDeleted(match);
+          },
+          error: (error) => {
+              console.error("❌ Error eliminando predicción:", error);
+              this.isSaving = false;
+          }
       });
-  }
+}
+
+private saveOrUpdatePrediction(match: Match, pollaId: string): void {
+  this.matchService.saveOrUpdatePrediction(match, this.userId!, pollaId)
+      .pipe(take(1))
+      .subscribe({
+          next: (savedPrediction) => {
+              this.handlePredictionSaved(match, savedPrediction);
+          },
+          error: (error) => {
+              console.error("❌ Error guardando predicción:", error);
+              this.isSaving = false;
+          }
+      });
+}
 
   private handlePredictionDeleted(match: Match): void {
     match.pronosticoGuardado = '';
@@ -210,7 +214,7 @@ export class PronosticosComponent implements OnInit, OnDestroy {
         return;
     }
 
-    const pollaId = Number(this.route.snapshot.paramMap.get('id'));
+    const pollaId = (this.route.snapshot.paramMap.get('id'));
     if (!pollaId) {
         console.error('❌ No se encontró ID de polla');
         return;
@@ -256,7 +260,7 @@ export class PronosticosComponent implements OnInit, OnDestroy {
         return;
     }
 
-    const pollaId = Number(this.route.snapshot.paramMap.get('id'));
+    const pollaId = (this.route.snapshot.paramMap.get('id'));
     if (!pollaId) {
         console.error('❌ No se encontró ID de polla');
         return;
@@ -295,7 +299,7 @@ export class PronosticosComponent implements OnInit, OnDestroy {
   }
 
   private updateUserScore(): void {
-    const pollaId = Number(this.route.snapshot.paramMap.get('id'));
+    const pollaId = (this.route.snapshot.paramMap.get('id'));
     if (!pollaId || !this.userId) return;
 
     this.puntajeService.actualizarPuntaje(pollaId, this.userId, this.puntajeTotal)

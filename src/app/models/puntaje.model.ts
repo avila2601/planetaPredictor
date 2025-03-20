@@ -1,6 +1,6 @@
 export interface Puntaje {
-  id?: number;
-  userId: number;
-  pollaId: number;
+  id?: string;
+  userId: string;
+  pollaId: string;
   puntajeTotal: number;
 }

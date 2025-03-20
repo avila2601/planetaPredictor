@@ -8,7 +8,7 @@ import { User } from '../models/user.model';
 
 interface TorneoData {
   name: string;
-  leagueId: number;
+  leagueId: string;
   leagueShortcut: string;
   leagueSeason: string;
 }
@@ -53,17 +53,21 @@ export class PollaService {
 
   getPollasByLoggedUser(): Observable<Polla[]> {
     return this.authService.user$.pipe(
-      switchMap((user: User | null) => {
-        if (!user?.pollas?.length) return of([]);
+        switchMap((user: User | null) => {
+            if (!user?.pollas?.length) return of([]);
 
-        return this.http.get<Polla[]>(this.apiUrl).pipe(
-          map(pollas => pollas.filter(p => user.pollas.includes(p.id || 0))),
-          tap(pollas => console.log('📋 Pollas del usuario:', pollas)),
-          catchError(this.handleError)
-        );
-      })
+            return this.http.get<Polla[]>(this.apiUrl).pipe(
+                map(pollas => pollas.filter(p => {
+                    // Ensure both IDs are strings for comparison
+                    const pollaId = p.id?.toString() || '';
+                    return user.pollas.includes(pollaId);
+                })),
+                tap(pollas => console.log('📋 Pollas del usuario:', pollas)),
+                catchError(this.handleError)
+            );
+        })
     );
-  }
+}
 
   calcularPosicionUsuario(polla: Polla): Observable<number> {
     if (!polla.participants?.length) {
@@ -129,7 +133,7 @@ export class PollaService {
         }
 
         const nuevaPolla: Polla = {
-          id: Date.now(),
+          id: Date.now().toString(),
           name: nombre,
           torneo: torneo.name,
           leagueId: torneo.leagueId,
