@@ -125,21 +125,29 @@ export class PronosticosComponent implements OnInit, OnDestroy {
   private loadPredictions(): void {
     if (!this.userId) return;
 
-    this.matchService.getPredictionsByUser(this.userId)
+    const pollaId = this.route.snapshot.paramMap.get('id');
+    if (!pollaId) return;
+
+    this.matchService.getPredictionsByUser(this.userId, pollaId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (predictions) => {
+          console.log('📊 Cargando predicciones:', predictions);
           this.updateMatchesWithPredictions(predictions);
           this.calcularPuntajeTotal();
         },
         error: (error) => console.error("❌ Error cargando predicciones:", error)
       });
-  }
+}
 
-  private updateMatchesWithPredictions(predictions: Prediction[]): void {
+private updateMatchesWithPredictions(predictions: Prediction[]): void {
     this.matches = this.matches.map(match => {
-      const prediction = predictions.find(p => (p.matchId) === (match.matchID));
+      const prediction = predictions.find(p =>
+        p.matchId.toString() === match.matchID.toString()
+      );
+
       if (prediction) {
+        console.log(`📝 Actualizando match ${match.matchID} con predicción:`, prediction);
         return {
           ...match,
           pronosticoLocal: prediction.pronosticoLocal,
@@ -150,7 +158,7 @@ export class PronosticosComponent implements OnInit, OnDestroy {
       }
       return match;
     });
-  }
+}
 
   private shouldDeletePrediction(match: Match): boolean {
     return match.pronosticoLocal === null && match.pronosticoVisitante === null;

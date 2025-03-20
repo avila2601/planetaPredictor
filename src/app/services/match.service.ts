@@ -62,18 +62,29 @@ export class MatchService {
     return this.getPredictionsByUser(userId, pollaId).pipe(
       take(1),
       switchMap(predictions => {
+        // Convert matchID to string for consistent comparison
         const existingPrediction = predictions.find(p =>
-          p.matchId === match.matchID && p.pollaId === pollaId
+          p.matchId.toString() === match.matchID.toString() &&
+          p.pollaId === pollaId
         );
 
-        const prediction = this.createPredictionObject(match, userId, pollaId, existingPrediction?.id);
+        const prediction = this.createPredictionObject(
+          match,
+          userId,
+          pollaId,
+          existingPrediction?.id
+        );
 
-        return existingPrediction
-          ? this.updatePrediction(existingPrediction.id, prediction)
-          : this.savePrediction(prediction);
+        if (existingPrediction) {
+          console.log('🔄 Actualizando predicción existente:', existingPrediction.id);
+          return this.updatePrediction(existingPrediction.id, prediction);
+        } else {
+          console.log('➕ Creando nueva predicción');
+          return this.savePrediction(prediction);
+        }
       })
     );
-  }
+}
 
   private createPredictionObject(match: Match, userId: string, pollaId: string, existingId?: string): Prediction {
     return {
@@ -146,7 +157,11 @@ export class MatchService {
     const resultadoVisitante = resultado.pointsTeam2;
     let puntos = 0;
 
-    // Acertar al ganador o empate = 5 puntos
+    // Acertar goles de cualquier equipo = 2 puntos por cada uno
+    if (match.pronosticoLocal === resultadoLocal) puntos += 2;
+    if (match.pronosticoVisitante === resultadoVisitante) puntos += 2;
+
+    // Acertar al ganador o empate = 5 puntos adicionales
     const acertoGanador =
         (match.pronosticoLocal > match.pronosticoVisitante && resultadoLocal > resultadoVisitante) ||
         (match.pronosticoLocal < match.pronosticoVisitante && resultadoLocal < resultadoVisitante) ||
@@ -158,24 +173,6 @@ export class MatchService {
         // Acertar diferencia de gol (solo si acertó ganador) = 1 punto adicional
         if ((match.pronosticoLocal - match.pronosticoVisitante) === (resultadoLocal - resultadoVisitante)) {
             puntos += 1;
-        }
-
-        // Acertar goles del equipo ganador = 2 puntos
-        if (resultadoLocal > resultadoVisitante) {
-            if (match.pronosticoLocal === resultadoLocal) puntos += 2;
-        } else if (resultadoLocal < resultadoVisitante) {
-            if (match.pronosticoVisitante === resultadoVisitante) puntos += 2;
-        } else {
-            // En caso de empate, se considera ganador a ambos
-            if (match.pronosticoLocal === resultadoLocal) puntos += 2;
-            if (match.pronosticoVisitante === resultadoVisitante) puntos += 2;
-        }
-
-        // Acertar goles del equipo perdedor = 2 puntos
-        if (resultadoLocal > resultadoVisitante) {
-            if (match.pronosticoVisitante === resultadoVisitante) puntos += 2;
-        } else if (resultadoLocal < resultadoVisitante) {
-            if (match.pronosticoLocal === resultadoLocal) puntos += 2;
         }
     }
 
