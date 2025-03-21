@@ -1,4 +1,4 @@
-<div class="tabla-container">
+<!-- <div class="tabla-container">
   <div class="titulo-tabla">Tabla de posiciones</div>
   <table>
     <tr>
@@ -18,4 +18,79 @@
     </tr>
   </table>
   <button class="boton-regresar" (click)="regresar()">Regresar</button>
-</div>
+</div> -->
+
+
+
+
+  <div *ngIf="!loading && rankings.length > 0" class="tabla-container">
+
+    <div class="titulo-tabla">Tabla de posiciones</div>
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Cargando posiciones...</p>
+    </div>
+
+
+    <table>
+      <thead>
+        <tr>
+          <th>Posición</th>
+          <th>Nombre</th>
+          <th>Puntaje</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let ranking of rankings; let i = index"
+          [class.current-user]="ranking.userId === currentUserId">
+          <td class="position">{{ i + 1 }}°</td>
+          <td class="username">{{ ranking.username }}</td>
+          <td class="points">{{ ranking.puntaje }} pts</td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="boton-regresar" (click)="regresar()">Regresar</button>
+  </div>
+  <div *ngIf="!loading && rankings.length === 0" class="no-data">
+    <p>No hay participantes registrados en esta polla.</p>
+  </div>
+
+
+
+<!-- <div class="posiciones-container">
+  <h2>Tabla de Posiciones</h2>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando posiciones...</p>
+  </div>
+
+  <div *ngIf="!loading && rankings.length > 0" class="rankings-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Posición</th>
+          <th>Usuario</th>
+          <th>Puntaje</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ranking of rankings; let i = index"
+            [class.current-user]="ranking.userId === currentUserId">
+          <td class="position">{{ i + 1 }}°</td>
+          <td class="username">{{ ranking.username }}</td>
+          <td class="points">{{ ranking.puntaje }} pts</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!loading && rankings.length === 0" class="no-data">
+    <p>No hay participantes registrados en esta polla.</p>
+  </div>
+
+  <button class="btn-regresar" (click)="regresar()">
+    Volver a Grupos Activos
+  </button>
+</div> -->
