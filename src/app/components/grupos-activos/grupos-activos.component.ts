@@ -114,9 +114,9 @@ export class GruposActivosComponent implements OnInit, OnDestroy {
     this.router.navigate(['/posiciones', polla.id]);
   }
 
-  irAAdministrar(): void {
-    // Implementar lógica de administración
-    console.log('🔧 Función de administración no implementada');
+  irAAdministrar(polla: Polla): void {
+    this.pollaService.setPollaSeleccionada(polla);
+    this.router.navigate(['/administrar', polla.id]);
   }
 
   abrirModal(): void {

@@ -1,26 +1,32 @@
-<div class="administrar-container">
-  <h2>Administrar Polla</h2>
+<div class="administrar-container" *ngIf="polla">
+  <div class="header-section">
+    <h2>{{ polla.torneo }}</h2>
+  </div>
 
-  <form class="administrar-form">
-    <div class="campo">
-      <label for="torneo">Torneo:</label>
-      <input type="text" id="torneo" placeholder="Ingrese el torneo">
+  <div class="conditions-section">
+    <h3>Condiciones Especiales</h3>
+    <div class="conditions-container">
+      <p class="notes">{{ polla.notes || 'No hay condiciones especiales establecidas' }}</p>
+      <!-- Here you can add more conditions if needed -->
     </div>
+  </div>
 
-    <div class="campo">
-      <label for="url">URL invitación:</label>
-      <input type="text" id="url" placeholder="Ingrese la URL">
+  <div class="invite-section">
+    <h3>Link de Invitación</h3>
+    <div class="invite-link-container">
+      <input type="text"
+             [value]="inviteLink"
+             readonly
+             class="invite-link-input">
+      <button (click)="copyInviteLink()"
+              class="btn-copy"
+              [class.copied]="linkCopied">
+        {{ linkCopied ? '✓ Copiado!' : 'Copiar Link' }}
+      </button>
     </div>
-
-    <div class="campo">
-      <label for="condiciones">Condiciones y premiación:</label>
-      <textarea id="condiciones" placeholder="Describa las condiciones y premiación"></textarea>
-    </div>
-  </form>
-
-  <!-- Contenedor para alinear el botón correctamente -->
-  <div class="boton-container">
-    <button class="boton-regresar">Actualizar</button>
   </div>
 </div>
 
+<div class="loading" *ngIf="!polla">
+  Cargando información de la polla...
+</div>

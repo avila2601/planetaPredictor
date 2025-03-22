@@ -1,5 +1,6 @@
 .tabla-container {
-  margin: 0 auto; /* Centra horizontalmente */
+  margin: auto; /* Centra horizontalmente */
+  margin-top: 30px;
   display: flex;
   flex-direction: column; /* Permite que la tabla y el botón se apilen verticalmente */
   align-items: center; /* Centra los elementos internos */

@@ -45,16 +45,16 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authService.login(usuarioLower, this.contrasena).subscribe({
       next: (success) => {
         if (success) {
-        this.isAuthenticated = true;
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('usuario', usuarioLower);
+          console.log('✅ Login successful');
+          this.isAuthenticated = true;
           this.router.navigate(['/grupos-activos']);
         } else {
+          console.log('❌ Login failed');
           this.errorMensaje = 'Usuario o contraseña incorrectos';
         }
       },
       error: (error) => {
-        console.error('Error en login:', error);
+        console.error('❌ Login error:', error);
         this.errorMensaje = 'Error al intentar iniciar sesión';
       }
     });

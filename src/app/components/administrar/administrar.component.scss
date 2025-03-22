@@ -61,10 +61,67 @@ h2 {
   cursor: pointer;
   transition: background 0.3s ease;
   display: block;
-  margin-left: auto; 
+  margin-left: auto;
 
   &:hover {
     background: linear-gradient(to bottom, #5a4bac, #140a47);
+  }
+}
+
+
+
+// ...existing code...
+
+.invite-section {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+
+  h3 {
+    color: #2a7a2a;
+    margin-bottom: 10px;
+  }
+}
+
+.invite-link-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.invite-link-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+  color: #666;
+  cursor: default;
+
+  &:focus {
+    outline: none;
+    border-color: #2a7a2a;
+  }
+}
+
+.btn-copy {
+  background: linear-gradient(to bottom, #5a4bac, #2f1f80);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+
+  &:hover {
+    background: linear-gradient(to bottom, #5a4bac, #140a47);
+  }
+
+  &.copied {
+    background: #2a7a2a;
   }
 }
 

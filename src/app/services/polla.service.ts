@@ -167,6 +167,9 @@ crearPolla(nombre: string, torneo: Partial<Polla>, notas: string): Observable<Po
         throw new Error('Usuario no autenticado');
       }
 
+      // Generate invite code during creation
+      const inviteCode = Math.random().toString(36).substring(2, 15);
+
       const nuevaPolla: Polla = {
         id: Date.now().toString(),
         name: nombre,
@@ -176,7 +179,8 @@ crearPolla(nombre: string, torneo: Partial<Polla>, notas: string): Observable<Po
         leagueSeason: torneo.leagueSeason!,
         adminId: user.id,
         participants: [user.id],
-        notes: notas
+        notes: notas,
+        inviteCode // Include invite code in new polla
       };
 
       // 1. Create the polla
@@ -207,10 +211,10 @@ crearPolla(nombre: string, torneo: Partial<Polla>, notas: string): Observable<Po
               // Update local BehaviorSubject
               const currentPollas = this.pollas$.getValue();
               this.pollas$.next([...currentPollas, polla]);
+              console.log('✅ Polla creada con link de invitación:', this.getInviteLink(polla));
             })
           );
         }),
-        tap(polla => console.log('✅ Polla creada:', polla)),
         catchError(error => {
           console.error('❌ Error creando polla:', error);
           return this.handleError(error);
@@ -262,4 +266,73 @@ crearPolla(nombre: string, torneo: Partial<Polla>, notas: string): Observable<Po
       catchError(this.handleError)
     );
   }
+
+
+  generateInviteCode(polla: Polla): Observable<Polla> {
+    const inviteCode = Math.random().toString(36).substring(2, 15);
+    const updatedPolla = { ...polla, inviteCode };
+
+    return this.http.patch<Polla>(`${this.apiUrl}/${polla.id}`, updatedPolla).pipe(
+      tap(updated => console.log('✅ Código de invitación generado:', updated.inviteCode)),
+      catchError(this.handleError)
+    );
+  }
+
+  addParticipant(pollaId: string, userId: string): Observable<Polla> {
+    return forkJoin({
+      polla: this.getPollaById(pollaId),
+      user: this.authService.getUserById(userId)
+    }).pipe(
+      switchMap(({ polla, user }) => {
+        if (!polla || !user) {
+          return throwError(() => new Error('Polla o usuario no encontrado'));
+        }
+
+        // Update polla participants
+        const updatedPolla = {
+          ...polla,
+          participants: [...polla.participants, userId]
+        };
+
+        // Update user's pollas
+        const updatedUser = {
+          ...user,
+          pollas: [...(user.pollas || []), pollaId]
+        };
+
+        // Create initial puntaje for new participant
+        const initialPuntaje = {
+          id: `${pollaId}_${userId}_${Date.now()}`,
+          userId,
+          pollaId,
+          puntajeTotal: 0
+        };
+
+        // Execute all updates
+        return forkJoin({
+          polla: this.http.patch<Polla>(`${this.apiUrl}/${pollaId}`, updatedPolla),
+          user: this.authService.updateUser(updatedUser),
+          puntaje: this.puntajeService.inicializarPuntajesParaPolla(updatedPolla)
+        }).pipe(
+          map(() => updatedPolla),
+          tap(() => {
+            // Update local state
+            const currentPollas = this.pollas$.getValue();
+            this.pollas$.next([...currentPollas, updatedPolla]);
+          })
+        );
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  getInviteLink(polla: Polla): string {
+    if (!polla.inviteCode) {
+      console.warn('⚠️ Polla sin código de invitación');
+      return '';
+    }
+    return `${window.location.origin}/join-polla/${polla.id}/${polla.inviteCode}`;
+  }
 }
+
+

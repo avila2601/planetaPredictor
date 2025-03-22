@@ -10,20 +10,22 @@ import { RegistroComponent } from './components/registro/registro.component';
 import { RecuperarPasswordComponent } from './components/recuperar-password/recuperar-password.component';
 import { CrearPollaComponent } from './components/crear-polla/crearpolla.component';
 import { AdministrarComponent } from './components/administrar/administrar.component';
+import { JoinPollaComponent } from './components/join-polla/join-polla.component';
 
 export const routes: Routes = [
   { path: '', component: InicioComponent },
   { path: 'inicio', component: InicioComponent },
+  { path: 'join-polla/:pollaId/:inviteCode', component: JoinPollaComponent},
   { path: 'grupos-activos', component: GruposActivosComponent, canActivate: [AuthGuard] },
   { path: 'pronosticos', component: PronosticosComponent, canActivate: [AuthGuard] },
   { path: 'pronosticos/:id', component: PronosticosComponent, canActivate: [AuthGuard] },
   { path: 'posiciones', component: PosicionesComponent, canActivate: [AuthGuard] },
   { path: 'posiciones/:id', component: PosicionesComponent, canActivate: [AuthGuard] },
+  { path: 'administrar/:id', component: AdministrarComponent },
   { path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard] },
   { path: 'info-general', component: InfoGeneralComponent, canActivate: [AuthGuard] },
   { path: 'recuperar-password', component: RecuperarPasswordComponent },
   { path: 'registro', component: RegistroComponent },
   { path: 'modal', component: CrearPollaComponent },
-  { path: 'administrar', component: AdministrarComponent },
   { path: '**', redirectTo: '' }
 ];

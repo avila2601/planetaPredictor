@@ -1,0 +1,43 @@
+<div class="tabla-container">
+  <div *ngIf="loading" class="loading">
+    Cargando información de la polla...
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error && polla" class="polla-info">
+    <h2>{{ polla.name }}</h2>
+
+    <table>
+      <tr>
+        <th>Torneo</th>
+        <td>{{ polla.torneo }}</td>
+      </tr>
+      <tr>
+        <th>Administrador</th>
+        <td>{{ admin?.username }}</td>
+      </tr>
+      <tr>
+        <th>Notas</th>
+        <td>{{ polla.notes }}</td>
+      </tr>
+      <tr>
+        <th>Participantes</th>
+        <td>{{ polla.participants.length }}</td>
+      </tr>
+    </table>
+
+    <div class="actions">
+      <button *ngIf="!isParticipant"
+              (click)="joinPolla()"
+              class="boton-guardar">
+        Unirte a la Polla
+      </button>
+      <p *ngIf="isParticipant" class="already-member">
+        Ya eres participante de esta polla
+      </p>
+    </div>
+  </div>
+</div>

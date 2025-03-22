@@ -7,7 +7,8 @@
       "password": "12",
       "pollas": [
         "1",
-        "db51"
+        "db51",
+        "1742604254937"
       ]
     },
     {
@@ -18,7 +19,8 @@
       "pollas": [
         "1",
         "db51",
-        "1742491733090"
+        "1742491733090",
+        "1742604254937"
       ]
     }
   ],
@@ -34,7 +36,8 @@
       "participants": [
         "1",
         "2"
-      ]
+      ],
+      "inviteCode": "dk29dufcwk"
     },
     {
       "id": "db51",
@@ -48,20 +51,23 @@
         "1",
         "2"
       ],
-      "notes": "Carga todos los partidos"
+      "notes": "Carga todos los partidos",
+      "inviteCode": "1vpgmpsv453"
     },
     {
-      "id": "1742491733090",
-      "name": "R",
-      "torneo": "OpenLigaDB-Testliga",
-      "leagueId": 4740,
-      "leagueShortcut": "test",
+      "id": "1742604254937",
+      "name": "A",
+      "torneo": "DFB-Pokal 2024/25",
+      "leagueId": 4739,
+      "leagueShortcut": "dfb",
       "leagueSeason": "2024",
-      "adminId": "2",
+      "adminId": "1",
       "participants": [
+        "1",
         "2"
       ],
-      "notes": "R"
+      "notes": "A",
+      "inviteCode": "dajrihakq7"
     }
   ],
   "predictions": [
@@ -278,6 +284,42 @@
       "userId": "1",
       "pollaId": "db51",
       "puntajeTotal": 20
+    },
+    {
+      "id": "1742603784425_1_1742603784438",
+      "userId": "1",
+      "pollaId": "1742603784425",
+      "puntajeTotal": 0
+    },
+    {
+      "id": "1742604254937_1_1742604254948",
+      "userId": "1",
+      "pollaId": "1742604254937",
+      "puntajeTotal": 0
+    },
+    {
+      "id": "1742604254937_1_1742621918562",
+      "userId": "1",
+      "pollaId": "1742604254937",
+      "puntajeTotal": 0
+    },
+    {
+      "id": "1742604254937_2_1742621918562",
+      "userId": "2",
+      "pollaId": "1742604254937",
+      "puntajeTotal": 0
+    },
+    {
+      "id": "1742604254937_1_1742622840373",
+      "userId": "1",
+      "pollaId": "1742604254937",
+      "puntajeTotal": 0
+    },
+    {
+      "id": "1742604254937_2_1742622840373",
+      "userId": "2",
+      "pollaId": "1742604254937",
+      "puntajeTotal": 0
     }
   ]
 }

@@ -8,4 +8,5 @@ export interface Polla {
   adminId: string;
   participants: string[];
   notes: string;
+  inviteCode?: string;
 }
