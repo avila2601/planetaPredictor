@@ -1,1 +1,63 @@
-<p>perfil works!</p>
+<div class="profile-container">
+  <div class="user-info" *ngIf="user">
+    <h2>Perfil de Usuario</h2>
+
+    <div class="info-section">
+      <h3>Información Personal</h3>
+      <div class="info-item">
+        <label>Usuario:</label>
+        <span>{{ user.username }}</span>
+      </div>
+      <div class="info-item">
+        <label>Correo electrónico:</label>
+        <span>{{ user.email }}</span>
+      </div>
+    </div>
+
+    <div class="password-section">
+      <h3>Cambiar Contraseña</h3>
+      <form (ngSubmit)="onChangePassword()" #passwordForm="ngForm">
+        <div class="form-group">
+          <label for="currentPassword">Contraseña Actual:</label>
+          <input
+            type="password"
+            id="currentPassword"
+            name="currentPassword"
+            [(ngModel)]="passwordChange.currentPassword"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="newPassword">Nueva Contraseña:</label>
+          <input
+            type="password"
+            id="newPassword"
+            name="newPassword"
+            [(ngModel)]="passwordChange.newPassword"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirmar Nueva Contraseña:</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            [(ngModel)]="passwordChange.confirmPassword"
+            required>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="!passwordForm.form.valid">
+            Cambiar Contraseña
+          </button>
+        </div>
+
+        <div class="messages">
+          <p class="error" *ngIf="error">{{ error }}</p>
+          <p class="success" *ngIf="success">{{ success }}</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

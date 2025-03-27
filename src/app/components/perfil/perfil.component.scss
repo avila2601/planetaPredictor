@@ -3,9 +3,112 @@
   margin: 0 auto;  // Centrarlo horizontalmente
   color: white;
   margin: 30px 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
   padding: 20px;
   border-radius: 10px;
   min-height: 70vh;
   box-sizing: border-box;
+}
+
+.profile-container {
+  max-width: 90%;
+  margin: auto;
+}
+
+.user-info {
+  h2 {
+    color: whitesmoke;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    color: whitesmoke;
+    margin-bottom: 1rem;
+    font-size: 20px;
+  }
+}
+
+.info-section {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  font-size: 20px;
+
+  .info-item {
+    margin: 0.5rem 0;
+
+    label {
+      font-weight: bold;
+      margin-right: 1rem;
+      color: #999;
+    }
+  }
+}
+
+.password-section {
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .form-group {
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #fdf8f8;
+    }
+
+    input {
+      width: 30%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+
+      &:focus {
+        outline: none;
+        border-color: #2a7a2a;
+      }
+    }
+  }
+}
+
+.form-actions {
+  margin-top: 1rem;
+
+  button {
+    background: linear-gradient(to bottom, #5a4bac, #2f1f80);
+  color: white;
+  border: none;
+  padding: 10px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  font-size: 14px;
+  display: block;
+  margin-right: auto;
+
+  &:hover {
+    background: linear-gradient(to bottom, #5a4bac, #140a47);
+  }
+
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.messages {
+  margin-top: 1rem;
+
+  .error {
+    color: #dc3545;
+  }
+
+  .success {
+    color: #28a745;
+  }
 }

@@ -218,50 +218,109 @@ private saveOrUpdatePrediction(match: Match, pollaId: string): void {
 
   guardarTodos(): void {
     if (this.isSaving || !this.userId) {
-        console.warn('⚠️ No se puede guardar: operación en curso o usuario no autenticado');
-        return;
+      console.warn('⚠️ No se puede guardar: operación en curso o usuario no autenticado');
+      return;
     }
 
-    const pollaId = (this.route.snapshot.paramMap.get('id'));
+    const pollaId = this.route.snapshot.paramMap.get('id');
     if (!pollaId) {
-        console.error('❌ No se encontró ID de polla');
-        return;
+      console.error('❌ No se encontró ID de polla');
+      return;
     }
 
     this.isSaving = true;
-    console.log('💾 Guardando todos los pronósticos...');
+    console.log('💾 Iniciando procesamiento masivo de pronósticos...');
 
-    // Filter matches that have both predictions
-    const matchesConPronostico = this.matches.filter(match =>
-        match.pronosticoLocal !== null &&
-        match.pronosticoVisitante !== null
+    // Separate matches into those to save and those to delete
+    const matchesParaGuardar = this.matches.filter(match =>
+      match.pronosticoLocal !== null &&
+      match.pronosticoVisitante !== null
     );
 
-    // Create an array of observables for each prediction
-    const saveOperations = matchesConPronostico.map(match =>
-        this.matchService.saveOrUpdatePrediction(match, this.userId!, pollaId)
+    const matchesParaBorrar = this.matches.filter(match =>
+      match.pronosticoGuardado && // Has a saved prediction
+      match.pronosticoLocal === null &&
+      match.pronosticoVisitante === null // Both fields cleared
     );
 
-    // Execute all save operations
-    forkJoin(saveOperations)
-        .pipe(
-            take(1),
-            finalize(() => {
-                this.isSaving = false;
-                console.log('✅ Operación completada');
-            })
-        )
-        .subscribe({
-            next: (results) => {
-                console.log('✅ Todos los pronósticos guardados:', results);
-                this.calcularPuntajeTotal();
-            },
-            error: (error) => {
-                console.error('❌ Error guardando pronósticos:', error);
-                this.isSaving = false;
-            }
-        });
-}
+    console.log('📝 Matches a guardar:', matchesParaGuardar.length);
+    console.log('🗑️ Matches a borrar:', matchesParaBorrar.length);
+
+    // Create operations arrays
+    const saveOperations = matchesParaGuardar.map(match =>
+      this.matchService.saveOrUpdatePrediction(match, this.userId!, pollaId).pipe(
+        tap(prediction => {
+          const matchToUpdate = this.matches.find(m => m.matchID.toString() === prediction.matchId);
+          if (matchToUpdate) {
+            matchToUpdate.pronosticoGuardado = prediction.pronosticoGuardado;
+            matchToUpdate.puntos = prediction.puntos;
+            console.log(`✅ Match ${prediction.matchId} guardado:`, prediction);
+          }
+        })
+      )
+    );
+
+    const deleteOperations = matchesParaBorrar.map(match =>
+      this.matchService.deleteMatchPrediction(match.matchID.toString(), pollaId).pipe(
+        tap(() => {
+          const matchToUpdate = this.matches.find(m => m.matchID === match.matchID);
+          if (matchToUpdate) {
+            matchToUpdate.pronosticoGuardado = '';
+            matchToUpdate.puntos = 0;
+            console.log(`🗑️ Match ${match.matchID} eliminado`);
+          }
+        })
+      )
+    );
+
+    // Combine all operations
+    const allOperations = [...saveOperations, ...deleteOperations];
+
+    if (allOperations.length === 0) {
+      console.warn('⚠️ No hay cambios para procesar');
+      this.isSaving = false;
+      return;
+    }
+
+    // Execute all operations
+    forkJoin(allOperations)
+      .pipe(
+        take(1),
+        finalize(() => {
+          this.isSaving = false;
+          console.log('🏁 Operación masiva completada');
+        })
+      )
+      .subscribe({
+        next: () => {
+          console.log('✅ Todos los cambios procesados');
+          this.matches = [...this.matches]; // Trigger change detection
+          this.calcularPuntajeTotal();
+          this.updateUserScore();
+        },
+        error: (error) => {
+          console.error('❌ Error en operación masiva:', error);
+          this.isSaving = false;
+        }
+      });
+  }
+
+  // Helper method to update total score
+  private updateUserScore(): void {
+    const pollaId = this.route.snapshot.paramMap.get('id');
+    if (!pollaId || !this.userId) return;
+
+    this.puntajeService.actualizarPuntaje(pollaId, this.userId, this.puntajeTotal)
+      .pipe(take(1))
+      .subscribe({
+        next: (puntaje) => {
+          console.log('✅ Puntaje total actualizado:', puntaje);
+        },
+        error: (error) => {
+          console.error('❌ Error actualizando puntaje total:', error);
+        }
+      });
+  }
 
   guardarYProcesar(match: Match): void {
     if (this.isSaving || !this.userId) {
@@ -304,22 +363,6 @@ private saveOrUpdatePrediction(match: Match, pollaId: string): void {
     this.puntajeTotal = nuevoPuntaje;
     this.updateUserScore();
     return this.puntajeTotal;
-  }
-
-  private updateUserScore(): void {
-    const pollaId = (this.route.snapshot.paramMap.get('id'));
-    if (!pollaId || !this.userId) return;
-
-    this.puntajeService.actualizarPuntaje(pollaId, this.userId, this.puntajeTotal)
-      .pipe(take(1))
-      .subscribe({
-        next: (puntaje) => {
-          console.log('✅ Puntaje guardado:', puntaje);
-        },
-        error: (error) => {
-          console.error('❌ Error guardando puntaje:', error);
-        }
-      });
   }
 
   onInputChange(value: any, match: Match, field: 'local' | 'visitante'): void {

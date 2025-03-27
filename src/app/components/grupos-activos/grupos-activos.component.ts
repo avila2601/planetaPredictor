@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { PuntajeService } from '../../services/puntaje.service';
@@ -24,9 +24,10 @@ export class GruposActivosComponent implements OnInit, OnDestroy {
   private posiciones = new Map<string, number>();
   private puntajesPorPolla = new Map<string, number>();
 
-  pollas$: Observable<Polla[]>;
+  pollas$: Observable<Polla[]> = of([]);
   puntajeTotal$: Observable<number>;
   user$: Observable<User | null>;
+  currentUserId: string | null = null;
   modalAbierto = false;
   mostrarPronostico = false;
   mostrarPosiciones = false;
@@ -47,11 +48,20 @@ export class GruposActivosComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(user => {
       if (user) {
+        this.currentUserId = user.id;
         this.cargarPollasUsuario(user.id);
         this.cargarPuntajeUsuario(user.id);
         this.loadPositions();
       }
     });
+  }
+
+  hasAdminRights(pollas: Polla[]): boolean {
+    return pollas.some(polla => this.isPollaAdmin(polla));
+  }
+
+  isPollaAdmin(polla: Polla): boolean {
+    return polla.adminId === this.currentUserId;
   }
 
   private cargarPuntajeUsuario(userId: string): void {
