@@ -7,7 +7,7 @@
       "password": "12",
       "pollas": [
         "1743031058845",
-        "1743034817528"
+        "1743038619347"
       ],
       "puntaje": 0
     },
@@ -18,7 +18,7 @@
       "password": "12",
       "pollas": [
         "1743031058845",
-        "1743034817528"
+        "1743038619347"
       ],
       "puntaje": 0
     },
@@ -29,7 +29,7 @@
       "password": "12",
       "pollas": [
         "1743031058845",
-        "1743034817528"
+        "1743038619347"
       ],
       "puntaje": 0
     }
@@ -52,20 +52,20 @@
       "inviteCode": "gyb7nf8rskm"
     },
     {
-      "id": "1743034817528",
-      "name": "Europa league",
-      "torneo": "Europa League 2024/25",
-      "leagueId": 4777,
-      "leagueShortcut": "uel",
+      "id": "1743038619347",
+      "name": "Bundesliga",
+      "torneo": "1. Fußball-Bundesliga 2024/2025",
+      "leagueId": 4741,
+      "leagueShortcut": "bl1",
       "leagueSeason": "2024",
       "adminId": "1743030939405",
       "participants": [
         "1743030939405",
-        "1743030965969",
-        "1743030986310"
+        "1743030986310",
+        "1743030965969"
       ],
       "notes": "70% 30%",
-      "inviteCode": "ocf6qwa7p"
+      "inviteCode": "fwbdx2rgh8u"
     }
   ],
   "predictions": [
@@ -106,10 +106,10 @@
       "equipoVisitante": "Dinamo Zagreb",
       "horario": "2024-09-17T19:00:00Z",
       "pronosticoLocal": 3,
-      "pronosticoVisitante": 1,
-      "pronosticoGuardado": "3 - 1",
+      "pronosticoVisitante": 2,
+      "pronosticoGuardado": "3 - 2",
       "resultadoFinal": "9 - 2",
-      "puntos": 5
+      "puntos": 7
     },
     {
       "id": "1743031172120",
@@ -124,20 +124,6 @@
       "pronosticoGuardado": "3 - 1",
       "resultadoFinal": "3 - 1",
       "puntos": 10
-    },
-    {
-      "id": "1743031175608",
-      "userId": "1743030939405",
-      "pollaId": "1743031058845",
-      "matchId": "74119",
-      "equipoLocal": "BSC Young Boys",
-      "equipoVisitante": "Aston Villa",
-      "horario": "2024-09-17T16:45:00Z",
-      "pronosticoLocal": 0,
-      "pronosticoVisitante": 0,
-      "pronosticoGuardado": "0 - 0",
-      "resultadoFinal": "0 - 3",
-      "puntos": 2
     },
     {
       "id": "1743031214729",
@@ -168,27 +154,69 @@
       "puntos": 7
     },
     {
-      "id": "1743031223638",
-      "userId": "1743030986310",
-      "pollaId": "1743031058845",
-      "matchId": "74120",
-      "equipoLocal": "FC Bayern München",
-      "equipoVisitante": "Dinamo Zagreb",
-      "horario": "2024-09-17T19:00:00Z",
-      "pronosticoLocal": 2,
-      "pronosticoVisitante": 0,
-      "pronosticoGuardado": "2 - 0",
-      "resultadoFinal": "9 - 2",
-      "puntos": 5
+      "id": "1743038635986",
+      "userId": "1743030939405",
+      "pollaId": "1743038619347",
+      "matchId": "72214",
+      "equipoLocal": "Borussia Mönchengladbach",
+      "equipoVisitante": "Bayer Leverkusen",
+      "horario": "2024-08-23T18:30:00Z",
+      "pronosticoLocal": 1,
+      "pronosticoVisitante": 2,
+      "pronosticoGuardado": "1 - 2",
+      "resultadoFinal": "2 - 3",
+      "puntos": 6
     },
     {
-      "id": "1743031228734",
+      "id": "1743039664241",
       "userId": "1743030986310",
-      "pollaId": "1743031058845",
-      "matchId": "74121",
-      "equipoLocal": "Real Madrid",
+      "pollaId": "1743038619347",
+      "matchId": "72214",
+      "equipoLocal": "Borussia Mönchengladbach",
+      "equipoVisitante": "Bayer Leverkusen",
+      "horario": "2024-08-23T18:30:00Z",
+      "pronosticoLocal": 1,
+      "pronosticoVisitante": 2,
+      "pronosticoGuardado": "1 - 2",
+      "resultadoFinal": "2 - 3",
+      "puntos": 6
+    },
+    {
+      "id": "1743039667967",
+      "userId": "1743030986310",
+      "pollaId": "1743038619347",
+      "matchId": "72215",
+      "equipoLocal": "RB Leipzig",
+      "equipoVisitante": "VfL Bochum",
+      "horario": "2024-08-24T13:30:00Z",
+      "pronosticoLocal": 1,
+      "pronosticoVisitante": 0,
+      "pronosticoGuardado": "1 - 0",
+      "resultadoFinal": "1 - 0",
+      "puntos": 10
+    },
+    {
+      "id": "1743039680382",
+      "userId": "1743030986310",
+      "pollaId": "1743038619347",
+      "matchId": "72217",
+      "equipoLocal": "TSG 1899 Hoffenheim",
+      "equipoVisitante": "Holstein Kiel",
+      "horario": "2024-08-24T13:30:00Z",
+      "pronosticoLocal": 2,
+      "pronosticoVisitante": 1,
+      "pronosticoGuardado": "2 - 1",
+      "resultadoFinal": "3 - 2",
+      "puntos": 6
+    },
+    {
+      "id": "1743039680388",
+      "userId": "1743030986310",
+      "pollaId": "1743038619347",
+      "matchId": "72218",
+      "equipoLocal": "SC Freiburg",
       "equipoVisitante": "VfB Stuttgart",
-      "horario": "2024-09-17T19:00:00Z",
+      "horario": "2024-08-24T13:30:00Z",
       "pronosticoLocal": 2,
       "pronosticoVisitante": 1,
       "pronosticoGuardado": "2 - 1",
@@ -196,32 +224,18 @@
       "puntos": 7
     },
     {
-      "id": "1743033727857",
-      "userId": "1743030986310",
-      "pollaId": "1743031058845",
-      "matchId": "74122",
-      "equipoLocal": "AC Mailand",
-      "equipoVisitante": "FC Liverpool",
-      "horario": "2024-09-17T19:00:00Z",
-      "pronosticoLocal": 1,
-      "pronosticoVisitante": 3,
-      "pronosticoGuardado": "1 - 3",
-      "resultadoFinal": "1 - 3",
-      "puntos": 10
-    },
-    {
-      "id": "1743033727858",
-      "userId": "1743030986310",
-      "pollaId": "1743031058845",
-      "matchId": "74123",
-      "equipoLocal": "Sporting Lissabon",
-      "equipoVisitante": "OSC Lille",
-      "horario": "2024-09-17T19:00:00Z",
+      "id": "1743041521991",
+      "userId": "1743030965969",
+      "pollaId": "1743038619347",
+      "matchId": "72214",
+      "equipoLocal": "Borussia Mönchengladbach",
+      "equipoVisitante": "Bayer Leverkusen",
+      "horario": "2024-08-23T18:30:00Z",
       "pronosticoLocal": 2,
       "pronosticoVisitante": 0,
       "pronosticoGuardado": "2 - 0",
-      "resultadoFinal": "2 - 0",
-      "puntos": 10
+      "resultadoFinal": "2 - 3",
+      "puntos": 2
     }
   ],
   "puntajes": [
@@ -229,73 +243,37 @@
       "id": "1743031058845_1743030965969_1743031058855",
       "userId": "1743030965969",
       "pollaId": "1743031058845",
-      "puntajeTotal": 17
-    },
-    {
-      "id": "1743031058845_1743030965969_1743031162564",
-      "userId": "1743030965969",
-      "pollaId": "1743031058845",
-      "puntajeTotal": 0
+      "puntajeTotal": 19
     },
     {
       "id": "1743031058845_1743030939405_1743031162564",
       "userId": "1743030939405",
       "pollaId": "1743031058845",
-      "puntajeTotal": 12
-    },
-    {
-      "id": "1743031058845_1743030965969_1743031207018",
-      "userId": "1743030965969",
-      "pollaId": "1743031058845",
-      "puntajeTotal": 0
-    },
-    {
-      "id": "1743031058845_1743030939405_1743031207018",
-      "userId": "1743030939405",
-      "pollaId": "1743031058845",
-      "puntajeTotal": 0
+      "puntajeTotal": 10
     },
     {
       "id": "1743031058845_1743030986310_1743031207018",
       "userId": "1743030986310",
       "pollaId": "1743031058845",
-      "puntajeTotal": 46
+      "puntajeTotal": 14
     },
     {
-      "id": "1743034817528_1743030939405_1743034817536",
+      "id": "1743038619347_1743030939405_1743038619359",
       "userId": "1743030939405",
-      "pollaId": "1743034817528",
-      "puntajeTotal": 0
+      "pollaId": "1743038619347",
+      "puntajeTotal": 6
     },
     {
-      "id": "1743034817528_1743030939405_1743035017587",
-      "userId": "1743030939405",
-      "pollaId": "1743034817528",
-      "puntajeTotal": 0
-    },
-    {
-      "id": "1743034817528_1743030965969_1743035017587",
-      "userId": "1743030965969",
-      "pollaId": "1743034817528",
-      "puntajeTotal": 0
-    },
-    {
-      "id": "1743034817528_1743030939405_1743035029879",
-      "userId": "1743030939405",
-      "pollaId": "1743034817528",
-      "puntajeTotal": 0
-    },
-    {
-      "id": "1743034817528_1743030965969_1743035029879",
-      "userId": "1743030965969",
-      "pollaId": "1743034817528",
-      "puntajeTotal": 0
-    },
-    {
-      "id": "1743034817528_1743030986310_1743035029879",
+      "id": "1743038619347_1743030986310_1743039645702",
       "userId": "1743030986310",
-      "pollaId": "1743034817528",
-      "puntajeTotal": 0
+      "pollaId": "1743038619347",
+      "puntajeTotal": 29
+    },
+    {
+      "id": "1743038619347_1743030965969_1743039720867",
+      "userId": "1743030965969",
+      "pollaId": "1743038619347",
+      "puntajeTotal": 2
     }
   ]
 }

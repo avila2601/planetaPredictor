@@ -49,7 +49,7 @@ export class PronosticosComponent implements OnInit, OnDestroy {
   }
 
   private initializeComponent(): void {
-    this.authService.getLoggedUser()
+    this.authService.user$
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (user) => {

@@ -167,7 +167,6 @@ crearPolla(nombre: string, torneo: Partial<Polla>, notas: string): Observable<Po
         throw new Error('Usuario no autenticado');
       }
 
-      // Generate invite code during creation
       const inviteCode = Math.random().toString(36).substring(2, 15);
 
       const nuevaPolla: Polla = {
@@ -180,35 +179,24 @@ crearPolla(nombre: string, torneo: Partial<Polla>, notas: string): Observable<Po
         adminId: user.id,
         participants: [user.id],
         notes: notas,
-        inviteCode // Include invite code in new polla
+        inviteCode
       };
 
-      // 1. Create the polla
       return this.http.post<Polla>(this.apiUrl, nuevaPolla).pipe(
         switchMap(polla => {
-          // 2. Update user's pollas array
           const updatedUser = {
             ...user,
             pollas: [...(user.pollas || []), polla.id!]
           };
 
-          // 3. Create initial puntaje for the creator
-          const initialPuntaje = {
-            id: `${polla.id}_${user.id}_${Date.now()}`,
-            userId: user.id,
-            pollaId: polla.id!,
-            puntajeTotal: 0
-          };
-
-          // 4. Execute all updates in parallel
+          // Use inicializarPuntajeParaNuevoMiembro instead of inicializarPuntajesParaPolla
           return forkJoin({
             polla: this.http.patch<Polla>(`${this.apiUrl}/${polla.id}`, polla),
             user: this.authService.updateUser(updatedUser),
-            puntaje: this.puntajeService.inicializarPuntajesParaPolla(polla)
+            puntaje: this.puntajeService.inicializarPuntajeParaNuevoMiembro(polla.id!, user.id)
           }).pipe(
             map(() => polla),
             tap(() => {
-              // Update local BehaviorSubject
               const currentPollas = this.pollas$.getValue();
               this.pollas$.next([...currentPollas, polla]);
               console.log('✅ Polla creada con link de invitación:', this.getInviteLink(polla));
@@ -279,6 +267,8 @@ crearPolla(nombre: string, torneo: Partial<Polla>, notas: string): Observable<Po
   }
 
   addParticipant(pollaId: string, userId: string): Observable<Polla> {
+    console.log('🔄 Añadiendo participante a polla:', { pollaId, userId });
+
     return forkJoin({
       polla: this.getPollaById(pollaId),
       user: this.authService.getUserById(userId)
@@ -300,29 +290,34 @@ crearPolla(nombre: string, torneo: Partial<Polla>, notas: string): Observable<Po
           pollas: [...(user.pollas || []), pollaId]
         };
 
-        // Create initial puntaje for new participant
-        const initialPuntaje = {
-          id: `${pollaId}_${userId}_${Date.now()}`,
-          userId,
-          pollaId,
-          puntajeTotal: 0
-        };
-
-        // Execute all updates
+        // Execute updates
         return forkJoin({
           polla: this.http.patch<Polla>(`${this.apiUrl}/${pollaId}`, updatedPolla),
           user: this.authService.updateUser(updatedUser),
-          puntaje: this.puntajeService.inicializarPuntajesParaPolla(updatedPolla)
+          puntaje: this.puntajeService.inicializarPuntajeParaNuevoMiembro(pollaId, userId)
         }).pipe(
           map(() => updatedPolla),
           tap(() => {
-            // Update local state
             const currentPollas = this.pollas$.getValue();
-            this.pollas$.next([...currentPollas, updatedPolla]);
+            const pollaIndex = currentPollas.findIndex(p => p.id === pollaId);
+
+            if (pollaIndex !== -1) {
+              // Update existing polla
+              const updatedPollas = [...currentPollas];
+              updatedPollas[pollaIndex] = updatedPolla;
+              this.pollas$.next(updatedPollas);
+            } else {
+              // Add new polla
+              this.pollas$.next([...currentPollas, updatedPolla]);
+            }
+            console.log('✅ Participante añadido exitosamente');
+          }),
+          catchError(error => {
+            console.error('❌ Error añadiendo participante:', error);
+            return this.handleError(error);
           })
         );
-      }),
-      catchError(this.handleError)
+      })
     );
   }
 

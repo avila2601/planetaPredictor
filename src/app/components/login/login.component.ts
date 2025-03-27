@@ -60,6 +60,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
+
+
   logout() {
     this.authService.logout();
     this.usuario = '';
