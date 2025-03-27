@@ -1,5 +1,5 @@
 <div class="container">
-<app-login></app-login>
+  <app-login *ngIf="!isRegistroRoute"></app-login>
 <app-nav-bar></app-nav-bar>
 <router-outlet></router-outlet>
 </div>

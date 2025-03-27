@@ -1,54 +1,116 @@
+@import '../../../styles.scss';
+
 .registro-container {
-  background-color: white;
+  background-color: $white;
   text-align: center;
-  width: 50%;
-  margin: 30px auto;
-  padding: 20px;
+  border: 1px solid $success;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 90%;
+  max-width: 500px;
+  margin: 20px auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid #2a7a2a;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  @include mobile {
+    width: 100%;
+    padding: 20px 15px;
+    margin: 0 auto;
+    border: none;
+    border-radius: 0;
+  }
+
+  @include tablet {
+    width: 80%;
+    padding: 25px;
+    margin: 20px auto;
+  }
 
   h2 {
-    color: #5a4bac;
-    margin-bottom: 15px;
+    color: $primary;
+    margin-bottom: 20px;
+    font-size: $font-size-xlarge;
+
+    @include mobile {
+      font-size: $font-size-large;
+      margin-bottom: 15px;
+    }
   }
 
   input {
-    display: block;
-    width: 80%;
-    max-width: 300px;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #2a7a2a;
+    width: 100%;
+    max-width: 400px;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid $gray;
     border-radius: 4px;
-    font-size: 16px;
+    font-size: $font-size-base;
+    transition: border-color 0.3s ease;
+
+    @include mobile {
+      max-width: 100%;
+      padding: 10px;
+      font-size: $font-size-small;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 2px rgba($primary, 0.1);
+    }
   }
 
   button {
-    background: linear-gradient(to bottom, #5a4bac, #3f2d9b);
-    color: white;
-    padding: 10px 15px;
-    margin: 15px;
+    background: linear-gradient(to bottom, $primary, $primary-dark);
+    color: $white;
+    padding: 12px 24px;
+    margin: 20px 0;
     border: none;
-    cursor: pointer;
     border-radius: 5px;
-    font-size: 16px;
-    transition: background 0.3s ease-in-out;
+    cursor: pointer;
+    font-size: $font-size-base;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    width: auto;
+    min-width: 200px;
+
+    @include mobile {
+      width: 100%;
+      margin: 15px 0;
+      padding: 12px;
+      font-size: $font-size-base;
+    }
 
     &:hover {
-      background: linear-gradient(to bottom, #5a4bac, #140a47);
+      background: linear-gradient(to bottom, $primary, darken($primary-dark, 10%));
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
     }
   }
 
   .error {
-    color: red;
-    font-size: 14px;
-  }
-}
+    color: #dc3545;
+    font-size: $font-size-small;
+    margin: 5px 0;
+    padding: 5px;
+    width: 100%;
+    max-width: 400px;
+    background-color: rgba(#dc3545, 0.1);
+    border-radius: 4px;
 
-.success {
-  color: green;
+    @include mobile {
+      font-size: 12px;
+      padding: 4px;
+    }
+  }
+
+  .success {
+    color: $success;
+    background-color: rgba($success, 0.1);
+  }
 }
