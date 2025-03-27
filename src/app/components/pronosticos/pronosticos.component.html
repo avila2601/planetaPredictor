@@ -1,6 +1,9 @@
 <div class="tabla-container">
-  <div class="titulo-tabla">Ingresar pronósticos</div>
-  <button class="boton-regresar" (click)="regresar()">Regresar</button>
+  <div class="header-container">
+    <div class="titulo-tabla">Ingresar pronósticos</div>
+    <button class="boton-regresar" (click)="regresar()">Regresar</button>
+  </div>
+
   <table>
     <tr>
       <th>Horario</th>
@@ -11,7 +14,7 @@
       <th>Resultado</th>
       <th>Puntaje</th>
     </tr>
-    <tr *ngFor="let match of matches">
+    <tr *ngFor="let match of paginatedMatches">
       <td>{{ match.matchDateTimeUTC | date:'dd MMM - HH:mm' }}</td>
       <td>
         <img [src]="match.team1.teamIconUrl" alt="{{ match.team1.teamName }}" class="icono-equipo">
@@ -34,8 +37,8 @@
                min="0"
                (ngModelChange)="onInputChange($event, match, 'visitante')">
         <button class="boton-guardar" (click)="guardarYProcesar(match)">Guardar</button>
-    </td>
-    <td>{{ match.pronosticoGuardado || '-' }}</td>
+      </td>
+      <td>{{ match.pronosticoGuardado || '-' }}</td>
       <td>
         <ng-container *ngIf="match.matchResults?.length; else sinResultado">
           {{ match.matchResults[1].pointsTeam1 }} - {{ match.matchResults[1].pointsTeam2 }}
@@ -54,7 +57,31 @@
       <td class="puntaje-total-numero">{{ puntajeTotal !== undefined ? puntajeTotal : '-' }}</td>
     </tr>
   </table>
+
+  <!-- Pagination controls -->
+  <div class="pagination-container" *ngIf="pages.length > 1">
+    <div class="pagination">
+      <a class="page-link"
+         [class.disabled]="currentPage === 1"
+         (click)="changePage(currentPage - 1)">
+        ◀ Anterior
+      </a>
+
+      <ng-container *ngFor="let page of pages">
+        <a class="page-link"
+           [class.active]="page === currentPage"
+           (click)="changePage(page)">
+          {{ page }}
+        </a>
+      </ng-container>
+
+      <a class="page-link"
+         [class.disabled]="currentPage === getTotalPages()"
+         (click)="changePage(currentPage + 1)">
+        Siguiente ▶
+      </a>
+    </div>
+  </div>
+
   <button class="boton-regresar" (click)="regresar()">Regresar</button>
 </div>
-
-

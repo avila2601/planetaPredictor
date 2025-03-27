@@ -1,19 +1,13 @@
 .tabla-container {
-  margin: 30px auto;
+  margin: 15px auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: white;
-  padding: 20px;
+  padding: 15px 20px 5px 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 1px solid #2a7a2a;
-}
-
-.titulo-tabla {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
 }
 
 table {
@@ -23,7 +17,7 @@ table {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: 0;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 th, td {
@@ -72,7 +66,7 @@ input {
 }
 
 .boton-regresar {
-  align-self: flex-end;
+  margin-left: auto;       // Add this line
   margin-bottom: 10px;
   padding: 8px;
 }
@@ -98,3 +92,65 @@ input {
   font-size: 18px;
   font-weight: bold;
 }
+
+// ... existing styles ...
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin: 5px 0;
+}
+
+.pagination {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+
+
+  .page-link {
+    background: linear-gradient(to bottom, #5a4bac, #2f1f80);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    font-size: 12px;
+    text-decoration: none;
+
+    &:hover {
+      background: linear-gradient(to bottom, #5a4bac, #140a47);
+    }
+
+    &.active {
+      background: linear-gradient(to bottom, #5a4bac, #140a47);
+    }
+
+    &.disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+      opacity: 0.7;
+
+      &:hover {
+        background: #cccccc;
+      }
+    }
+  }
+}
+
+.header-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.titulo-tabla {
+  font-size: 24px;
+  font-weight: bold;
+  flex-grow: 1;
+  text-align: center;
+}
+
+

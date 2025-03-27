@@ -25,6 +25,9 @@ export class PronosticosComponent implements OnInit, OnDestroy {
   userId: string | null = null;
   pollaSeleccionada$: Observable<Polla | null>;
   isSaving = false;
+  pageSize = 30;
+  currentPage = 1;
+  pages: number[] = [];
 
   private destroy$ = new Subject<void>();
 
@@ -46,6 +49,27 @@ export class PronosticosComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  get paginatedMatches(): Match[] {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.matches.slice(startIndex, endIndex);
+  }
+
+  changePage(page: number): void {
+    if (page >= 1 && page <= this.getTotalPages()) {
+      this.currentPage = page;
+      window.scrollTo(0, 0); // Scroll to top when changing page
+    }
+  }
+
+  getTotalPages(): number {
+    return Math.ceil(this.matches.length / this.pageSize);
+  }
+
+  updatePagesArray(): void {
+    this.pages = Array.from({length: this.getTotalPages()}, (_, i) => i + 1);
   }
 
   private initializeComponent(): void {
@@ -135,6 +159,7 @@ export class PronosticosComponent implements OnInit, OnDestroy {
           console.log('📊 Cargando predicciones:', predictions);
           this.updateMatchesWithPredictions(predictions);
           this.calcularPuntajeTotal();
+          this.updatePagesArray(); // Add this line
         },
         error: (error) => console.error("❌ Error cargando predicciones:", error)
       });
