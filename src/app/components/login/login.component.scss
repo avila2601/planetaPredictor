@@ -1,58 +1,124 @@
+@import '../../../styles.scss';
 
 .login-container, .dashboard {
-  background-color: white;
+  background-color: $white;
   text-align: center;
-  width: 50%;
-  margin: auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: center; /* Centra el texto */
-  align-items: center;
-  border: 1px solid #2a7a2a;
-  border-radius: 8px;
+  border: 1px solid $success;
+  border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  margin: 10px auto;
+  box-sizing: border-box;
+
+  @include mobile {
+    width: 95%;
+    max-width: 500px;
+    padding: 2px 5px;
+    margin: 5px auto 0;
+    border: none;
+    border-radius: 5px;
+  }
+
+  @include tablet {
+    width: 80%;
+    max-width: 500px;
+    padding: 10px 5px;
+    margin: 10px auto;
+  }
+
+  @include desktop {
+    width: 50%;
+    max-width: 500px;
+    padding: 10px 5px;
+    margin: 10px auto;
+  }
 }
 
 input {
-  display: block;
-  width: 25%;
-  max-width: 150px;
+  width: 100%;
+  max-width: 300px;
   padding: 10px;
-  margin: 10px;
-  border: 1px solid #2a7a2a;
+  margin: 10px auto;
+  border: 1px solid $success;
   border-radius: 4px;
+
+  @include mobile {
+    max-width: 90%;
+  }
 }
 
 button {
-  background: linear-gradient(to bottom, #5a4bac, #3f2d9b);
-  color: white;
-  padding: 10px 15px;
-  margin: 0 15px;
+  background: linear-gradient(to bottom, $primary, $primary-dark);
+  color: $white;
   border: none;
   cursor: pointer;
   border-radius: 5px;
-}
+  padding: 8px 16px;
 
-button:hover {
-  background: linear-gradient(to bottom, #5a4bac, #140a47);
+
+  @include mobile {
+    justify-content: space-between;
+    margin: 10px 0;
+  }
+
+  &:hover {
+    background: linear-gradient(to bottom, $primary, darken($primary-dark, 10%));
+  }
 }
 
 .error {
   color: red;
-  font-size: 14px;
+  font-size: $font-size-small;
+  margin: 5px 0;
 }
 
 .forgot-password {
-  margin-top: 5px;
+  margin: 10px;
   text-align: center;
   cursor: pointer;
+  width: 100%;
+
+  @include mobile {
+    font-size: 14px;
+  }
 
   a {
     text-decoration: none;
     font-weight: bold;
+    color: $primary;
 
     &:hover {
       text-decoration: underline;
+      color: $primary-dark;
     }
   }
 }
+
+.welcome-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+
+  button {
+      padding: 5px;
+      white-space: nowrap;
+  }
+
+  @include mobile {
+      flex-direction: row;
+      text-align: center;
+
+      button {
+          width: 40%;
+      }
+  }
+}
+
+

@@ -17,7 +17,9 @@
 
   <!-- Mensaje de bienvenida y botón de logout -->
   <div class="dashboard" *ngIf="isAuthenticated">
-    <h2>Bienvenid&#64;, {{ usuario }}</h2>
-    <button (click)="logout()">Cerrar Sesión</button>
-  </div>
+    <div class="welcome-section">
+        <h2>Bienvenid&#64;, {{ usuario }}</h2>
+        <button (click)="logout()">Cerrar Sesión</button>
+    </div>
+</div>
 </div>
