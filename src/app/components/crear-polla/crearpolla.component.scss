@@ -1,149 +1,157 @@
+@import '../../../styles.scss';
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .modal-content {
   background: white;
-  padding: 20px;
+  width: 90%;
+  max-width: 500px;
   border-radius: 8px;
-  width: 50%;
-}
-
-/* Encabezado del modal */
-.modal-header {
-  display: flex;
-  justify-content: center; /* Centra el contenido */
-  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   position: relative;
+
+  @include mobile {
+    width: 95%;
+    margin: 10px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
 }
 
-.modal-header h2 {
-  text-align: center;
-  flex-grow: 1;
-  font-size: 24px;
-  font-weight: bold;
-}
+.modal-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid $gray;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-/* Botón de cerrar */
-.cerrar-modal {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-/* Barra de navegación */
-nav {
-  background: linear-gradient(to bottom, #5a4bac, #090130);
-  padding: 10px 0;
-  margin: 10px auto 0;
-  border-radius: 5px;
-
-  ul {
-    list-style: none;
-    display: flex;
-    justify-content: space-around;
-    padding: 0;
+  h2 {
     margin: 0;
+    color: $primary;
+    font-size: $font-size-large;
 
-    li {
-      a {
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
-        padding: 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background 0.3s ease-in-out;
-
-        &:hover {
-          background-color: rgba(255, 255, 255, 0.2);
-        }
-      }
+    @include mobile {
+      font-size: $font-size-medium;
     }
   }
 }
 
-/* Cuerpo del modal */
-.modal-body {
-  min-height: 150px;
-}
-
-/* Pie del modal */
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-}
-
-/* Botón Guardar con los mismos estilos que "Crear Polla" */
-.boton-guardar {
-  background: linear-gradient(to bottom, #5a4bac, #2f1f80);
-  color: white;
+.cerrar-modal {
+  background: none;
   border: none;
-  padding: 10px 10px;
-  border-radius: 5px;
+  font-size: 20px;
   cursor: pointer;
-  transition: background 0.3s ease-in-out;
-  font-size: 14px;
-  display: block;
-  margin-left: auto; 
+  color: $gray;
+  padding: 5px;
 
   &:hover {
-    background: linear-gradient(to bottom, #5a4bac, #140a47);
+    color: $primary-dark;
   }
 }
 
-/* Estilos del formulario Info General */
-.formulario-info-general {
-  background-color: white;
-  color: black;
+.modal-body {
   padding: 20px;
-  border-radius: 8px;
+
+  @include mobile {
+    padding: 15px;
+  }
+}
+
+.formulario-info-general {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
+
+  @include mobile {
+    gap: 15px;
+  }
 }
 
-/* Ajuste de los campos */
 .campo {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  gap: 8px;
+
+  label {
+    font-weight: 500;
+    color: $primary-dark;
+    font-size: $font-size-base;
+  }
+
+  input, select, textarea {
+    padding: 10px;
+    border: 1px solid $gray;
+    border-radius: 4px;
+    font-size: $font-size-base;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 2px rgba($primary, 0.1);
+    }
+
+    @include mobile {
+      padding: 8px;
+      font-size: $font-size-small;
+    }
+  }
+
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+
+    @include mobile {
+      min-height: 80px;
+    }
+  }
 }
 
-/* Etiquetas */
-.campo label {
-  font-weight: bold;
-  width: 180px; /* Tamaño fijo para alinear correctamente */
-  text-align: right;
+.modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid $gray;
+  display: flex;
+  justify-content: flex-end;
+
+  @include mobile {
+    padding: 10px 15px;
+  }
 }
 
-/* Entradas de texto y select */
-.campo input,
-.campo select,
-.campo textarea {
-  flex-grow: 1;
-  padding: 8px;
-  border: 1px solid #ccc;
+.boton-guardar {
+  background: linear-gradient(to bottom, $primary, $primary-dark);
+  color: white;
+  border: none;
+  padding: 10px 20px;
   border-radius: 5px;
-  font-size: 14px;
-}
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: $font-size-base;
 
-/* Área de texto */
-.campo textarea {
-  resize: vertical;
-  height: 80px;
+  @include mobile {
+    width: 100%;
+    padding: 12px;
+    font-size: $font-size-small;
+  }
+
+  &:hover {
+    background: linear-gradient(to bottom, $primary, darken($primary-dark, 10%));
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    background: $gray;
+    cursor: not-allowed;
+  }
 }

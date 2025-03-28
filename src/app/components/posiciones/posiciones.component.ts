@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { PollaService } from '../../services/polla.service';
 import { AuthService } from '../../services/auth.service';
 import { PuntajeService } from '../../services/puntaje.service';
 import { Ranking } from '../../models/ranking.model';
+import { Polla } from '../../models/polla.model';
 
 @Component({
   selector: 'app-posiciones',
@@ -20,14 +21,15 @@ export class PosicionesComponent implements OnInit, OnDestroy {
   loading = false;
   currentUserId: string | null = null;
   pollaId: string | null = null;
+  pollaSeleccionada$: Observable<Polla | null>;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private pollaService: PollaService,
     private authService: AuthService,
-    private puntajeService: PuntajeService
-  ) {}
+    private puntajeService: PuntajeService,
+  ) {this.pollaSeleccionada$ = this.pollaService.pollaSeleccionada$;}
 
   ngOnInit(): void {
     this.pollaId = this.route.snapshot.paramMap.get('id');

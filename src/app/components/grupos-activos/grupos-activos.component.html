@@ -1,33 +1,41 @@
 <div class="tabla-container">
   <ng-container *ngIf="pollas$ | async as pollas">
-    <table>
-      <tr>
-        <th>Nombre</th>
-        <th>Torneo</th>
-        <th>Posición</th>
-        <th>Puntaje</th>
-        <th>Pronósticos</th>
-        <th>Tabla de<br>posiciones</th>
-        <th>Administrar</th>
-      </tr>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Torneo</th>
+            <th>Posición</th>
+            <th>Puntaje</th>
+            <th>Pronósticos</th>
+            <th>Tabla de<br>posiciones</th>
+            <th>Administrar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let polla of pollas">
+            <td data-label="Nombre">{{ polla.name }}</td>
+            <td data-label="Torneo">{{ polla.torneo }}</td>
+            <td data-label="Posición" class="posicion-cell">{{ getPosicion(polla.id) }}</td>
+            <td data-label="Puntaje">{{ getPuntajePolla(polla.id) }}</td>
+            <td data-label="Pronósticos">
+              <button class="action-button" (click)="irAPronosticos(polla)" aria-label="Ver pronósticos">🔮</button>
+            </td>
+            <td data-label="Posiciones">
+              <button class="action-button" (click)="irAPosiciones(polla)" aria-label="Ver posiciones">📈</button>
+            </td>
+            <td data-label="Administrar">
+              <button class="action-button" *ngIf="isPollaAdmin(polla)" (click)="irAAdministrar(polla)" aria-label="Administrar">⚙️</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-      <tr *ngFor="let polla of pollas">
-        <td>{{ polla.name }}</td>
-        <td>{{ polla.torneo }}</td>
-        <td class="posicion-cell">{{ getPosicion(polla.id) }}</td>
-        <td>{{ getPuntajePolla(polla.id) }}</td>
-        <td><a (click)="irAPronosticos(polla)" role="button" aria-label="Ver pronósticos">🔮</a></td>
-        <td><a (click)="irAPosiciones(polla)" role="button" aria-label="Ver posiciones">📈</a></td>
-        <td>
-          <a *ngIf="isPollaAdmin(polla)"
-             (click)="irAAdministrar(polla)"
-             role="button"
-             aria-label="Administrar">⚙️</a>
-        </td>
-      </tr>
-    </table>
-
-    <p *ngIf="pollas.length === 0">No estás registrado en ninguna polla.</p>
+    <p class="empty-message" *ngIf="pollas.length === 0">
+      No estás registrado en ninguna polla.
+    </p>
   </ng-container>
 
   <div class="crear-polla-container">
@@ -38,12 +46,10 @@
       CREAR POLLA
     </button>
   </div>
-
-  <app-crear-polla
-    *ngIf="modalAbierto"
-    (modalCerrado)="onModalCerrado()">
-  </app-crear-polla>
 </div>
 
-<app-pronosticos *ngIf="mostrarPronostico"></app-pronosticos>
-<app-posiciones *ngIf="mostrarPosiciones"></app-posiciones>
+<app-crear-polla
+  *ngIf="modalAbierto"
+  (modalCerrado)="onModalCerrado()">
+</app-crear-polla>
+

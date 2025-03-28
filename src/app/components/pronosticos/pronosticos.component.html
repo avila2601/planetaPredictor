@@ -1,6 +1,6 @@
 <div class="tabla-container">
   <div class="header-container">
-    <div class="titulo-tabla">Ingresar pronósticos</div>
+    <div class="titulo-tabla">{{ (pollaSeleccionada$ | async)?.name }}</div>
     <button class="boton-regresar" (click)="regresar()">Regresar</button>
   </div>
 

@@ -1,35 +1,104 @@
+@import '../../../styles.scss';
+
 .tabla-container {
-  margin: auto; /* Centra horizontalmente */
+  margin: auto;
   margin-top: 15px;
   display: flex;
-  flex-direction: column; /* Permite que la tabla y el botón se apilen verticalmente */
-  align-items: center; /* Centra los elementos internos */
-  background-color: white; /* Asegura que el fondo sea blanco */
-  padding: 20px; /* Espaciado interno */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-  width: 90%; /* Limita el ancho del contenedor */
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 90%;
+
+  @include mobile {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+  }
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+
+  @include mobile {
+    overflow-x: visible;
+  }
 }
 
 table {
-  width: 100%; /* La tabla ocupará todo el ancho del contenedor */
+  width: 100%;
   border-collapse: separate;
   border-radius: 2px;
-  border: 1px solid #2a7a2a;
-  overflow: hidden;
+  border: 1px solid $success;
   margin: 10px 0;
+
+  @include mobile {
+    border: none;
+
+    thead {
+      display: none;
+    }
+
+    tbody tr {
+      display: block;
+      margin-bottom: 1rem;
+      border: 1px solid $success;
+      border-radius: 4px;
+      background-color: white;
+
+      &:nth-child(even) {
+        background-color: rgba(144, 238, 144, 0.3);
+      }
+
+      &:last-child {
+        margin-bottom: 0px;
+      }
+    }
+
+    td {
+      display: block;
+      text-align: right;
+      padding: 8px;
+      border-bottom: 1px dotted $success;
+      color: $black;
+
+      &:last-child {
+        border-bottom: none;
+        margin-bottom: 15px;
+      }
+
+      &::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        color: $success;
+      }
+    }
+  }
+
+  @include tablet {
+    tbody tr {
+      &:nth-child(even) {
+        background-color: rgba(144, 238, 144, 0.3);
+      }
+    }
+  }
 }
 
 th, td {
   padding: 10px;
   text-align: center;
-  border-bottom: 1px dotted #2a7a2a;
-  border-right: 1px dotted #2a7a2a;
-  border-left: 1px dotted #2a7a2a;
+  border-bottom: 1px dotted $success;
+  border-right: 1px dotted $success;
+  border-left: 1px dotted $success;
+  color: $black;
 }
 
 th {
-  background-color: #2a7a2a; /* Verde oscuro para encabezado */
+  background-color: $success;
   color: white;
   font-weight: bold;
 }
@@ -38,43 +107,66 @@ tr:nth-child(even) {
   background-color: rgba(144, 238, 144, 0.3);
 }
 
+.action-button,
 a {
-  text-decoration: none; /* Quita el subrayado */
-  font-size: 20px; /* Aumenta el tamaño del emoji */
-  display: inline-block; /* Evita que se desplace con el texto */
-}
-
-/* Contenedor del botón "CREAR POLLA" */
-.crear-polla-container {
-  display: flex;
-  justify-content: flex-end; /* Alinea a la derecha */
-  width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
-  padding-top: 15px; /* Espaciado superior */
-}
-
-/* Estilos del botón */
-.boton-guardar {
-  background: linear-gradient(to bottom, #5a4bac, #2f1f80);
-  color: white;
-  border: none;
-  padding: 10px 10px;
-  border-radius: 5px;
+  text-decoration: none;
+  font-size: 20px;
+  display: inline-block;
   cursor: pointer;
-  transition: background 0.3s ease-in-out;
-  font-size: 12px;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
 
   &:hover {
-    background: linear-gradient(to bottom, #5a4bac, #140a47);
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+  }
+
+  @include mobile {
+    font-size: 18px;
   }
 }
 
-a {
-  cursor: pointer;
+.crear-polla-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding-top: 15px;
+
+  @include mobile {
+    justify-content: center;
+  }
 }
 
+.boton-guardar {
+  background: linear-gradient(to bottom, $primary, $primary-dark);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  font-size: 14px;
 
+  @include mobile {
+    width: 100%;
+    margin: 0 10px;
+  }
 
+  &:hover {
+    background: linear-gradient(to bottom, $primary, darken($primary-dark, 10%));
+  }
 
+  &:disabled {
+    background: $gray;
+    cursor: not-allowed;
+  }
+}
 
-
-
+.empty-message {
+  text-align: center;
+  padding: 20px;
+  color: $gray;
+  font-style: italic;
+}

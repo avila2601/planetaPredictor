@@ -9,13 +9,12 @@ import { PollaService } from '../../services/polla.service';
 import { Polla } from '../../models/polla.model';
 import { User } from '../../models/user.model';
 import { CrearPollaComponent } from '../crear-polla/crearpolla.component';
-import { PronosticosComponent } from '../pronosticos/pronosticos.component';
-import { PosicionesComponent } from '../posiciones/posiciones.component';
+
 
 @Component({
   selector: 'app-grupos-activos',
   standalone: true,
-  imports: [CommonModule, RouterModule, CrearPollaComponent, PronosticosComponent, PosicionesComponent],
+  imports: [CommonModule, RouterModule, CrearPollaComponent],
   templateUrl: './grupos-activos.component.html',
   styleUrls: ['./grupos-activos.component.scss']
 })

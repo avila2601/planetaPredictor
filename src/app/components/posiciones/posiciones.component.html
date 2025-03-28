@@ -1,7 +1,7 @@
 
   <div *ngIf="!loading && rankings.length > 0" class="tabla-container">
 
-    <div class="titulo-tabla">Tabla de posiciones</div>
+    <div class="titulo-tabla">{{ (pollaSeleccionada$ | async)?.name }}</div>
     <div *ngIf="loading" class="loading">
       <div class="spinner"></div>
       <p>Cargando posiciones...</p>
