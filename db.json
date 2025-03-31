@@ -236,6 +236,34 @@
       "pronosticoGuardado": "2 - 0",
       "resultadoFinal": "2 - 3",
       "puntos": 2
+    },
+    {
+      "id": "1743438178244",
+      "userId": "1743030965969",
+      "pollaId": "1743031058845",
+      "matchId": "74121",
+      "equipoLocal": "Real Madrid",
+      "equipoVisitante": "VfB Stuttgart",
+      "horario": "2024-09-17T19:00:00Z",
+      "pronosticoLocal": 2,
+      "pronosticoVisitante": 1,
+      "pronosticoGuardado": "2 - 1",
+      "resultadoFinal": "3 - 1",
+      "puntos": 7
+    },
+    {
+      "id": "1743438206534",
+      "userId": "1743030965969",
+      "pollaId": "1743038619347",
+      "matchId": "72215",
+      "equipoLocal": "RB Leipzig",
+      "equipoVisitante": "VfL Bochum",
+      "horario": "2024-08-24T13:30:00Z",
+      "pronosticoLocal": 1,
+      "pronosticoVisitante": 0,
+      "pronosticoGuardado": "1 - 0",
+      "resultadoFinal": "1 - 0",
+      "puntos": 10
     }
   ],
   "puntajes": [
@@ -243,7 +271,7 @@
       "id": "1743031058845_1743030965969_1743031058855",
       "userId": "1743030965969",
       "pollaId": "1743031058845",
-      "puntajeTotal": 19
+      "puntajeTotal": 26
     },
     {
       "id": "1743031058845_1743030939405_1743031162564",
@@ -273,7 +301,7 @@
       "id": "1743038619347_1743030965969_1743039720867",
       "userId": "1743030965969",
       "pollaId": "1743038619347",
-      "puntajeTotal": 2
+      "puntajeTotal": 12
     }
   ]
 }

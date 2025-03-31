@@ -10,10 +10,13 @@
   box-sizing: border-box;
 }
 
+@import '../../../styles.scss';
+
 h1 {
   text-align: center;
   font-size: 2.5rem;
   margin-bottom: 20px;
+  color: $primary
 }
 
 h2 {

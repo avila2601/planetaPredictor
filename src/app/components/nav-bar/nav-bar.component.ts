@@ -11,6 +11,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './nav-bar.component.scss'
 })
 export class NavBarComponent implements OnInit {
+  isMenuOpen = false;
   isAuthenticated = false;
 
   constructor(
@@ -26,6 +27,10 @@ export class NavBarComponent implements OnInit {
       this.isAuthenticated = status;
       this.cdRef.detectChanges(); // 🔄 Forzar actualización del navbar si Angular no lo detecta
     });
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 
   logout(): void {

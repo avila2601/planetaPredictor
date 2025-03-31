@@ -1,9 +1,14 @@
 <nav>
-  <ul>
+  <div class="hamburger" (click)="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <ul [class.active]="isMenuOpen">
     <li><a routerLink="/inicio">INICIO</a></li>
     <li><a routerLink="/grupos-activos">GRUPOS ACTIVOS</a></li>
     <li><a routerLink="/perfil">PERFIL</a></li>
-    <li><a routerLink="/info-general">INFO GENERAL</a></li>
+    <li><a routerLink="/reglamento">REGLAS DE JUEGO</a></li>
     <li *ngIf="!isAuthenticated"><a routerLink="/registro" class="registro-link">REGISTRO</a></li>
   </ul>
 </nav>

@@ -3,7 +3,7 @@ import { InicioComponent } from './components/inicio/inicio.component';
 import { GruposActivosComponent } from './components/grupos-activos/grupos-activos.component';
 import { PosicionesComponent } from './components/posiciones/posiciones.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
-import { InfoGeneralComponent } from './components/info-general/info-general.component';
+import { InfoGeneralComponent } from './components/reglamento/reglamento.component';
 import { PronosticosComponent } from './components/pronosticos/pronosticos.component';
 import { AuthGuard } from './guards/auth.guard';
 import { RegistroComponent } from './components/registro/registro.component';
@@ -23,7 +23,7 @@ export const routes: Routes = [
   { path: 'posiciones/:id', component: PosicionesComponent, canActivate: [AuthGuard] },
   { path: 'administrar/:id', component: AdministrarComponent },
   { path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard] },
-  { path: 'info-general', component: InfoGeneralComponent, canActivate: [AuthGuard] },
+  { path: 'reglamento', component: InfoGeneralComponent, canActivate: [AuthGuard] },
   { path: 'recuperar-password', component: RecuperarPasswordComponent },
   { path: 'registro', component: RegistroComponent },
   { path: 'modal', component: CrearPollaComponent },
