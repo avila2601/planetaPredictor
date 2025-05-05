@@ -23,23 +23,16 @@ jobs:
           node-version: "18"
           cache: "npm"
 
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
       - name: Install dependencies
         run: npm ci
 
       - name: Build
         env:
           NODE_OPTIONS: --max_old_space_size=4096
-        run: |
-          npm run build -- --configuration=production
-          cp dist/planeta-predictor/browser/index.html dist/planeta-predictor/browser/404.html
+        run: npm run build -- --configuration=production --base-href=/planetaPredictor/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
@@ -57,5 +50,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
