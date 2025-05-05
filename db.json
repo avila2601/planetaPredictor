@@ -1,135 +1,68 @@
 {
   "users": [
     {
-      "id": "1743030939405",
+      "id": "1743446657043",
       "username": "diego",
-      "email": "diego2601@gmail.com",
+      "email": "d@g.com",
       "password": "12",
       "pollas": [
-        "1743031058845",
-        "1743038619347"
-      ],
-      "puntaje": 0
+        "1743446737285"
+      ]
     },
     {
-      "id": "1743030965969",
-      "username": "adm",
-      "email": "a@g.com",
-      "password": "12",
-      "pollas": [
-        "1743031058845",
-        "1743038619347"
-      ],
-      "puntaje": 0
-    },
-    {
-      "id": "1743030986310",
-      "username": "juanita",
+      "id": "1743446689888",
+      "username": "juani",
       "email": "j@g.com",
       "password": "12",
       "pollas": [
-        "1743031058845",
-        "1743038619347"
-      ],
-      "puntaje": 0
+        "1743446737285"
+      ]
+    },
+    {
+      "id": "1743475615954",
+      "username": "ragui",
+      "email": "r@g.com",
+      "password": "12",
+      "pollas": []
     }
   ],
   "pollas": [
     {
-      "id": "1743031058845",
+      "id": "1743446737285",
       "name": "Champions League",
-      "torneo": "UEFA Champions League",
-      "leagueId": 4778,
-      "leagueShortcut": "ucl24",
+      "torneo": "Champions League 2024/25",
+      "leagueId": 4769,
+      "leagueShortcut": "ucl2024",
       "leagueSeason": "2024",
-      "adminId": "1743030965969",
+      "adminId": "1743446657043",
       "participants": [
-        "1743030965969",
-        "1743030939405",
-        "1743030986310"
+        "1743446657043",
+        "1743446689888"
       ],
-      "notes": "100%",
-      "inviteCode": "gyb7nf8rskm"
-    },
-    {
-      "id": "1743038619347",
-      "name": "Bundesliga",
-      "torneo": "1. Fußball-Bundesliga 2024/2025",
-      "leagueId": 4741,
-      "leagueShortcut": "bl1",
-      "leagueSeason": "2024",
-      "adminId": "1743030939405",
-      "participants": [
-        "1743030939405",
-        "1743030986310",
-        "1743030965969"
-      ],
-      "notes": "70% 30%",
-      "inviteCode": "fwbdx2rgh8u"
+      "notes": "NA",
+      "inviteCode": "lnh1dfmtnm"
     }
   ],
   "predictions": [
     {
-      "id": "1743031076637",
-      "userId": "1743030965969",
-      "pollaId": "1743031058845",
-      "matchId": "74118",
-      "equipoLocal": "Juventus Turin",
-      "equipoVisitante": "PSV Eindhoven",
-      "horario": "2024-09-17T16:45:00Z",
-      "pronosticoLocal": 2,
-      "pronosticoVisitante": 1,
-      "pronosticoGuardado": "2 - 1",
-      "resultadoFinal": "3 - 1",
-      "puntos": 7
-    },
-    {
-      "id": "1743031092835",
-      "userId": "1743030965969",
-      "pollaId": "1743031058845",
-      "matchId": "74119",
+      "id": "1743446754591",
+      "userId": "1743446657043",
+      "pollaId": "1743446737285",
+      "matchId": "74576",
       "equipoLocal": "BSC Young Boys",
       "equipoVisitante": "Aston Villa",
       "horario": "2024-09-17T16:45:00Z",
-      "pronosticoLocal": 1,
+      "pronosticoLocal": 0,
       "pronosticoVisitante": 2,
-      "pronosticoGuardado": "1 - 2",
+      "pronosticoGuardado": "0 - 2",
       "resultadoFinal": "0 - 3",
-      "puntos": 5
-    },
-    {
-      "id": "1743031105435",
-      "userId": "1743030965969",
-      "pollaId": "1743031058845",
-      "matchId": "74120",
-      "equipoLocal": "FC Bayern München",
-      "equipoVisitante": "Dinamo Zagreb",
-      "horario": "2024-09-17T19:00:00Z",
-      "pronosticoLocal": 3,
-      "pronosticoVisitante": 2,
-      "pronosticoGuardado": "3 - 2",
-      "resultadoFinal": "9 - 2",
       "puntos": 7
     },
     {
-      "id": "1743031172120",
-      "userId": "1743030939405",
-      "pollaId": "1743031058845",
-      "matchId": "74118",
-      "equipoLocal": "Juventus Turin",
-      "equipoVisitante": "PSV Eindhoven",
-      "horario": "2024-09-17T16:45:00Z",
-      "pronosticoLocal": 3,
-      "pronosticoVisitante": 1,
-      "pronosticoGuardado": "3 - 1",
-      "resultadoFinal": "3 - 1",
-      "puntos": 10
-    },
-    {
-      "id": "1743031214729",
-      "userId": "1743030986310",
-      "pollaId": "1743031058845",
-      "matchId": "74118",
+      "id": "1743446758592",
+      "userId": "1743446657043",
+      "pollaId": "1743446737285",
+      "matchId": "74577",
       "equipoLocal": "Juventus Turin",
       "equipoVisitante": "PSV Eindhoven",
       "horario": "2024-09-17T16:45:00Z",
@@ -140,168 +73,32 @@
       "puntos": 7
     },
     {
-      "id": "1743031221336",
-      "userId": "1743030986310",
-      "pollaId": "1743031058845",
-      "matchId": "74119",
+      "id": "1743446798668",
+      "userId": "1743446689888",
+      "pollaId": "1743446737285",
+      "matchId": "74576",
       "equipoLocal": "BSC Young Boys",
       "equipoVisitante": "Aston Villa",
       "horario": "2024-09-17T16:45:00Z",
-      "pronosticoLocal": 1,
+      "pronosticoLocal": 0,
       "pronosticoVisitante": 3,
-      "pronosticoGuardado": "1 - 3",
+      "pronosticoGuardado": "0 - 3",
       "resultadoFinal": "0 - 3",
-      "puntos": 7
-    },
-    {
-      "id": "1743038635986",
-      "userId": "1743030939405",
-      "pollaId": "1743038619347",
-      "matchId": "72214",
-      "equipoLocal": "Borussia Mönchengladbach",
-      "equipoVisitante": "Bayer Leverkusen",
-      "horario": "2024-08-23T18:30:00Z",
-      "pronosticoLocal": 1,
-      "pronosticoVisitante": 2,
-      "pronosticoGuardado": "1 - 2",
-      "resultadoFinal": "2 - 3",
-      "puntos": 6
-    },
-    {
-      "id": "1743039664241",
-      "userId": "1743030986310",
-      "pollaId": "1743038619347",
-      "matchId": "72214",
-      "equipoLocal": "Borussia Mönchengladbach",
-      "equipoVisitante": "Bayer Leverkusen",
-      "horario": "2024-08-23T18:30:00Z",
-      "pronosticoLocal": 1,
-      "pronosticoVisitante": 2,
-      "pronosticoGuardado": "1 - 2",
-      "resultadoFinal": "2 - 3",
-      "puntos": 6
-    },
-    {
-      "id": "1743039667967",
-      "userId": "1743030986310",
-      "pollaId": "1743038619347",
-      "matchId": "72215",
-      "equipoLocal": "RB Leipzig",
-      "equipoVisitante": "VfL Bochum",
-      "horario": "2024-08-24T13:30:00Z",
-      "pronosticoLocal": 1,
-      "pronosticoVisitante": 0,
-      "pronosticoGuardado": "1 - 0",
-      "resultadoFinal": "1 - 0",
-      "puntos": 10
-    },
-    {
-      "id": "1743039680382",
-      "userId": "1743030986310",
-      "pollaId": "1743038619347",
-      "matchId": "72217",
-      "equipoLocal": "TSG 1899 Hoffenheim",
-      "equipoVisitante": "Holstein Kiel",
-      "horario": "2024-08-24T13:30:00Z",
-      "pronosticoLocal": 2,
-      "pronosticoVisitante": 1,
-      "pronosticoGuardado": "2 - 1",
-      "resultadoFinal": "3 - 2",
-      "puntos": 6
-    },
-    {
-      "id": "1743039680388",
-      "userId": "1743030986310",
-      "pollaId": "1743038619347",
-      "matchId": "72218",
-      "equipoLocal": "SC Freiburg",
-      "equipoVisitante": "VfB Stuttgart",
-      "horario": "2024-08-24T13:30:00Z",
-      "pronosticoLocal": 2,
-      "pronosticoVisitante": 1,
-      "pronosticoGuardado": "2 - 1",
-      "resultadoFinal": "3 - 1",
-      "puntos": 7
-    },
-    {
-      "id": "1743041521991",
-      "userId": "1743030965969",
-      "pollaId": "1743038619347",
-      "matchId": "72214",
-      "equipoLocal": "Borussia Mönchengladbach",
-      "equipoVisitante": "Bayer Leverkusen",
-      "horario": "2024-08-23T18:30:00Z",
-      "pronosticoLocal": 2,
-      "pronosticoVisitante": 0,
-      "pronosticoGuardado": "2 - 0",
-      "resultadoFinal": "2 - 3",
-      "puntos": 2
-    },
-    {
-      "id": "1743438178244",
-      "userId": "1743030965969",
-      "pollaId": "1743031058845",
-      "matchId": "74121",
-      "equipoLocal": "Real Madrid",
-      "equipoVisitante": "VfB Stuttgart",
-      "horario": "2024-09-17T19:00:00Z",
-      "pronosticoLocal": 2,
-      "pronosticoVisitante": 1,
-      "pronosticoGuardado": "2 - 1",
-      "resultadoFinal": "3 - 1",
-      "puntos": 7
-    },
-    {
-      "id": "1743438206534",
-      "userId": "1743030965969",
-      "pollaId": "1743038619347",
-      "matchId": "72215",
-      "equipoLocal": "RB Leipzig",
-      "equipoVisitante": "VfL Bochum",
-      "horario": "2024-08-24T13:30:00Z",
-      "pronosticoLocal": 1,
-      "pronosticoVisitante": 0,
-      "pronosticoGuardado": "1 - 0",
-      "resultadoFinal": "1 - 0",
       "puntos": 10
     }
   ],
   "puntajes": [
     {
-      "id": "1743031058845_1743030965969_1743031058855",
-      "userId": "1743030965969",
-      "pollaId": "1743031058845",
-      "puntajeTotal": 26
-    },
-    {
-      "id": "1743031058845_1743030939405_1743031162564",
-      "userId": "1743030939405",
-      "pollaId": "1743031058845",
-      "puntajeTotal": 10
-    },
-    {
-      "id": "1743031058845_1743030986310_1743031207018",
-      "userId": "1743030986310",
-      "pollaId": "1743031058845",
+      "id": "1743446737285_1743446657043_1743446737297",
+      "userId": "1743446657043",
+      "pollaId": "1743446737285",
       "puntajeTotal": 14
     },
     {
-      "id": "1743038619347_1743030939405_1743038619359",
-      "userId": "1743030939405",
-      "pollaId": "1743038619347",
-      "puntajeTotal": 6
-    },
-    {
-      "id": "1743038619347_1743030986310_1743039645702",
-      "userId": "1743030986310",
-      "pollaId": "1743038619347",
-      "puntajeTotal": 29
-    },
-    {
-      "id": "1743038619347_1743030965969_1743039720867",
-      "userId": "1743030965969",
-      "pollaId": "1743038619347",
-      "puntajeTotal": 12
+      "id": "1743446737285_1743446689888_1743446785472",
+      "userId": "1743446689888",
+      "pollaId": "1743446737285",
+      "puntajeTotal": 10
     }
   ]
 }

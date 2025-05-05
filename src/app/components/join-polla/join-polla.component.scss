@@ -1,93 +1,101 @@
+@import '../../../styles.scss';
+
+
 .tabla-container {
-  margin: auto;
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: white;
-  padding: 20px;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 15px;
+  background: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 40%;
-  max-width: 600px;
 
-  h2 {
-    color: black;
-    margin: auto;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-}
-
-.polla-info{
-  width: 100%;
-}
-
-table {
-  width: 100%;
-  border-collapse: separate;
-  border-radius: 2px;
-  border: 1px solid #2a7a2a;
-  overflow: hidden;
-  margin: 20px 0;
-
-  th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px dotted #2a7a2a;
+  @media (max-width: 768px) {
+    padding: 10px;
   }
 
-  th {
-    background-color: #2a7a2a;
-    color: white;
-    width: 30%;
+  @media (max-width: 480px) {
+    padding: 8px;
   }
-
-  tr:nth-child(even) {
-    background-color: rgba(144, 238, 144, 0.3);
-  }
-}
-
-.actions {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.boton-guardar {
-  background: linear-gradient(to bottom, #5a4bac, #2f1f80);
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s ease-in-out;
-  font-size: 16px;
-
-  &:hover {
-    background: linear-gradient(to bottom, #5a4bac, #140a47);
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-}
-
-.already-member {
-  color: #2a7a2a;
-  font-weight: bold;
-}
-
-.error-message {
-  color: red;
-  margin: 20px 0;
-  text-align: center;
 }
 
 .loading {
   text-align: center;
-  padding: 20px;
-  color: #666;
+  font-size: 1.2rem;
+  color: #555;
 }
 
+.error-message {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.polla-info {
+  h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    color: $primary-dark;
+    margin-bottom: 20px;
+
+    @media (max-width: 480px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+
+    th, td {
+      text-align: left;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+
+      @media (max-width: 480px) {
+        padding: 8px;
+        font-size: 0.9rem;
+      }
+    }
+
+    th {
+      background-color: #f4f4f4;
+      font-weight: bold;
+    }
+  }
+
+  .actions {
+    text-align: center;
+
+    button {
+      background: linear-gradient(to bottom, #5a4bac, #2f1f80);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      max-width: 200px;
+      transition: background 0.3s ease-in-out;
+
+      &:hover {
+        background: linear-gradient(to bottom, #5a4bac, #140a47);
+      }
+
+      @media (max-width: 480px) {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+      }
+    }
+
+    .already-member {
+      font-size: 1rem;
+      color: #555;
+
+      @media (max-width: 480px) {
+        font-size: 0.9rem;
+      }
+    }
+  }
+}

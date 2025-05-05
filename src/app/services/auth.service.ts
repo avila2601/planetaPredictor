@@ -123,7 +123,6 @@ export class AuthService {
               email,
               password,
               pollas: [],
-              puntaje: 0
             };
 
             return this.http.post<User>(this.API_URL, newUser).pipe(

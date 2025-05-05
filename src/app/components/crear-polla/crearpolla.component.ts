@@ -90,7 +90,6 @@ export class CrearPollaComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe({
       next: () => {
-        console.log("✅ Polla creada correctamente");
         this.cerrarModal(); // Solo llamamos cerrarModal una vez
       },
       error: (error) => {
