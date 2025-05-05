@@ -9,7 +9,7 @@ import { Puntaje } from '../models/puntaje.model';
   providedIn: 'root'
 })
 export class PuntajeService {
-  private readonly API_URL = 'http://localhost:3000/puntajes';
+  private readonly API_URL = 'https://planeta-db.onrender.com/puntajes';
   private puntajesPorPollaSubject = new BehaviorSubject<Map<string, number>>(new Map());
   private puntajeTotalSubject = new BehaviorSubject<number>(0);
 

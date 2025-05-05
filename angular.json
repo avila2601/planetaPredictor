@@ -38,6 +38,7 @@
           },
           "configurations": {
             "production": {
+              "outputPath": "dist/planeta-predictor",
               "budgets": [
                 {
                   "type": "initial",

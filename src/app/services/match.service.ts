@@ -11,7 +11,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class MatchService {
-  private readonly predictionsUrl = 'http://localhost:3000/predictions';
+  private readonly predictionsUrl = 'https://planeta-db.onrender.com/predictions';
   private readonly matchApiUrl = 'https://api.openligadb.de/getmatchdata';
 
   constructor(private http: HttpClient, private authService: AuthService) {}

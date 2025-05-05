@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = 'http://localhost:3000/users';
+  private readonly API_URL = 'https://planeta-db.onrender.com/users';
   private readonly USER_KEY = 'currentUser';
   private authStatus = new BehaviorSubject<User | null>(this.getStoredUser());
   private authInitialized = new BehaviorSubject<boolean>(false);

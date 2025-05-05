@@ -13,7 +13,7 @@ import { PuntajeService } from './puntaje.service';
   providedIn: 'root'
 })
 export class PollaService {
-  private readonly apiUrl = 'http://localhost:3000/pollas';
+  private readonly apiUrl = 'https://planeta-db.onrender.com/pollas';
   private readonly ligaApiUrl = 'https://api.openligadb.de/getavailableleagues';
 
   // Estado de la aplicación
