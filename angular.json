@@ -28,8 +28,10 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
-              }
+                "input": "public",
+                "output": "/"
+              },
+              "src/assets"
             ],
             "styles": [
               "src/styles.scss"
@@ -39,6 +41,7 @@
           "configurations": {
             "production": {
               "outputPath": "dist/planeta-predictor",
+              "baseHref": "/planetaPredictor/",
               "budgets": [
                 {
                   "type": "initial",
@@ -88,8 +91,10 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
-              }
+                "input": "public",
+                "output": "/"
+              },
+              "src/assets"
             ],
             "styles": [
               "src/styles.scss"
