@@ -9,6 +9,12 @@
     <li><a routerLink="/grupos-activos">GRUPOS ACTIVOS</a></li>
     <li><a routerLink="/perfil">PERFIL</a></li>
     <li><a routerLink="/reglamento">REGLAS DE JUEGO</a></li>
-    <li *ngIf="!isAuthenticated"><a routerLink="/registro" class="registro-link">REGISTRO</a></li>
+    <li *ngIf="!isAuthenticated"><a routerLink="/login">INGRESO</a></li>
+    <li *ngIf="!isAuthenticated">
+      <a routerLink="/registro" class="registro-link">REGISTRO</a>
+    </li>
+    <li *ngIf="isAuthenticated">
+      <a (click)="logout()" class="logout-link">CERRAR SESIÓN</a>
+    </li>
   </ul>
 </nav>
