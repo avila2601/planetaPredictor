@@ -28,7 +28,9 @@ export class JoinPollaComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private pollaService: PollaService,
     private authService: AuthService
-  ) {}
+  ) {
+    console.log('🚩 JoinPollaComponent constructor');
+  }
 
   ngOnInit(): void {
     console.log('🔄 JoinPollaComponent initialized');
