@@ -326,7 +326,9 @@ crearPolla(nombre: string, torneo: Partial<Polla>, notas: string): Observable<Po
       console.warn('⚠️ Polla sin código de invitación');
       return '';
     }
-    return `${window.location.origin}/join-polla/${polla.id}/${polla.inviteCode}`;
+    // Incluir el baseHref para GitHub Pages
+    const baseHref = '/planetaPredictor/';
+    return `${window.location.origin}${baseHref}join-polla/${polla.id}/${polla.inviteCode}`;
   }
 }
 
