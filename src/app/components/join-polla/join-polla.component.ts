@@ -70,13 +70,17 @@ export class JoinPollaComponent implements OnInit, OnDestroy {
   }
 
   private loadPolla(pollaId: string, inviteCode: string): void {
-    console.log('🔄 Loading polla data:', { pollaId, inviteCode });
+    console.log('🔍 Intentando cargar polla:', { pollaId, inviteCode });
 
     this.pollaService.getPollaById(pollaId).subscribe({
       next: (polla) => {
-        console.log('📋 Polla data:', polla);
+        console.log('📦 Respuesta de getPollaById:', polla);
         if (!polla || polla.inviteCode !== inviteCode) {
-          console.error('❌ Invalid invite code or polla not found');
+          console.error('❌ Link de invitación inválido o no coincide el código', {
+            polla,
+            inviteCodeEsperado: polla?.inviteCode,
+            inviteCodeRecibido: inviteCode
+          });
           this.error = 'Link de invitación inválido';
           this.loading = false;
           return;
