@@ -7,31 +7,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <script type="text/javascript">
-      // Single Page Apps for GitHub Pages
-      // MIT License
-      // https://github.com/rafgraph/spa-github-pages
-      // This script checks to see if a redirect is present in the query string,
-      // converts it back into the correct url and adds it to the
-      // browser's history using window.history.replaceState(...),
-      // which won't cause the browser to attempt to load the new url.
-      // When the single page app is loaded further down in this file,
-      // the correct url will be waiting in the browser's history for
-      // the single page app to route accordingly.
-      (function (l) {
-        console.log("index.html: Checking for redirect, search:", l.search);
-        if (l.search[1] === "/") {
-          var decoded = l.search
-            .slice(1)
-            .split("&")
-            .map(function (s) {
-              return s.replace(/~and~/g, "&");
-            })
-            .join("?");
-          var newUrl = l.pathname.slice(0, -1) + decoded + l.hash;
-          console.log("index.html: Restoring URL to:", newUrl);
+      // Handle redirects from 404.html
+      (function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var redirectPath = urlParams.get('redirect');
+
+        if (redirectPath) {
+          console.log('index.html: Redirect path found:', redirectPath);
+
+          // Remove the redirect parameter from the URL
+          urlParams.delete('redirect');
+          var newSearch = urlParams.toString();
+          var newUrl = window.location.pathname + (newSearch ? '?' + newSearch : '') + window.location.hash;
+
+          // Update the URL without triggering a page reload
           window.history.replaceState(null, null, newUrl);
+
+          // Navigate to the correct route
+          var fullPath = '/planetaPredictor/' + redirectPath;
+          console.log('index.html: Navigating to:', fullPath);
+          window.history.pushState(null, null, fullPath);
         }
-      })(window.location);
+      })();
     </script>
   </head>
   <body>
