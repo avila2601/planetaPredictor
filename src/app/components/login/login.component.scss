@@ -1,100 +1,92 @@
 @import '../../../styles.scss';
 
-.login-container, .dashboard {
-  background-color: $white;
-  text-align: center;
-  border: 1px solid $success;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-
-  margin: 10px auto;
+:host {
+  display: block;
+  margin: 0 auto;
+  color: white;
+  margin: 15px auto;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  min-height: 70vh;
   box-sizing: border-box;
+  max-width: 60%;
+  width: 100%;
+}
 
-  @include mobile {
-    width: 95%;
-    max-width: 500px;
-    padding: 2px 5px;
-    margin: 5px auto 0;
-    border: none;
-    border-radius: 5px;
-  }
-
-  @include tablet {
-    width: 80%;
-    max-width: 500px;
-    padding: 10px 5px;
-    margin: 10px auto;
-  }
-
-  @include desktop {
-    width: 50%;
-    max-width: 500px;
-    padding: 10px 5px;
-    margin: 10px auto;
-  }
+.login-container, .dashboard {
+  max-width: 90%;
+  margin: auto;
+  text-align: center;
 }
 
 input {
   width: 100%;
   max-width: 300px;
-  padding: 10px;
-  margin: 10px auto;
-  border: 1px solid $success;
+  padding: 0.5rem;
+  margin: 20px auto;
+  border: 1px solid #ddd;
   border-radius: 4px;
+  font-size: 1rem;
+  display: block;
+
+  &:focus {
+    outline: none;
+    border-color: #2a7a2a;
+  }
 
   @include mobile {
-    max-width: 90%;
+    width: 90%;
+    max-width: 300px;
+  }
+
+  @include tablet {
+    width: 80%;
+    max-width: 300px;
   }
 }
 
 button {
-  background: linear-gradient(to bottom, $primary, $primary-dark);
-  color: $white;
+  background: linear-gradient(to bottom, #5a4bac, #2f1f80);
+  color: white;
   border: none;
-  cursor: pointer;
+  padding: 10px 20px;
   border-radius: 5px;
-  padding: 8px 16px;
-
-
-  @include mobile {
-    justify-content: space-between;
-    margin: 10px 0;
-  }
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  font-size: 16px;
+  margin: 25px auto;
+  display: block;
 
   &:hover {
-    background: linear-gradient(to bottom, $primary, darken($primary-dark, 10%));
+    background: linear-gradient(to bottom, #5a4bac, #140a47);
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
   }
 }
 
 .error {
-  color: red;
+  color: #dc3545;
   font-size: $font-size-small;
-  margin: 5px 0;
+  margin: 20px 0;
 }
 
 .forgot-password {
-  margin: 10px;
+  margin: 25px 0;
   text-align: center;
   cursor: pointer;
-  width: 100%;
-
-  @include mobile {
-    font-size: 14px;
-  }
 
   a {
     text-decoration: none;
     font-weight: bold;
-    color: $primary;
+    color: #5a4bac;
 
     &:hover {
       text-decoration: underline;
-      color: $primary-dark;
+      color: #2f1f80;
     }
   }
 }
@@ -105,19 +97,25 @@ button {
   justify-content: space-between;
   gap: 20px;
 
+  h2 {
+    color: #5a4bac;
+    margin: 0;
+  }
 
   button {
-      padding: 5px;
-      white-space: nowrap;
+    padding: 8px 16px;
+    white-space: nowrap;
+    margin: 0;
   }
 
   @include mobile {
-      flex-direction: row;
-      text-align: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
 
-      button {
-          width: 40%;
-      }
+    button {
+      width: auto;
+    }
   }
 }
 
